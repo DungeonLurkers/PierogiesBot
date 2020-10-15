@@ -10,7 +10,6 @@ namespace PierogiesBot.Runners.Console
     {
         public static void AddBotServices(this IServiceCollection services)
         {
-            services.AddSingleton<DiscordSocketClient>();
             services.AddSingleton<IDiscordBotService, DiscordBotServiceImpl>();
             
             services.AddHostedService<PierogiesBotService>();
