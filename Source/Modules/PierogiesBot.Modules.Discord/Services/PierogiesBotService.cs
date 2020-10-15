@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Discord;
+using Discord.WebSocket;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using PierogiesBot.Modules.Core.Enums;
@@ -68,6 +69,7 @@ namespace PierogiesBot.Modules.Discord.Services
                 .Select(tuple => tuple.message);
 
             var commandObservable = messageObservable.AsBotCommandObservable();
+
 
             commandObservable
                 .WhereBotCommandIs("sayhi")
@@ -185,12 +187,47 @@ namespace PierogiesBot.Modules.Discord.Services
 
             messageObservable
                 .Merge(messageObservable.WhereMessageContentContains("stópkarz"))
-                .Merge(messageObservable.WhereMessageContentContains("stoopkarz"))
+                .Merge(messageObservable.WhereMessageContentContains("stopkarz"))
                 .WhereMessageContentContains("st00pkarz")
                 .WhereAuthorUsernameIsNot("PierogiesBot")
                 .SendMessageToCurrentMessageChannel("Fuj, stopy :v")
                 .Subscribe();
 
+            CronObservable.Cron(CronObservable.BlazeCronTab, TaskPoolScheduler.Default)
+                .Merge(CronObservable.Cron(CronObservable.Blaze2CronTab, TaskPoolScheduler.Default))
+                .Select(async i
+                    => (channel: await _discordBotService.DiscordClient.GetChannelAsync(655390316148555807),
+                        message: "4:20"))
+                .Do(async tuple =>
+                {
+                    var (channel, message) = await tuple;
+
+                    var textChannel = channel as SocketTextChannel;
+
+                    textChannel?.SendMessageAsync(message);
+                })
+                .Subscribe();
+
+            SendMessageOnCronOccurrence(CronObservable.Jp2CronTab, "2137")
+                .Subscribe();
+
+
+        }
+
+        private IObservable<Task<(IChannel channel, string message)>> SendMessageOnCronOccurrence(string crontab, string message)
+        {
+            return CronObservable.Cron(crontab, TaskPoolScheduler.Default)
+                .Select(async i
+                    => (channel: await _discordBotService.DiscordClient.GetChannelAsync(655390316148555807),
+                        message: message))
+                .Do(async tuple =>
+                {
+                    var (channel, message) = await tuple;
+
+                    var textChannel = channel as SocketTextChannel;
+
+                    textChannel?.SendMessageAsync(message);
+                });
         }
 
         private static async Task SearchForAllMatchesWordAndReport(IMessage message, string substring)
