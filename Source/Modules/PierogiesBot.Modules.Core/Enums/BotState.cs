@@ -1,4 +1,4 @@
-﻿namespace PierogiesBot.Host.Models
+﻿namespace PierogiesBot.Modules.Core.Enums
 {
     public enum BotState
     {

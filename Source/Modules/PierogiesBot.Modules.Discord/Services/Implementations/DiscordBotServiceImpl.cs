@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
-using PierogiesBot.Host.Models;
-using PierogiesBot.Host.Services.Definitions;
+using PierogiesBot.Modules.Core.Enums;
+using PierogiesBot.Modules.Discord.Services.Definitions;
 
-namespace PierogiesBot.Host.Services.Implementations
+namespace PierogiesBot.Modules.Discord.Services.Implementations
 {
     public class DiscordBotServiceImpl : IDiscordBotService
     {
@@ -96,5 +97,17 @@ namespace PierogiesBot.Host.Services.Implementations
             _botStateSubject.OnNext(BotState.LoggingOut);
             await _discordClient.LogoutAsync();
         }
+
+        public Task<IEnumerable<IUser>> GetUsersAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<IMessageChannel>> GetMessageChannelsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IDMChannel?> GetMessageChannelAsync(ulong id) => await _discordClient.GetDMChannelAsync(id);
     }
 }

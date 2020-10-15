@@ -1,16 +1,50 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PierogiesBot.Host", "PierogiesBot.Host\PierogiesBot.Host.csproj", "{DD9B10F3-0DC4-4B15-ABE4-BE94B2BF4544}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{CB00BB16-FF83-4243-A996-167CE889E239}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Runners", "Runners", "{DAD83AC0-177A-4830-91CA-FD67C6366F18}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{7B5117AD-1A84-4679-B1BD-5B24E248B4F4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{090FA22C-78CA-4FD9-8CA3-CA79B818D44C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PierogiesBot.Modules.Core", "Source\Modules\PierogiesBot.Modules.Core\PierogiesBot.Modules.Core.csproj", "{889F223E-7A8A-4B60-B76C-89E64C25314F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PierogiesBot.Modules.Discord", "Source\Modules\PierogiesBot.Modules.Discord\PierogiesBot.Modules.Discord.csproj", "{9D53353A-1B53-462C-8A43-8591A0A4879C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PierogiesBot.Runners.Console", "Source\Runners\PierogiesBot.Runners.Console\PierogiesBot.Runners.Console.csproj", "{1B083054-5DEB-4443-AA96-003579CA8286}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		Arm32|arm = Arm32|arm
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DD9B10F3-0DC4-4B15-ABE4-BE94B2BF4544}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DD9B10F3-0DC4-4B15-ABE4-BE94B2BF4544}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DD9B10F3-0DC4-4B15-ABE4-BE94B2BF4544}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DD9B10F3-0DC4-4B15-ABE4-BE94B2BF4544}.Release|Any CPU.Build.0 = Release|Any CPU
+		{889F223E-7A8A-4B60-B76C-89E64C25314F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{889F223E-7A8A-4B60-B76C-89E64C25314F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{889F223E-7A8A-4B60-B76C-89E64C25314F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{889F223E-7A8A-4B60-B76C-89E64C25314F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{889F223E-7A8A-4B60-B76C-89E64C25314F}.Arm32|arm.ActiveCfg = Debug|Any CPU
+		{889F223E-7A8A-4B60-B76C-89E64C25314F}.Arm32|arm.Build.0 = Debug|Any CPU
+		{9D53353A-1B53-462C-8A43-8591A0A4879C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D53353A-1B53-462C-8A43-8591A0A4879C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D53353A-1B53-462C-8A43-8591A0A4879C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D53353A-1B53-462C-8A43-8591A0A4879C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D53353A-1B53-462C-8A43-8591A0A4879C}.Arm32|arm.ActiveCfg = Debug|Any CPU
+		{9D53353A-1B53-462C-8A43-8591A0A4879C}.Arm32|arm.Build.0 = Debug|Any CPU
+		{1B083054-5DEB-4443-AA96-003579CA8286}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B083054-5DEB-4443-AA96-003579CA8286}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B083054-5DEB-4443-AA96-003579CA8286}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B083054-5DEB-4443-AA96-003579CA8286}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B083054-5DEB-4443-AA96-003579CA8286}.Arm32|arm.ActiveCfg = Debug|Any CPU
+		{1B083054-5DEB-4443-AA96-003579CA8286}.Arm32|arm.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DAD83AC0-177A-4830-91CA-FD67C6366F18} = {7B5117AD-1A84-4679-B1BD-5B24E248B4F4}
+		{CB00BB16-FF83-4243-A996-167CE889E239} = {7B5117AD-1A84-4679-B1BD-5B24E248B4F4}
+		{889F223E-7A8A-4B60-B76C-89E64C25314F} = {CB00BB16-FF83-4243-A996-167CE889E239}
+		{9D53353A-1B53-462C-8A43-8591A0A4879C} = {CB00BB16-FF83-4243-A996-167CE889E239}
+		{1B083054-5DEB-4443-AA96-003579CA8286} = {DAD83AC0-177A-4830-91CA-FD67C6366F18}
 	EndGlobalSection
 EndGlobal
