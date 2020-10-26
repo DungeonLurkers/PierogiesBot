@@ -9,7 +9,7 @@ namespace PierogiesBot.Modules.Core.Extensions
     {
         public static string Jp2CronTab = "37 20 * * *";
         public static string BlazeCronTab = "20 15 * * *";
-        public static string Blaze2CronTab = "20 2 * * *";
+        public static string Blaze2CronTab = "20 3 * * *";
         public static IObservable<int> Cron(string cron, IScheduler scheduler)
         {
             var schedule = CrontabSchedule.Parse(cron);
