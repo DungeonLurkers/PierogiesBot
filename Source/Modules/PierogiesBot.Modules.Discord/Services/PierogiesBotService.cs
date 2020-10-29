@@ -197,7 +197,7 @@ namespace PierogiesBot.Modules.Discord.Services
                 .Merge(CronObservable.Cron(CronObservable.Blaze2CronTab, TaskPoolScheduler.Default))
                 .Select(async i
                     => (channel: await _discordBotService.DiscordClient.GetChannelAsync(655390316148555807),
-                        message: "4:20"))
+                        message: "<:420:705367102676009000>"))
                 .Do(async tuple =>
                 {
                     var (channel, message) = await tuple;
@@ -208,7 +208,7 @@ namespace PierogiesBot.Modules.Discord.Services
                 })
                 .Subscribe();
 
-            SendMessageOnCronOccurrence(CronObservable.Jp2CronTab, "2137")
+            SendMessageOnCronOccurrence(CronObservable.Jp2CronTab, "<:2137:709845177983959050>")
                 .Subscribe();
 
 
