@@ -2,3 +2,6 @@ bin/
 obj/
 .*-publish/
 idea/
+.idea/.idea.PierogiesBot/.idea/
+
+Source/Runners/Runner.Console/appsettings.json
