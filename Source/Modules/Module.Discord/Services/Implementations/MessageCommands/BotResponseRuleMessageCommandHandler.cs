@@ -13,19 +13,16 @@ namespace Module.Discord.Services.Implementations.MessageCommands
     {
         private readonly IDataSource<BotResponseRule, Guid> _botResponseRules;
 
-        private IList<BotResponseRule> _rules;
-
         public BotResponseRuleMessageCommandHandler(IDataSource<BotResponseRule, Guid> botResponseRules)
         {
             _botResponseRules = botResponseRules;
-
-            _rules = _botResponseRules.GetAll().ToList();
         }
 
         public void Handle(IMessage message)
         {
+            var rules = _botResponseRules.GetAll().ToList();
 
-            foreach (var rule in _rules)
+            foreach (var rule in rules)
             {
                 if (rule.IsRespondToRegex)
                 {
@@ -38,16 +35,16 @@ namespace Module.Discord.Services.Implementations.MessageCommands
                 {
                     if (rule.IsRespondOnContains)
                     {
-                        if (message.Content.Contains(rule.RespondTo))
+                        if (message.Content.Contains(rule.RespondTo, rule.StringComparison))
                         {
                             message.Channel.SendMessageAsync(rule.RespondWith).GetAwaiter().GetResult(); // await
                         }
                     }
                     else
                     {
-                        if (message.Content.Equals(rule.RespondTo))
+                        if (message.Content.Equals(rule.RespondTo, rule.StringComparison))
                         {
-                            message.Channel.SendMessageAsync(rule.RespondWith);
+                            message.Channel.SendMessageAsync(rule.RespondWith).GetAwaiter().GetResult();
                         }
                     }
                 }
