@@ -2,8 +2,8 @@ using System;
 using System.Linq.Expressions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Module.Data.Models;
 using MongoDB.Driver;
-using Persistence.Models;
 
 namespace Persistence.Storage
 {

@@ -15,7 +15,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Module.Core.Enums;
 using Module.Core.Extensions;
-using Module.Discord.Observables.Implementations;
+using Module.Discord.Extensions;
 using Module.Discord.Services.Definitions;
 
 namespace Module.Discord.Services
@@ -26,13 +26,18 @@ namespace Module.Discord.Services
         private readonly ILogger<PierogiesBotService> _logger;
         private readonly IDiscordBotService _discordBotService;
         private readonly IConfiguration _configuration;
+        private readonly IMessageCommandChain _commandChain;
         private readonly Random _random;
 
-        public PierogiesBotService(ILogger<PierogiesBotService> logger, IDiscordBotService discordBotService, IConfiguration configuration)
+        public PierogiesBotService(ILogger<PierogiesBotService> logger,
+            IDiscordBotService discordBotService,
+            IConfiguration configuration,
+            IMessageCommandChain commandChain)
         {
             _logger = logger;
             _discordBotService = discordBotService;
             _configuration = configuration;
+            _commandChain = commandChain;
             _random = new Random((int) DateTime.Now.Ticks);
 
             InitializeSubscriptions();
@@ -70,6 +75,8 @@ namespace Module.Discord.Services
             var messageObservable = _discordBotService.MessageObservable
                 .Where(tuple => tuple.changeType == MessageChangeType.Added)
                 .Select(tuple => tuple.message);
+
+            _commandChain.BindToMessageObservable(messageObservable);
 
             var commandObservable = messageObservable.AsBotCommandObservable();
 

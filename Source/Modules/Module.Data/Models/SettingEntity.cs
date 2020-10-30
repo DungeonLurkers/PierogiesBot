@@ -1,7 +1,6 @@
 using System;
-using Module.Data.Models;
 
-namespace Persistence.Models
+namespace Module.Data.Models
 {
     public class SettingEntity : EntityBase<Guid>
     {

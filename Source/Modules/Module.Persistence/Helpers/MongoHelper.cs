@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Module.Data.Models;
-using Persistence.Models;
 
 namespace Persistence.Helpers
 {

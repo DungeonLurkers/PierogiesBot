@@ -5,6 +5,8 @@ using Discord;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Module.Discord.Services.Definitions;
+using Module.Discord.Services.Implementations.MessageCommands;
 
 namespace Module.Discord.Extensions
 {
@@ -28,6 +30,9 @@ namespace Module.Discord.Extensions
 
                 return client;
             });
+
+            services.AddTransient<IMessageCommandHandler, BotResponseRuleMessageCommandHandler>();
+            services.AddTransient<IMessageCommandChain, MessageCommandChainImpl>();
         }
 
         private static Task ClientOnLog(LogMessage message, ILogger logger)

@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Discord;
-using Module.Data.Models;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Persistence.Models
+namespace Module.Data.Models
 {
     public class GuildEntity : EntityBase<ulong>
     {

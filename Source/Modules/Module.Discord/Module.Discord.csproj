@@ -12,6 +12,12 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Module.Core\Module.Core.csproj" />
+      <ProjectReference Include="..\Module.Data\Module.Data.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Observables\Definitions" />
+      <Folder Include="Observables\Implementations" />
     </ItemGroup>
 
 </Project>

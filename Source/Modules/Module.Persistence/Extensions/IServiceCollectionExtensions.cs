@@ -3,9 +3,9 @@
 using System;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Module.Data.Models;
 using Module.Data.Storage;
 using MongoDB.Driver;
-using Persistence.Models;
 using Persistence.Storage;
 
 namespace Persistence.Extensions
@@ -32,6 +32,7 @@ namespace Persistence.Extensions
             services.AddSingleton<IDataSource<GuildEntity, ulong>, GuildMongoDataSource>();
             services.AddSingleton<IDataSource<GuildUserEntity, ulong>, GuildUserMongoDataSource>();
             services.AddSingleton<IDataSource<SettingEntity, Guid>, SettingMongoDataSource>();
+            services.AddSingleton<IDataSource<BotResponseRule, Guid>, BotResponseRuleMongoDataSource>();
         }
     }
 }

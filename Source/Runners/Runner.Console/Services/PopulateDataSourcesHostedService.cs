@@ -8,9 +8,9 @@ using Discord;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Module.Core.Enums;
+using Module.Data.Models;
 using Module.Data.Storage;
 using Module.Discord.Services.Definitions;
-using Persistence.Models;
 
 namespace Runner.Console.Services
 {
@@ -20,6 +20,7 @@ namespace Runner.Console.Services
         private readonly IDataSource<GuildEntity, ulong> _guildDataSource;
         private readonly IDataSource<GuildUserEntity, ulong> _guildUserDataSource;
         private readonly IDataSource<SettingEntity, Guid> _settingDataSource;
+        private readonly IDataSource<BotResponseRule, Guid> _rulesDataSource;
         private readonly IDiscordBotService _discordBotService;
         private readonly IDiscordClient _discordClient;
         private readonly ILogger<PopulateDataSourcesHostedService> _logger;
@@ -29,6 +30,7 @@ namespace Runner.Console.Services
             IDataSource<RoleEntity, ulong> roleDataSource, IDataSource<GuildEntity, ulong> guildDataSource,
             IDataSource<GuildUserEntity, ulong> guildUserDataSource,
             IDataSource<SettingEntity, Guid> settingDataSource,
+            IDataSource<BotResponseRule, Guid> rulesDataSource,
             IDiscordBotService discordBotService,
             ILogger<PopulateDataSourcesHostedService> logger, IHostApplicationLifetime applicationLifetime)
         {
@@ -36,6 +38,7 @@ namespace Runner.Console.Services
             _guildDataSource = guildDataSource;
             _guildUserDataSource = guildUserDataSource;
             _settingDataSource = settingDataSource;
+            _rulesDataSource = rulesDataSource;
             _discordBotService = discordBotService;
             _discordClient = discordBotService.DiscordClient;
             _logger = logger;
@@ -81,6 +84,9 @@ namespace Runner.Console.Services
 
                     var users = (await guild.GetUsersAsync())?.Select(user => new GuildUserEntity(user));
                     var roles = guild.Roles?.Select(role => new RoleEntity(role));
+
+                    _logger.LogDebug("Constructing responding rules");
+
                     if (users != null && roles != null)
                     {
                         PopulateDataSource(roles, _roleDataSource);
@@ -92,7 +98,7 @@ namespace Runner.Console.Services
             });
         }
 
-        private void PopulateDataSource<T>(IEnumerable<T> entities, IDataSource<T, ulong> dataSource) where T : class
+        private void PopulateDataSource<T, TId>(IEnumerable<T> entities, IDataSource<T, TId> dataSource) where T : class
         {
             var enumerable = entities.ToList();
             if (!enumerable.Any()) return;

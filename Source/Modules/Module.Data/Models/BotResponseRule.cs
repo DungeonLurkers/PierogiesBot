@@ -1,8 +1,7 @@
 using System;
-using Module.Data.Models;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Persistence.Models
+namespace Module.Data.Models
 {
     public class BotResponseRule : EntityBase<Guid>
     {
@@ -12,6 +11,10 @@ namespace Persistence.Models
         public string RespondWith { get; set; }
         [BsonElement]
         public bool IsRespondToRegex { get; set; }
+        [BsonElement]
+        public bool IsRespondOnContains { get; set; }
+        [BsonElement]
+        public StringComparison StringComparison { get; set; }
 
         public BotResponseRule()
         {

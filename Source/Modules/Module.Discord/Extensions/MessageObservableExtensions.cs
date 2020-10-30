@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Discord;
 using Module.Discord.Services;
 
-namespace Module.Discord.Observables.Implementations
+namespace Module.Discord.Extensions
 {
     public static class MessageObservableExtensions
     {
