@@ -23,8 +23,13 @@ namespace Module.Discord.Services.Implementations.MessageCommands
 
         protected override string AddRuleCmdPrefix { get; set; } = "=>addrule ";
 
-        protected override string RuleHelp { get; set; } =
-            "=>addrule [TRIGGER_TEXT];[IS_REGEX];[SHOULD_TRIGGER_ON_CONTAINS];[RESPONSE_TEXT";
+        protected override Embed RuleHelp { get; set; } =
+            new EmbedBuilder()
+            .WithColor(Color.Purple)
+            .WithDescription("```powershell\n=>addrule [TRIGGER_TEXT];[IS_REGEX];[SHOULD_TRIGGER_ON_CONTAINS];[RESPONSE]\n\n[TRIGGER_TEXT] # text to trigger bot response\n[IS_REGEX} # true if [TRIGGER_TEXT] is a Regex pattern, default is false\n[SHOULD...] # true if bot should be triggered if message contains [TRIGGER_TEXT]. If false, bot will be triggered only if message is equal to trigger\n```")
+            .WithCurrentTimestamp()
+            .Build();
+
         protected override void HandleRule(string triggerText, bool isRegex, bool shouldTriggerOnContains, string respondWith, IMessage message)
         {
             if (!message.Content.StartsWith(AddRuleCmdPrefix)) return;

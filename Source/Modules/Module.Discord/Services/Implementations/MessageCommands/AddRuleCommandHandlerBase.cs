@@ -11,7 +11,7 @@ namespace Module.Discord.Services.Implementations.MessageCommands
     {
         private readonly ILogger<AddRuleCommandHandlerBase<TRule>> _logger;
         protected abstract string AddRuleCmdPrefix { get; set; }
-        protected abstract string RuleHelp { get; set; }
+        protected abstract Embed RuleHelp { get; set; }
 
         public AddRuleCommandHandlerBase(ILogger<AddRuleCommandHandlerBase<TRule>> logger)
         {
@@ -24,7 +24,8 @@ namespace Module.Discord.Services.Implementations.MessageCommands
             if (message.Content.Equals($"{AddRuleCmdPrefix}-h", StringComparison.InvariantCultureIgnoreCase))
             {
                 _logger.LogDebug($"Displaying {typeof(TRule).Name} help");
-                channel.SendMessageAsync(RuleHelp).GetAwaiter().GetResult();
+
+                message.Channel.SendMessageAsync(embed: RuleHelp).GetAwaiter().GetResult();
             }
 
             var author = (SocketGuildUser) message.Author;
