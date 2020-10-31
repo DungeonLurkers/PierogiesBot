@@ -32,6 +32,9 @@ namespace Module.Discord.Extensions
             });
 
             services.AddTransient<IMessageCommandHandler, BotResponseRuleMessageCommandHandler>();
+            services.AddTransient<IMessageCommandHandler, BotReactRuleMessageCommandHandler>();
+            services.AddTransient<IMessageCommandHandler, AddBotReactRuleCommandHandler>();
+            services.AddTransient<IMessageCommandHandler, AddBotResponseRuleCommandHandler>();
             services.AddTransient<IMessageCommandChain, MessageCommandChainImpl>();
         }
 

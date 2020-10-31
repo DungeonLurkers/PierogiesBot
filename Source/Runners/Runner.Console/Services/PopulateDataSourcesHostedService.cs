@@ -21,6 +21,7 @@ namespace Runner.Console.Services
         private readonly IDataSource<GuildUserEntity, ulong> _guildUserDataSource;
         private readonly IDataSource<SettingEntity, Guid> _settingDataSource;
         private readonly IDataSource<BotResponseRule, Guid> _rulesDataSource;
+        private readonly IDataSource<BotReactRule, Guid> _reactRulesDataSource;
         private readonly IDiscordBotService _discordBotService;
         private readonly IDiscordClient _discordClient;
         private readonly ILogger<PopulateDataSourcesHostedService> _logger;
@@ -31,6 +32,7 @@ namespace Runner.Console.Services
             IDataSource<GuildUserEntity, ulong> guildUserDataSource,
             IDataSource<SettingEntity, Guid> settingDataSource,
             IDataSource<BotResponseRule, Guid> rulesDataSource,
+            IDataSource<BotReactRule, Guid> reactRulesDataSource,
             IDiscordBotService discordBotService,
             ILogger<PopulateDataSourcesHostedService> logger, IHostApplicationLifetime applicationLifetime)
         {
@@ -39,6 +41,7 @@ namespace Runner.Console.Services
             _guildUserDataSource = guildUserDataSource;
             _settingDataSource = settingDataSource;
             _rulesDataSource = rulesDataSource;
+            _reactRulesDataSource = reactRulesDataSource;
             _discordBotService = discordBotService;
             _discordClient = discordBotService.DiscordClient;
             _logger = logger;

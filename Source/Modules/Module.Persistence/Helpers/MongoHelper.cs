@@ -13,6 +13,7 @@ namespace Persistence.Helpers
             {typeof(GuildUserEntity), "GuildUsers"},
             {typeof(SettingEntity), "Settings"},
             {typeof(BotResponseRule), "BotResponseRules"},
+            {typeof(BotReactRule), "BotReactRule"},
         };
 
         public static string GetCollNameFromEntity<TId>(EntityBase<TId> entity) => _collNamesToEntitiesMapping[entity.GetType()];
