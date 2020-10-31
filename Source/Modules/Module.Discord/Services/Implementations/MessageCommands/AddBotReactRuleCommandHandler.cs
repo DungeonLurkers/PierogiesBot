@@ -30,6 +30,8 @@ namespace Module.Discord.Services.Implementations.MessageCommands
             "=>addreact [TRIGGER_MSG];[IS_REGEX];[SHOULD_TRIGGER_ON_CONTAINS];[REACTION_NAME]";
         protected override void HandleRule(string triggerText, bool isRegex, bool shouldTriggerOnContains, string respondWith, IMessage message)
         {
+            if (!message.Content.StartsWith(AddRuleCmdPrefix)) return;
+            
             _logger.LogDebug($"New rule command: {nameof(BotReactRule.TriggerText)} = '{triggerText}'; " +
                              $"{nameof(BotReactRule.IsTriggerTextRegex)} = {isRegex}; " +
                              $"{nameof(BotReactRule.ShouldTriggerOnContains)} = {shouldTriggerOnContains}; " +
