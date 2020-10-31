@@ -56,7 +56,7 @@ namespace Persistence.Storage
             {
                 var getId = GetNonMongoIdDelegate.Compile();
 
-                if (_mongoCollection.FindSync(Builders<TEntity>.Filter.Eq(GetNonMongoIdDelegate, getId(entity))) != null)
+                if (_mongoCollection.FindSync(Builders<TEntity>.Filter.Eq(GetNonMongoIdDelegate, getId(entity))).Any())
                 {
                     _mongoCollection
                         .FindOneAndReplace(
