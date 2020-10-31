@@ -33,6 +33,7 @@ namespace Persistence.Extensions
             services.AddSingleton<IDataSource<GuildUserEntity, ulong>, GuildUserMongoDataSource>();
             services.AddSingleton<IDataSource<SettingEntity, Guid>, SettingMongoDataSource>();
             services.AddSingleton<IDataSource<BotResponseRule, Guid>, BotResponseRuleMongoDataSource>();
+            services.AddSingleton<IDataSource<BotReactRule, Guid>, BotReactRuleMongoDataSource>();
         }
     }
 }

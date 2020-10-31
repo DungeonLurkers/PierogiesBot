@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Discord;
@@ -9,20 +8,19 @@ using Module.Discord.Services.Definitions;
 
 namespace Module.Discord.Services.Implementations.MessageCommands
 {
-    public class BotResponseRuleMessageCommandHandler : IMessageCommandHandler
+    public abstract class BotMessageRuleMessageCommandHandlerBase<TRule> : IMessageCommandHandler where TRule : BotMessageRuleBase
     {
-        private readonly IDataSource<BotResponseRule, Guid> _botResponseRules;
+        protected IDataSource<TRule, Guid> RulesDataSource { get; set; }
 
-        public BotResponseRuleMessageCommandHandler(IDataSource<BotResponseRule, Guid> botResponseRules)
+        public BotMessageRuleMessageCommandHandlerBase(IDataSource<TRule, Guid> rulesDataSource)
         {
-            _botResponseRules = botResponseRules;
+            RulesDataSource = rulesDataSource;
         }
-
         public void Handle(IMessage message)
         {
             if (message.Author.IsBot) return;
 
-            var rules = _botResponseRules.GetAll().ToList();
+            var rules = RulesDataSource.GetAll().ToList();
 
             foreach (var rule in rules)
             {
@@ -32,12 +30,12 @@ namespace Module.Discord.Services.Implementations.MessageCommands
                     {
                         if (Regex.IsMatch(message.Content, rule.TriggerText))
                         {
-                            message.Channel.SendMessageAsync(rule.RespondWith).GetAwaiter().GetResult(); // await
+                            CommandAction(message, rule);
                         }
                     }
                     if (Regex.IsMatch(message.Content, $"^{rule.TriggerText}$"))
                     {
-                        message.Channel.SendMessageAsync(rule.RespondWith).GetAwaiter().GetResult(); // await
+                        CommandAction(message, rule);
                     }
                 }
                 else
@@ -46,18 +44,20 @@ namespace Module.Discord.Services.Implementations.MessageCommands
                     {
                         if (message.Content.Contains(rule.TriggerText, rule.StringComparison))
                         {
-                            message.Channel.SendMessageAsync(rule.RespondWith).GetAwaiter().GetResult(); // await
+                            CommandAction(message, rule);
                         }
                     }
                     else
                     {
                         if (message.Content.Equals(rule.TriggerText, rule.StringComparison))
                         {
-                            message.Channel.SendMessageAsync(rule.RespondWith).GetAwaiter().GetResult();
+                            CommandAction(message, rule);
                         }
                     }
                 }
             }
         }
+
+        protected abstract void CommandAction(IMessage message, TRule rule);
     }
 }
