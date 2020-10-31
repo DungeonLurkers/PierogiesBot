@@ -88,24 +88,12 @@ namespace Runner.Console.Services
                     var users = (await guild.GetUsersAsync())?.Select(user => new GuildUserEntity(user));
                     var roles = guild.Roles?.Select(role => new RoleEntity(role));
 
-                    var rules = new List<BotReactRule>
-                    {
-                        new BotReactRule()
-                        {
-                            ShouldTriggerOnContains = true,
-                            TriggerText = "2137",
-                            Reaction = "2137"
-
-                        }
-                    };
-
                     _logger.LogDebug("Constructing responding rules");
 
                     if (users != null && roles != null)
                     {
                         PopulateDataSource(roles, _roleDataSource);
                         PopulateDataSource(users, _guildUserDataSource);
-                        PopulateDataSource(rules, _reactRulesDataSource);
                     }
 
                     _logger.LogInformation("All data sources populated");

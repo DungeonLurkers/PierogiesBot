@@ -4,6 +4,10 @@ namespace Module.Data.Models
 {
     public abstract class BotMessageRuleBase : EntityBase<Guid>
     {
+        public BotMessageRuleBase()
+        {
+            Id = Guid.NewGuid();
+        }
         public string TriggerText { get; set; } = "";
         public StringComparison StringComparison { get; set; } = StringComparison.InvariantCultureIgnoreCase;
         public bool IsTriggerTextRegex { get; set; } = false;
