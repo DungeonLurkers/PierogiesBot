@@ -10,7 +10,7 @@ namespace Module.Discord.Services.Implementations.MessageCommands
     public abstract class AddRuleCommandHandlerBase<TRule> : BotMessageCommandHandlerBase where TRule : BotMessageRuleBase
     {
         private readonly ILogger<AddRuleCommandHandlerBase<TRule>> _logger;
-        protected abstract string AddRuleCmdPrefix { get; set; }
+        protected virtual string AddRuleCmdPrefix { get; set; } = "=>";
         protected abstract Embed RuleHelp { get; set; }
 
         public AddRuleCommandHandlerBase(ILogger<AddRuleCommandHandlerBase<TRule>> logger)
