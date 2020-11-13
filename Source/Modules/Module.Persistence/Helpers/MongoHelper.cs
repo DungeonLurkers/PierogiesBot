@@ -14,6 +14,7 @@ namespace Persistence.Helpers
             {typeof(SettingEntity), "Settings"},
             {typeof(BotResponseRule), "BotResponseRules"},
             {typeof(BotReactRule), "BotReactRule"},
+            {typeof(QuestionEntity), "Questions"},
         };
 
         public static string GetCollNameFromEntity<TId>(EntityBase<TId> entity) => _collNamesToEntitiesMapping[entity.GetType()];

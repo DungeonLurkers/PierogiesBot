@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Discord;
 using Module.Data.Models;
 using Module.Data.Storage;
@@ -16,7 +17,7 @@ namespace Module.Discord.Services.Implementations.MessageCommands
         {
             RulesDataSource = rulesDataSource;
         }
-        public void Handle(IMessage message)
+        public async Task Handle(IMessage message)
         {
             if (message.Author.IsBot) return;
 
@@ -30,12 +31,12 @@ namespace Module.Discord.Services.Implementations.MessageCommands
                     {
                         if (Regex.IsMatch(message.Content, rule.TriggerText))
                         {
-                            CommandAction(message, rule);
+                            await CommandAction(message, rule);
                         }
                     }
                     if (Regex.IsMatch(message.Content, $"^{rule.TriggerText}$"))
                     {
-                        CommandAction(message, rule);
+                        await CommandAction(message, rule);
                     }
                 }
                 else
@@ -44,20 +45,20 @@ namespace Module.Discord.Services.Implementations.MessageCommands
                     {
                         if (message.Content.Contains(rule.TriggerText, rule.StringComparison))
                         {
-                            CommandAction(message, rule);
+                            await CommandAction(message, rule);
                         }
                     }
                     else
                     {
                         if (message.Content.Equals(rule.TriggerText, rule.StringComparison))
                         {
-                            CommandAction(message, rule);
+                            await CommandAction(message, rule);
                         }
                     }
                 }
             }
         }
 
-        protected abstract void CommandAction(IMessage message, TRule rule);
+        protected abstract Task CommandAction(IMessage message, TRule rule);
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
@@ -10,22 +11,20 @@ namespace Module.Discord.Services.Implementations.MessageCommands
     public abstract class AddRuleCommandHandlerBase<TRule> : BotMessageCommandHandlerBase where TRule : BotMessageRuleBase
     {
         private readonly ILogger<AddRuleCommandHandlerBase<TRule>> _logger;
-        protected virtual string AddRuleCmdPrefix { get; set; } = "=>";
         protected abstract Embed RuleHelp { get; set; }
 
-        public AddRuleCommandHandlerBase(ILogger<AddRuleCommandHandlerBase<TRule>> logger)
+        protected AddRuleCommandHandlerBase(ILogger<AddRuleCommandHandlerBase<TRule>> logger, string cmdPrefix) : base(cmdPrefix)
         {
             _logger = logger;
         }
-        public override void HandleInternal(IMessage message)
+        public override async Task HandleInternal(IMessage message)
         {
-            var channel = message.Channel;
             _logger.LogInformation($"Found {typeof(TRule).Name} command");
-            if (message.Content.Equals($"{AddRuleCmdPrefix}-h", StringComparison.InvariantCultureIgnoreCase))
+            if (message.Content.Equals($"{CmdPrefix}-h", StringComparison.InvariantCultureIgnoreCase))
             {
                 _logger.LogDebug($"Displaying {typeof(TRule).Name} help");
 
-                message.Channel.SendMessageAsync(embed: RuleHelp).GetAwaiter().GetResult();
+                await message.Channel.SendMessageAsync(embed: RuleHelp);
             }
 
             var author = (SocketGuildUser) message.Author;
@@ -34,7 +33,7 @@ namespace Module.Discord.Services.Implementations.MessageCommands
             if (!author.Roles.Any(role => role.Permissions.Administrator)) return;
             var command = message.Content!;
 
-            var cmdEntries = command.Substring(AddRuleCmdPrefix.Length - 1).Split(';', StringSplitOptions.RemoveEmptyEntries)!;
+            var cmdEntries = command.Substring(CmdPrefix.Length - 1).Split(';', StringSplitOptions.RemoveEmptyEntries)!;
             if (cmdEntries.Length < 4) return;
 
             var triggerText = cmdEntries[0]!.TrimStart(' ');
@@ -42,10 +41,10 @@ namespace Module.Discord.Services.Implementations.MessageCommands
             var shouldTriggerOnContains = bool.Parse(cmdEntries[2]);
             var respondWith = cmdEntries[3];
 
-            HandleRule(triggerText, isRegex, shouldTriggerOnContains, respondWith, message);
+            await HandleRule(triggerText, isRegex, shouldTriggerOnContains, respondWith, message);
         }
 
-        protected abstract void HandleRule(string triggerText, bool isRegex, bool shouldTriggerOnContains,
+        protected abstract Task HandleRule(string triggerText, bool isRegex, bool shouldTriggerOnContains,
             string respondWith, IMessage message);
     }
 }

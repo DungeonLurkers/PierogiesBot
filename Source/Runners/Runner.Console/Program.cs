@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Module.Core.Extensions;
+using Module.Discord;
 
 namespace Runner.Console
 {

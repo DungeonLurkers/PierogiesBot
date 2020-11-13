@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Discord;
 using Module.Data.Models;
 using Module.Data.Storage;
@@ -19,10 +20,10 @@ namespace Module.Discord.Services.Implementations.MessageCommands
             _guildDataSource = guildDataSource;
             _discordClient = discordClient;
         }
-        protected override void CommandAction(IMessage message, BotReactRule rule)
+        protected override async Task CommandAction(IMessage message, BotReactRule rule)
         {
             var guildEntity = _guildDataSource.GetAll().Single();
-            var guild = _discordClient.GetGuildAsync(guildEntity.DiscordId).GetAwaiter().GetResult();
+            var guild = await _discordClient.GetGuildAsync(guildEntity.DiscordId);
 
             var emotes = guild.Emotes;
 
@@ -30,7 +31,7 @@ namespace Module.Discord.Services.Implementations.MessageCommands
 
             if (reaction == null) return;
 
-            message.AddReactionAsync(reaction);
+            await message.AddReactionAsync(reaction);
         }
     }
 }

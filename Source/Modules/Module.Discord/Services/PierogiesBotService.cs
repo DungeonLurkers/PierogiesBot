@@ -27,17 +27,20 @@ namespace Module.Discord.Services
         private readonly IDiscordBotService _discordBotService;
         private readonly IConfiguration _configuration;
         private readonly IMessageCommandChain _commandChain;
+        private readonly CommandHandler _commandHandler;
         private readonly Random _random;
 
         public PierogiesBotService(ILogger<PierogiesBotService> logger,
             IDiscordBotService discordBotService,
             IConfiguration configuration,
-            IMessageCommandChain commandChain)
+            IMessageCommandChain commandChain,
+            CommandHandler commandHandler)
         {
             _logger = logger;
             _discordBotService = discordBotService;
             _configuration = configuration;
             _commandChain = commandChain;
+            _commandHandler = commandHandler;
             _random = new Random((int) DateTime.Now.Ticks);
 
             InitializeSubscriptions();
@@ -79,8 +82,7 @@ namespace Module.Discord.Services
             _commandChain.BindToMessageObservable(messageObservable);
 
             var commandObservable = messageObservable.AsBotCommandObservable();
-
-
+            
             commandObservable
                 .WhereBotCommandIs("sayhi")
                 .Do(async commandMsg =>
@@ -222,6 +224,7 @@ namespace Module.Discord.Services
                 .Subscribe();
 
 
+            _commandHandler.InstallCommandsAsync().GetAwaiter().GetResult();
         }
 
         private IObservable<Task<(IChannel channel, string message)>> SendMessageOnCronOccurrence(string crontab, string message)

@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using Discord;
 using Microsoft.Extensions.Logging;
+using Module.Discord.Services.Definitions;
 
-namespace Module.Discord.Services.Definitions
+namespace Module.Discord.Services.Implementations
 {
     public class MessageCommandChainImpl : IMessageCommandChain
     {
@@ -18,13 +20,13 @@ namespace Module.Discord.Services.Definitions
             _handlers = new List<IMessageCommandHandler>(messageCommandHandlers);
         }
 
-        public void HandleMessage(IMessage message)
+        public async Task HandleMessage(IMessage message)
         {
             foreach (var commandHandler in _handlers)
             {
                 try
                 {
-                    commandHandler.Handle(message);
+                    await commandHandler.Handle(message);
                 }
                 catch (Exception e)
                 {
@@ -37,7 +39,7 @@ namespace Module.Discord.Services.Definitions
         public IDisposable BindToMessageObservable(IObservable<IMessage> messageObservable)
         {
             return messageObservable
-                .Do(HandleMessage)
+                .Do(async (message) => await HandleMessage(message))
                 .Subscribe();
         }
     }
