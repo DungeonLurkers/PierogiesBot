@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Discord;
 using Module.Data.Models;
 using Module.Data.Storage;
@@ -18,7 +19,7 @@ namespace Module.Discord.Services.Implementations.MessageCommands
             _botResponseRules = botResponseRules;
         }
 
-        public void Handle(IMessage message)
+        public async Task Handle(IMessage message)
         {
             if (message.Author.IsBot) return;
 
@@ -26,38 +27,43 @@ namespace Module.Discord.Services.Implementations.MessageCommands
 
             foreach (var rule in rules)
             {
-                if (rule.IsTriggerTextRegex)
+                switch ((isRegex: rule.IsTriggerTextRegex, triggerOnContains: rule.ShouldTriggerOnContains))
                 {
-                    if (rule.ShouldTriggerOnContains)
-                    {
-                        if (Regex.IsMatch(message.Content, rule.TriggerText))
-                        {
-                            message.Channel.SendMessageAsync(rule.RespondWith).GetAwaiter().GetResult(); // await
-                        }
-                    }
-                    if (Regex.IsMatch(message.Content, $"^{rule.TriggerText}$"))
-                    {
-                        message.Channel.SendMessageAsync(rule.RespondWith).GetAwaiter().GetResult(); // await
-                    }
-                }
-                else
-                {
-                    if (rule.ShouldTriggerOnContains)
-                    {
-                        if (message.Content.Contains(rule.TriggerText, rule.StringComparison))
-                        {
-                            message.Channel.SendMessageAsync(rule.RespondWith).GetAwaiter().GetResult(); // await
-                        }
-                    }
-                    else
-                    {
-                        if (message.Content.Equals(rule.TriggerText, rule.StringComparison))
-                        {
-                            message.Channel.SendMessageAsync(rule.RespondWith).GetAwaiter().GetResult();
-                        }
-                    }
+                    case (true, true):
+                        await RespondIfMessageMatchesRegex(message, rule);
+                        break;
+                    case (true, false):
+                        await RespondIfWholeMessageMatchesRegex(message, rule);
+                        break;
+                    case (false, false):
+                        await RespondIfMessageMatchesText(message, rule);
+                        break;
+                    case (false, true):
+                        await RespondIfMessageContainsText(message, rule);
+                        break;
                 }
             }
+        }
+
+        private async Task RespondIfMessageMatchesRegex(IMessage message, BotResponseRule rule)
+        {
+            if (Regex.IsMatch(message.Content, rule.TriggerText))
+                await message.Channel.SendMessageAsync(rule.RespondWith);
+        }
+        private async Task RespondIfWholeMessageMatchesRegex(IMessage message, BotResponseRule rule)
+        {
+            if (Regex.IsMatch(message.Content, $"^{rule.TriggerText}$"))
+                await message.Channel.SendMessageAsync(rule.RespondWith);
+        }
+        private async Task RespondIfMessageMatchesText(IMessage message, BotResponseRule rule)
+        {
+            if (message.Content.Equals(rule.TriggerText, rule.StringComparison))
+                await message.Channel.SendMessageAsync(rule.RespondWith);
+        }
+        private async Task RespondIfMessageContainsText(IMessage message, BotResponseRule rule)
+        {
+            if (message.Content.Contains(rule.TriggerText, rule.StringComparison))
+                await message.Channel.SendMessageAsync(rule.RespondWith);
         }
     }
 }

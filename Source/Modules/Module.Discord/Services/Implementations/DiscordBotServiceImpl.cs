@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
@@ -33,14 +34,14 @@ namespace Module.Discord.Services.Implementations
             BotStateObservable = _botStateSubject.AsObservable();
 
             _messageSubject = new Subject<(MessageChangeType, IMessage)>();
-            MessageObservable = _messageSubject.AsObservable();
+            MessageObservable = _messageSubject.AsObservable().ObserveOn(TaskPoolScheduler.Default);
             
             _botStateSubject.OnNext(BotState.Created);
 
             _discordClient.LoggedIn += DiscordClientOnLoggedIn;
             _discordClient.Ready += DiscordClientOnReady;
             _discordClient.MessageReceived += DiscordClientOnMessageReceived;
-            _discordClient.MessageDeleted += DiscordClientOnMessageDeleted;
+            // _discordClient.MessageDeleted += DiscordClientOnMessageDeleted;
             _discordClient.MessageUpdated += DiscordClientOnMessageUpdated;
             
             _botStateSubject.OnNext(BotState.Idle);
@@ -54,7 +55,6 @@ namespace Module.Discord.Services.Implementations
 
         private async Task DiscordClientOnMessageDeleted(Cacheable<IMessage, ulong> arg1, ISocketMessageChannel arg2)
         {
-            
             _messageSubject.OnNext((MessageChangeType.Removed, await arg1.GetOrDownloadAsync()));
         }
 

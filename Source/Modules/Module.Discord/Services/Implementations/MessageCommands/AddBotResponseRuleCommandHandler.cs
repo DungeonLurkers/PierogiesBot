@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
@@ -15,13 +16,11 @@ namespace Module.Discord.Services.Implementations.MessageCommands
         private readonly IDataSource<BotResponseRule, Guid> _rulesDataSource;
 
         public AddBotResponseRuleCommandHandler(ILogger<AddBotResponseRuleCommandHandler> logger,
-            IDataSource<BotResponseRule, Guid> rulesDataSource) : base(logger)
+            IDataSource<BotResponseRule, Guid> rulesDataSource) : base(logger, "=>addrule ")
         {
             _logger = logger;
             _rulesDataSource = rulesDataSource;
         }
-
-        protected override string AddRuleCmdPrefix { get; set; } = "=>addrule ";
 
         protected override Embed RuleHelp { get; set; } =
             new EmbedBuilder()
@@ -30,9 +29,8 @@ namespace Module.Discord.Services.Implementations.MessageCommands
             .WithCurrentTimestamp()
             .Build();
 
-        protected override void HandleRule(string triggerText, bool isRegex, bool shouldTriggerOnContains, string respondWith, IMessage message)
+        protected override async Task HandleRule(string triggerText, bool isRegex, bool shouldTriggerOnContains, string respondWith, IMessage message)
         {
-            if (!message.Content.StartsWith(AddRuleCmdPrefix)) return;
             _logger.LogDebug($"New rule command: {nameof(BotResponseRule.TriggerText)} = '{triggerText}'; " +
                              $"{nameof(BotResponseRule.IsTriggerTextRegex)} = {isRegex}; " +
                              $"{nameof(BotResponseRule.ShouldTriggerOnContains)} = {shouldTriggerOnContains}; " +
@@ -54,7 +52,7 @@ namespace Module.Discord.Services.Implementations.MessageCommands
             var msgPart = shouldTriggerOnContains ? "message contains" : "message is";
             msgPart = isRegex ? "pattern matches" : msgPart;
 
-            message.Channel.SendMessageAsync($"I will respond with '{respondWith}' when {msgPart} '{triggerText}'");
+            await message.Channel.SendMessageAsync($"I will respond with '{respondWith}' when {msgPart} '{triggerText}'");
         }
     }
 }

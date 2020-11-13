@@ -69,36 +69,36 @@ namespace Runner.Console.Services
                 });
 
             resetEvent.Wait();
-            Task.Run(async () =>
-            {
-                _logger.LogDebug("Fetching guilds...");
-                var guilds = await _discordClient.GetGuildsAsync();
-
-                if (guilds != null && guilds.Any())
-                {
-                    _logger.LogDebug("Fetched {0} guilds", guilds.Count);
-                    var guildEntities = guilds.Select(x => new GuildEntity(x)).ToList();
-
-                    _logger.LogDebug("Saving guilds to database");
-                    _guildDataSource.AddOrUpdateRange(guildEntities);
-                    _logger.LogDebug("Saved guilds to database");
-
-                    var guild = guilds.First(g => g.Id == 182523210175086594);
-
-                    var users = (await guild.GetUsersAsync())?.Select(user => new GuildUserEntity(user));
-                    var roles = guild.Roles?.Select(role => new RoleEntity(role));
-
-                    _logger.LogDebug("Constructing responding rules");
-
-                    if (users != null && roles != null)
-                    {
-                        PopulateDataSource(roles, _roleDataSource);
-                        PopulateDataSource(users, _guildUserDataSource);
-                    }
-
-                    _logger.LogInformation("All data sources populated");
-                }
-            });
+            // Task.Run(async () =>
+            // {
+            //     _logger.LogDebug("Fetching guilds...");
+            //     var guilds = await _discordClient.GetGuildsAsync();
+            //
+            //     if (guilds != null && guilds.Any())
+            //     {
+            //         _logger.LogDebug("Fetched {0} guilds", guilds.Count);
+            //         var guildEntities = guilds.Select(x => new GuildEntity(x)).ToList();
+            //
+            //         _logger.LogDebug("Saving guilds to database");
+            //         _guildDataSource.AddOrUpdateRange(guildEntities);
+            //         _logger.LogDebug("Saved guilds to database");
+            //
+            //         var guild = guilds.First(g => g.Id == 182523210175086594);
+            //
+            //         var users = (await guild.GetUsersAsync())?.Select(user => new GuildUserEntity(user));
+            //         var roles = guild.Roles?.Select(role => new RoleEntity(role));
+            //
+            //         _logger.LogDebug("Constructing responding rules");
+            //
+            //         if (users != null && roles != null)
+            //         {
+            //             PopulateDataSource(roles, _roleDataSource);
+            //             PopulateDataSource(users, _guildUserDataSource);
+            //         }
+            //
+            //         _logger.LogInformation("All data sources populated");
+            //     }
+            // });
         }
 
         private void PopulateDataSource<T, TId>(IEnumerable<T> entities, IDataSource<T, TId> dataSource) where T : class

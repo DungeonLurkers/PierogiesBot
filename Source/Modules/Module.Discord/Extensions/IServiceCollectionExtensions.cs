@@ -2,11 +2,15 @@
 
 using System.Threading.Tasks;
 using Discord;
+using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Module.Discord.CommandModules;
 using Module.Discord.Services.Definitions;
+using Module.Discord.Services.Implementations;
 using Module.Discord.Services.Implementations.MessageCommands;
+using Module.Discord.TypeReaders;
 
 namespace Module.Discord.Extensions
 {
@@ -15,7 +19,7 @@ namespace Module.Discord.Extensions
         public static void AddDiscordClient(this IServiceCollection services)
         {
 
-            services.AddSingleton<IDiscordClient>(provider =>
+            services.AddSingleton<IDiscordClient, DiscordSocketClient>(provider =>
             {
                 var logger = provider.GetService<ILoggerFactory>().CreateLogger(nameof(DiscordSocketClient));
 
@@ -36,6 +40,11 @@ namespace Module.Discord.Extensions
             services.AddTransient<IMessageCommandHandler, AddBotReactRuleCommandHandler>();
             services.AddTransient<IMessageCommandHandler, AddBotResponseRuleCommandHandler>();
             services.AddTransient<IMessageCommandChain, MessageCommandChainImpl>();
+
+            services.AddSingleton<CommandService>();
+            services.AddSingleton<CommandHandler>();
+
+            services.AddSingleton<CreateQuestionDtoTypeReader>();
         }
 
         private static Task ClientOnLog(LogMessage message, ILogger logger)
