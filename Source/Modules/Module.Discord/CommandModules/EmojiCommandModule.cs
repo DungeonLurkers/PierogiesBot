@@ -9,12 +9,6 @@ namespace Module.Discord.CommandModules
 {
     public class EmojiCommandModule : ModuleBase<SocketCommandContext>
     {
-        private readonly IDiscordClient _client;
-
-        public EmojiCommandModule(IDiscordClient client)
-        {
-            _client = client;
-        }
         [Command("react")]
         public async Task React(string reactionName)
         {
