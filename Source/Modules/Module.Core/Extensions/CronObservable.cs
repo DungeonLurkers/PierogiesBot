@@ -10,12 +10,7 @@ namespace Module.Core.Extensions
         public static string Jp2CronTab = "37 21 * * *";
         public static string BlazeCronTab = "20 16 * * *";
         public static string Blaze2CronTab = "20 4 * * *";
-
-
-        static CronObservable()
-        {
-
-        }
+      
         public static IObservable<int> Cron(string cron, IScheduler scheduler)
         {
 
