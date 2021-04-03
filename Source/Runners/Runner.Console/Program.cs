@@ -17,7 +17,6 @@ namespace Runner.Console
             .ConfigureAppConfiguration(builder =>
             {
                 builder.AddEnvironmentVariables("PIEROGIESBOT");
-                builder.AddJsonFile("appsettings.json");
             })
             .ConfigureServices(Startup.ConfigureServices)
             .ConfigureLogging(Startup.ConfigureLogging);
