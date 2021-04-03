@@ -16,7 +16,7 @@ namespace Module.Core.Extensions
 
             var schedule = CrontabSchedule.Parse(cron);
             return Observable.Generate(0, d => true, d => d + 1, d => d,
-                d => scheduler.Now.ToLocalTime());
+                d => schedule.GetNextOccurrence(scheduler.Now.LocalDateTime));
         }
     }
 }

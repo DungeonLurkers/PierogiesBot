@@ -23,8 +23,6 @@ namespace Runner.Console
 
         public static async Task Main(string[] args)
         {
-            CultureInfo.CurrentCulture = CultureInfo.GetCultureInfoByIetfLanguageTag("pl-PL");
-            
             using var host = CreateHostBuilder(args).Build();
             try
             {
