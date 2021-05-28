@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="BCrypt.Net-Next" Version="4.0.2" />
+        <PackageReference Include="FB.AspNetCore.Identity.MongoDB" Version="2.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.6" />
+        <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.11.1" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+        <PackageReference Include="MongoDB.Bson" Version="2.12.3" />
+        <PackageReference Include="MongoDB.Driver" Version="2.12.3" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.11.1" />
+    </ItemGroup>
+
+</Project>
