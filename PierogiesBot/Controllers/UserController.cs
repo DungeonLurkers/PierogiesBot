@@ -1,25 +1,19 @@
 using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AspNetCore.Identity.MongoDB;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using PierogiesBot.Commons.Dtos.UserData;
 using PierogiesBot.Models;
-using PierogiesBot.Models.Dtos;
-using PierogiesBot.Models.Dtos.UserData;
-using PierogiesBot.Services;
 using PierogiesBot.Settings;
 
 namespace PierogiesBot.Controllers
@@ -32,23 +26,21 @@ namespace PierogiesBot.Controllers
         private readonly ILogger<UserController> _logger;
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<MongoIdentityRole> _roleManager;
-        private readonly SignInManager<AppUser> _signInManager;
         private IConfiguration _configuration;
         private JwtSettings _jwtSettings;
 
-        public UserController(ILogger<UserController> logger, UserManager<AppUser> userManager, RoleManager<MongoIdentityRole> roleManager, SignInManager<AppUser> signInManager,
+        public UserController(ILogger<UserController> logger, UserManager<AppUser> userManager, RoleManager<MongoIdentityRole> roleManager,
             IConfiguration configuration, IOptions<JwtSettings> jwtOptions)
         {
             _logger = logger;
             _userManager = userManager;
             _roleManager = roleManager;
-            _signInManager = signInManager;
             _configuration = configuration;
             
             _jwtSettings = jwtOptions.Value;
         }
 
-        [Authorize(Roles = "user")]
+        [Authorize(Roles = "user,admin")]
         [HttpGet]
         public IActionResult GetHello() => Ok("Hello");
 
@@ -57,33 +49,29 @@ namespace PierogiesBot.Controllers
         public async Task<IActionResult> Authenticate([FromBody] AuthenticateRequest request)
         {
             var (userName, password) = request;
-            var user = await _userManager.FindByNameAsync(userName);  
-            if (user is not null && await _userManager.CheckPasswordAsync(user, password))
-            {
+            var user = await _userManager.FindByNameAsync(userName);
+            if (user is null || !await _userManager.CheckPasswordAsync(user, password)) return Unauthorized();
+            var utcNow = DateTime.UtcNow;
+
+            var authClaims = user.Claims.Select(c => new Claim(c.Type, c.Value));
+
+            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret));
+
+            var expires = DateTime.UtcNow.AddDays(3);
+            var token = new JwtSecurityToken(
+                expires: expires,
+                notBefore: utcNow,
+                audience: _jwtSettings.ValidAudience,
+                issuer: _jwtSettings.ValidIssuer,
+                claims: authClaims,  
+                signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)  
+            );
                 
-                var utcNow = DateTime.UtcNow;
-
-                var authClaims = user.Claims.Select(c => new Claim(c.Type, c.Value));
-
-                var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret));
-
-                var expires = DateTime.UtcNow.AddDays(3);
-                var token = new JwtSecurityToken(
-                    expires: expires,
-                    notBefore: utcNow,
-                    audience: _jwtSettings.ValidAudience,
-                    issuer: _jwtSettings.ValidIssuer,
-                    claims: authClaims,  
-                    signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)  
-                );
-                
-                return Ok(new  
-                {  
-                    token = new JwtSecurityTokenHandler().WriteToken(token),  
-                    expiration = token.ValidTo  
-                });  
-            }  
-            return Unauthorized();  
+            return Ok(new  
+            {  
+                token = new JwtSecurityTokenHandler().WriteToken(token),  
+                expiration = token.ValidTo  
+            });
         }
         
         // GET: api/User/5

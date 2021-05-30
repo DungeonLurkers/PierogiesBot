@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using PierogiesBot.Models;
-using PierogiesBot.Models.Dtos.BotCrontabRule;
-using PierogiesBot.Models.Dtos.BotReactRule;
-using PierogiesBot.Services;
+using PierogiesBot.Commons.Dtos.BotCrontabRule;
+using PierogiesBot.Data.Models;
+using PierogiesBot.Data.Services;
 
 namespace PierogiesBot.Controllers
 {
@@ -50,8 +47,8 @@ namespace PierogiesBot.Controllers
             _logger.LogTrace("{0}", nameof(Post));
             try
             {
-                var (isEmoji, crontab, channelId, replyMessage, replyEmoji) = ruleDto;
-                var rule = new BotCrontabRule(isEmoji, crontab, channelId, replyMessage, replyEmoji);
+                var (isEmoji, crontab, replyMessage, replyEmoji, timeZoneInfo) = ruleDto;
+                var rule = new BotCrontabRule(isEmoji, crontab, replyMessage, replyEmoji, timeZoneInfo);
                 await _repository.InsertAsync(rule);
 
                 return Ok();
@@ -77,14 +74,13 @@ namespace PierogiesBot.Controllers
                         return NotFound(id);
                     default:
                     {
-                        var (isEmoji, crontab, channelId, replyMessage, replyEmoji) = ruleDto;
+                        var (isEmoji, crontab, replyMessages, replyEmojis) = ruleDto;
                         var updatedRule = rule with
                         {
                             IsEmoji = isEmoji,
                             Crontab = crontab,
-                            ReplyMessage = replyMessage,
-                            ChannelId = channelId,
-                            ReplyEmoji = replyEmoji
+                            ReplyMessages = replyMessages,
+                            ReplyEmoji = replyEmojis,
                         };
                         
                         await _repository.UpdateAsync(updatedRule);

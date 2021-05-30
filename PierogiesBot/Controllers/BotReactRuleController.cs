@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using PierogiesBot.Models;
-using PierogiesBot.Models.Dtos.BotReactRule;
-using PierogiesBot.Models.Dtos.BotResponseRule;
-using PierogiesBot.Services;
+using PierogiesBot.Commons.Dtos.BotReactRule;
+using PierogiesBot.Data.Models;
+using PierogiesBot.Data.Services;
 
 namespace PierogiesBot.Controllers
 {
@@ -78,10 +75,10 @@ namespace PierogiesBot.Controllers
                         return NotFound(id);
                     default:
                     {
-                        var (reaction, triggerText, stringComparison, isTriggerTextRegex, shouldTriggerOnContains) = ruleDto;
+                        var (reactions, triggerText, stringComparison, isTriggerTextRegex, shouldTriggerOnContains) = ruleDto;
                         var updatedRule = rule with
                         {
-                            Reaction = reaction, 
+                            Reactions = reactions, 
                             TriggerText = triggerText, 
                             StringComparison = stringComparison, 
                             IsTriggerTextRegex = isTriggerTextRegex, 

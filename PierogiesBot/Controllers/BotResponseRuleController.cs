@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using PierogiesBot.Models;
-using PierogiesBot.Models.Dtos.BotResponseRule;
-using PierogiesBot.Models.Dtos.UserData;
-using PierogiesBot.Services;
+using PierogiesBot.Commons.Dtos.BotResponseRule;
+using PierogiesBot.Data.Models;
+using PierogiesBot.Data.Services;
 
 namespace PierogiesBot.Controllers
 {
@@ -50,8 +47,8 @@ namespace PierogiesBot.Controllers
             _logger.LogTrace("{0}", nameof(Post));
             try
             {
-                var (respondWith, triggerText, stringComparison, isTriggerTextRegex, shouldTriggerOnContains) = ruleDto;
-                var rule = new BotResponseRule(respondWith, triggerText, stringComparison, isTriggerTextRegex,
+                var (responseMode, respondWith, triggerText, stringComparison, isTriggerTextRegex, shouldTriggerOnContains) = ruleDto;
+                var rule = new BotResponseRule(responseMode, respondWith, triggerText, stringComparison, isTriggerTextRegex,
                     shouldTriggerOnContains);
                 await _repository.InsertAsync(rule);
 
@@ -81,7 +78,7 @@ namespace PierogiesBot.Controllers
                         var (respondWith, triggerText, stringComparison, isTriggerTextRegex, shouldTriggerOnContains) = ruleDto;
                         var updatedRule = rule with
                         {
-                            RespondWith = respondWith, 
+                            Responses = respondWith, 
                             TriggerText = triggerText, 
                             StringComparison = stringComparison, 
                             IsTriggerTextRegex = isTriggerTextRegex, 

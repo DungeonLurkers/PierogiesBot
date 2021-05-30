@@ -2,8 +2,11 @@ using System;
 using System.Security.Claims;
 using System.Text;
 using AspNetCore.Identity.MongoDB;
+using Discord.Commands;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -13,9 +16,14 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
+using PierogiesBot.Data;
+using PierogiesBot.Data.Services;
+using PierogiesBot.Discord;
+using PierogiesBot.Discord.HealthChecks;
+using PierogiesBot.Discord.Settings;
+using PierogiesBot.Extensions;
 using PierogiesBot.Middlewares;
 using PierogiesBot.Models;
-using PierogiesBot.Services;
 using PierogiesBot.Settings;
 
 namespace PierogiesBot
@@ -32,35 +40,44 @@ namespace PierogiesBot
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+            services.AddMongo();
+            services.AddDataServices();
+            services.AddDiscord();
+            
+            services.AddHealthChecks()
+                .AddMongoDb(Configuration["MongoDBOption:ConnectionString"], Configuration["MongoDBOption:Database"], name: "MongoDB PierogiesBot collection health check")
+                .AddCheck<DiscordHealthCheck>("Discord");
+
+            services.AddHealthChecksUI(settings =>
+            {
+                settings.SetApiMaxActiveRequests(2);
+                settings.SetEvaluationTimeInSeconds(15);
+                settings.MaximumHistoryEntriesPerEndpoint(25);
+                settings.AddHealthCheckEndpoint("PierogiesBot", "/health");
+            }).AddInMemoryStorage();
 
             services.AddCors();
             services.AddControllers();
 
             services.Configure<DatabaseSettings>(Configuration.GetSection(SettingsSections.DatabaseSettings));
             services.Configure<JwtSettings>(Configuration.GetSection(SettingsSections.JwtSettings));
+            services.Configure<DiscordSettings>(Configuration.GetSection(DiscordSettings.SectionName));
+            services.Configure<CommandServiceConfig>(Configuration.GetSection(nameof(CommandServiceConfig)));
             
             services.Configure<MongoDBOption>(Configuration.GetSection(SettingsSections.MongoDbOption))
                 .AddMongoDatabase()
                 .AddMongoDbContext<AppUser, MongoIdentityRole>()
                 .AddMongoStore<AppUser, MongoIdentityRole>();
 
-            services.AddSingleton<IMongoClient>(provider =>
-            {
-                var settings = provider.GetRequiredService<IOptions<DatabaseSettings>>();
-
-                return new MongoClient(settings.Value.ConnectionString);
-            });
-
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings.
-                // options.Password.RequireDigit = true;
-                // options.Password.RequireLowercase = true;
-                // options.Password.RequireNonAlphanumeric = true;
-                // options.Password.RequireUppercase = true;
-                // options.Password.RequiredLength = 6;
-                // options.Password.RequiredUniqueChars = 1;
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
 
                 // Lockout settings.
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
@@ -93,7 +110,7 @@ namespace PierogiesBot
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtSettings:Secret"])),
                         ValidIssuer = Configuration["JwtSettings:ValidIssuer"],
                         ValidAudience = Configuration["JwtSettings:ValidAudience"],
-                        ClockSkew = TimeSpan.FromMinutes(5),
+                        ClockSkew = TimeSpan.Zero,
                         NameClaimType = ClaimTypes.Name,
                         RoleClaimType = ClaimTypes.Role,
                     };
@@ -151,7 +168,18 @@ namespace PierogiesBot
             app.UseAuthorization();
             app.UseAuthentication();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health", new HealthCheckOptions
+                    {
+                        Predicate = _ => true,
+                        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                    })
+                    .RequireHost("localhost");
+
+                endpoints.MapHealthChecksUI().RequireAuthorization();
+            });
         }
     }
 }
