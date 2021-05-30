@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
@@ -17,22 +18,62 @@ namespace PierogiesBot.Discord.Modules
             _logger = logger;
             _channelSubscribeService = channelSubscribeService;
         }
-        [Command("add")]
+        [Command("all")]
         public async Task Subscribe()
         {
             _logger.LogInformation("New response subscription on channel {0} guild {1}", Context.Channel.Name, Context.Guild.Name);
-            await _channelSubscribeService.Subscribe(Context.Guild, Context.Channel);
+            
+            foreach (var guildChannel in await Context.Guild.GetChannelsAsync())
+            {
+                if (guildChannel is SocketTextChannel channel)
+                    await _channelSubscribeService.Subscribe(Context.Guild, channel);
+            }
 
-            await ReplyAsync("I will watch this channel from now on...");
+            await ReplyAsync("I will watch ALL channels from now on...");
+        }
+        
+        [Command("add")]
+        public async Task Subscribe(SocketTextChannel channel)
+        {
+            _logger.LogInformation("New response subscription on channel {0} guild {1}", Context.Channel.Name, Context.Guild.Name);
+            await _channelSubscribeService.Subscribe(Context.Guild, channel);
+
+            await ReplyAsync($"I will watch channel {channel.Name} from now on...");
+        }
+        
+        [Command("add")]
+        public async Task Subscribe(params SocketTextChannel[] channels)
+        {
+            _logger.LogInformation("New response subscription on  multiple channels in guild {0}", Context.Guild.Name);
+            
+            foreach (var channel in channels)
+                await _channelSubscribeService.Subscribe(Context.Guild, channel);
+
+            await ReplyAsync($"I will watch channels {string.Join(", ", channels.Select(c => c.Name))} from now on...");
         }
         
         [Command("del")]
         public async Task Unsubscribe()
         {
-            _logger.LogInformation("New response subscription on channel {0} guild {1}", Context.Channel.Name, Context.Guild.Name);
-            await _channelSubscribeService.Subscribe(Context.Guild, Context.Channel);
+            _logger.LogInformation("Del response subscription on guild {0}", Context.Guild.Name);
+            
+            foreach (var guildChannel in await Context.Guild.GetChannelsAsync())
+            {
+                if (guildChannel is SocketTextChannel channel)
+                    await _channelSubscribeService.Unsubscribe(Context.Guild, channel);
+            }
 
-            await ReplyAsync("I will watch this channel from now on...");
+            await ReplyAsync("I got bored watching you, bye");
+        }
+        
+        [Command("del")]
+        public async Task Unsubscribe(SocketTextChannel channel)
+        {
+            _logger.LogInformation("Del response subscription on channel {0} guild {1}", Context.Channel.Name, Context.Guild.Name);
+            
+            await _channelSubscribeService.Unsubscribe(Context.Guild, channel);
+
+            await ReplyAsync($"I got bored watching you on {channel.Name}, bye");
         }
     }
 }
