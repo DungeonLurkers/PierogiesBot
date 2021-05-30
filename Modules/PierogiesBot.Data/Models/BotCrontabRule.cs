@@ -5,13 +5,13 @@ using MongoDB.Bson;
 namespace PierogiesBot.Data.Models
 {
     public record BotCrontabRule(string Id, bool IsEmoji, string Crontab, IEnumerable<string> ReplyMessages,
-        IEnumerable<string> ReplyEmoji, TimeZoneInfo TimeZoneInfo) : EntityBase(Id)
+        IEnumerable<string> ReplyEmoji) : EntityBase(Id)
     {
         public BotCrontabRule(bool isEmoji, string crontab, IEnumerable<string> replyMessages,
-            IEnumerable<string> replyEmojis, TimeZoneInfo timeZoneInfo) : 
+            IEnumerable<string> replyEmojis) : 
             this(ObjectId.GenerateNewId().ToString(), 
                 isEmoji, crontab, replyMessages,
-                replyEmojis, timeZoneInfo)
+                replyEmojis)
         {
             
         }

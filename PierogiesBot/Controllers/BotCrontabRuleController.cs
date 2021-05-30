@@ -47,8 +47,8 @@ namespace PierogiesBot.Controllers
             _logger.LogTrace("{0}", nameof(Post));
             try
             {
-                var (isEmoji, crontab, replyMessage, replyEmoji, timeZoneInfo) = ruleDto;
-                var rule = new BotCrontabRule(isEmoji, crontab, replyMessage, replyEmoji, timeZoneInfo);
+                var (isEmoji, crontab, replyMessage, replyEmoji) = ruleDto;
+                var rule = new BotCrontabRule(isEmoji, crontab, replyMessage, replyEmoji);
                 await _repository.InsertAsync(rule);
 
                 return Ok();

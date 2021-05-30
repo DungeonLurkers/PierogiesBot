@@ -15,6 +15,7 @@ using PierogiesBot.Data.Models;
 using PierogiesBot.Data.Services;
 using PierogiesBot.Discord.Jobs;
 using PierogiesBot.Discord.Settings;
+using PierogiesBot.Discord.TypeReaders;
 using Quartz;
 using Quartz.Impl;
 
@@ -75,6 +76,8 @@ namespace PierogiesBot.Discord.Services
                 if (message.Exception is not null) _discordLogger.LogError(message.Exception, message.Message);
                 else _discordLogger.Log(logLevel, message.Message);
             });
+            
+            _commandService.AddTypeReader<TimeZoneInfo>(new TimeZoneInfoTypeReader());
             
             await _client.LoginAsync(TokenType.Bot, _settings.Token);
             await _client.StartAsync();

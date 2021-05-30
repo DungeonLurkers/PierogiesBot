@@ -22,10 +22,10 @@ namespace PierogiesBot.Discord.Jobs
         }
         public async Task Execute(IJobExecutionContext context)
         {
-            if (context.MergedJobDataMap["Rule"] is BotCrontabRule rule)
+            if (context.MergedJobDataMap["Rule"] is BotCrontabRule rule && context.MergedJobDataMap["GuildId"] is ulong guildId)
             {
                 _logger.LogDebug("Running job trigger fron crontab rule {0}", rule.Crontab);
-                var subs = await _subscriptions.GetAll();
+                var subs = await _subscriptions.GetAllByProperty(s => s.GuildId, guildId);
                 
                 foreach (var sub in subs)
                 {

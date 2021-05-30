@@ -42,7 +42,7 @@ namespace PierogiesBot.Discord.Services
 
             foreach (var sub in subscriptions)
             {
-                var (_, guildId, channelId) = sub;
+                var (_, guildId, channelId, _) = sub;
                 Subscribe(guildId, channelId);
             }
         }
@@ -54,7 +54,7 @@ namespace PierogiesBot.Discord.Services
             var existingList = existing?.ToList() ?? new ();
 
             if (!existingList.Any())
-                await _repository.InsertAsync(new BotMessageSubscription(guild.Id, channel.Id));
+                await _repository.InsertAsync(new BotMessageSubscription(guild.Id, channel.Id, SubscriptionType.Responses));
 
             Subscribe(guild.Id, channel.Id);
         }

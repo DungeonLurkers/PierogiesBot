@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
-using Discord.WebSocket;
 using PierogiesBot.Data.Models;
 using PierogiesBot.Data.Services;
 using PierogiesBot.Discord.Jobs;
@@ -21,77 +19,62 @@ namespace PierogiesBot.Discord.Services
     {
         private readonly IScheduler _scheduler;
         private readonly IRepository<BotCrontabRule> _ruleRepository;
+        private readonly IRepository<GuildSettings> _settingsRepository;
         private readonly IRepository<BotMessageSubscription> _subscriptionRepository;
-        private readonly DiscordSocketClient _client;
-        private readonly IMessageHandlerChain _messageHandlerChain;
-
-        private ISubject<SocketUserMessage> _userMessagesSubject;
-
-        private Dictionary<(ulong, ulong), object> _subscriptions;
-
-        public CrontabSubscribeService(IScheduler scheduler, IRepository<BotCrontabRule> ruleRepository, IRepository<BotMessageSubscription> subscriptionRepository, DiscordSocketClient client, IMessageHandlerChain messageHandlerChain)
+        public CrontabSubscribeService(IScheduler scheduler, IRepository<BotCrontabRule> ruleRepository, IRepository<GuildSettings> settingsRepository, IRepository<BotMessageSubscription> subscriptionRepository)
         {
             _scheduler = scheduler;
             _ruleRepository = ruleRepository;
+            _settingsRepository = settingsRepository;
             _subscriptionRepository = subscriptionRepository;
-            _client = client;
-            _messageHandlerChain = messageHandlerChain;
-
-            _subscriptions = new Dictionary<(ulong, ulong), object>();
-            
         }
-        
         public async Task LoadSubscriptions()
         {
             var rules = await _ruleRepository.GetAll();
+            var guilds = await _settingsRepository.GetAll();
 
-            foreach (var rule in rules)
-            {
-                
-                var job = JobBuilder.Create<SendCrontabMessageToChannelsJob>()
-                    .WithIdentity(rule.Id, nameof(CrontabSubscribeService))
-                    .SetJobData(new JobDataMap
-                    {
-                        {"Rule", rule}
-                    }).Build();
-                
-                var trigger = TriggerBuilder
-                    .Create()
-                    .WithIdentity(rule.Id, nameof(CrontabSubscribeService))
-                    .ForJob(job)
-                    .WithCronSchedule(rule.Crontab)
-                    .Build();
-                
-                await _scheduler.ScheduleJob(job, trigger);
-            }
+            foreach (var (id, guildId, guildTimeZone) in guilds)
+                foreach (var rule in rules)
+                {
+                    var tzInfo = TimeZoneInfo.FromSerializedString(guildTimeZone);
+                    var job = JobBuilder.Create<SendCrontabMessageToChannelsJob>()
+                        .WithIdentity(id, rule.Crontab)
+                        .SetJobData(new JobDataMap
+                        {
+                            {"Rule", rule},
+                            {"GuildId", guildId}
+                        }).Build();
+                    
+                    var trigger = TriggerBuilder
+                        .Create()
+                        .WithIdentity(id, rule.Crontab)
+                        .ForJob(job)
+                        .WithCronSchedule(rule.Crontab, builder => builder.InTimeZone(tzInfo))
+                        .Build();
+                    
+                    await _scheduler.ScheduleJob(job, trigger);
+                }
         }
-        
         public async Task Subscribe(IGuild guild, IMessageChannel channel)
         {
             var existing = await _subscriptionRepository
                 .GetByPredicate(s => s.GuildId.Equals(guild.Id) 
-                                     && s.ChannelId.Equals(channel.Id));
+                                     && s.ChannelId.Equals(channel.Id)
+                                     && s.SubscriptionType == SubscriptionType.Crontab);
             var existingList = existing?.ToList() ?? new ();
 
             if (!existingList.Any())
-                await _subscriptionRepository.InsertAsync(new BotMessageSubscription(guild.Id, channel.Id));
-
-            Subscribe(guild.Id, channel.Id);
+                await _subscriptionRepository.InsertAsync(new BotMessageSubscription(guild.Id, channel.Id, SubscriptionType.Crontab));
         }
-        
-        private void Subscribe(ulong guildId, ulong channelId)
+        public async Task Unsubscribe(IGuild guild, IMessageChannel channel)
         {
-            if (_subscriptions.ContainsKey((guildId, channelId))) return;
-            // var disposable = _userMessagesSubject
-            //     .ObserveOn(TaskPoolScheduler.Default)
-            //     .Where(m => !m.Author.IsBot)
-            //     .Where(m => m.Channel.Id == channelId)
-            //     .Select(m => new SocketCommandContext(_client, m))
-            //     .Do(async ctx => await _messageHandlerChain.HandleAsync(ctx))
-            //     .Subscribe();
-                
-            _subscriptions[(guildId, channelId)] = new {};
+            var existingEnumerable = await _subscriptionRepository
+                .GetByPredicate(s => s.GuildId.Equals(guild.Id) 
+                                     && s.ChannelId.Equals(channel.Id)
+                                     && s.SubscriptionType == SubscriptionType.Crontab);
+            var existing = existingEnumerable?.FirstOrDefault();
+
+            if (existing is not null) await _subscriptionRepository.DeleteAsync(existing.Id);
         }
-        
     }
 }
