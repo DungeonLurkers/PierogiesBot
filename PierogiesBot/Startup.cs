@@ -53,7 +53,7 @@ namespace PierogiesBot
                 settings.SetApiMaxActiveRequests(2);
                 settings.SetEvaluationTimeInSeconds(15);
                 settings.MaximumHistoryEntriesPerEndpoint(25);
-                settings.AddHealthCheckEndpoint("PierogiesBot", "/health");
+                settings.AddHealthCheckEndpoint("PierogiesBot", "http://localhost:5000/health");
             }).AddInMemoryStorage();
 
             services.AddCors();

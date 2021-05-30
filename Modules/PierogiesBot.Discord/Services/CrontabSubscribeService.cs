@@ -43,20 +43,13 @@ namespace PierogiesBot.Discord.Services
         
         public async Task LoadSubscriptions()
         {
-            var subscriptions = await _subscriptionRepository.GetAll();
             var rules = await _ruleRepository.GetAll();
-
-            foreach (var sub in subscriptions)
-            {
-                var (_, guildId, channelId) = sub;
-                Subscribe(guildId, channelId);
-            }
 
             foreach (var rule in rules)
             {
                 
                 var job = JobBuilder.Create<SendCrontabMessageToChannelsJob>()
-                    .WithIdentity(nameof(CrontabSubscribeService))
+                    .WithIdentity(rule.Id, nameof(CrontabSubscribeService))
                     .SetJobData(new JobDataMap
                     {
                         {"Rule", rule}
@@ -64,7 +57,7 @@ namespace PierogiesBot.Discord.Services
                 
                 var trigger = TriggerBuilder
                     .Create()
-                    .WithIdentity(nameof(CrontabSubscribeService))
+                    .WithIdentity(rule.Id, nameof(CrontabSubscribeService))
                     .ForJob(job)
                     .WithCronSchedule(rule.Crontab)
                     .Build();

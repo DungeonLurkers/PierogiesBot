@@ -18,10 +18,8 @@ namespace PierogiesBot.Discord.Services
         private readonly IRepository<BotMessageSubscription> _repository;
         private readonly DiscordSocketClient _client;
         private readonly IMessageHandlerChain _messageHandlerChain;
-
-        private ISubject<SocketUserMessage> _userMessagesSubject;
-
-        private Dictionary<(ulong, ulong), IDisposable> _subscriptions;
+        private readonly ISubject<SocketUserMessage> _userMessagesSubject;
+        private readonly Dictionary<(ulong, ulong), IDisposable> _subscriptions;
 
         public ChannelSubscribeService(IRepository<BotMessageSubscription> repository, DiscordSocketClient client, IMessageHandlerChain messageHandlerChain)
         {
@@ -59,6 +57,21 @@ namespace PierogiesBot.Discord.Services
                 await _repository.InsertAsync(new BotMessageSubscription(guild.Id, channel.Id));
 
             Subscribe(guild.Id, channel.Id);
+        }
+        
+        public async Task Unsubscribe(IGuild guild, IMessageChannel channel)
+        {
+            var existingEnumerable = await _repository
+                .GetByPredicate(s => s.GuildId.Equals(guild.Id) 
+                                     && s.ChannelId.Equals(channel.Id));
+            var existing = existingEnumerable.FirstOrDefault();
+
+            if (existing is not null)
+            {
+                await _repository.DeleteAsync(existing.Id);
+                if (_subscriptions[(guild.Id, channel.Id)] is {} sub) sub.Dispose();
+            }
+
         }
 
         private void Subscribe(ulong guildId, ulong channelId)
