@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PierogiesBot.Commons", "Mod
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PierogiesBot.Discord", "Modules\PierogiesBot.Discord\PierogiesBot.Discord.csproj", "{649C4E26-F55D-4296-A26E-F12775FC92A2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PierogiesBot.Manager", "PierogiesBot.Manager\PierogiesBot.Manager.csproj", "{0C8C1CDF-A5C6-4FEF-B9DD-F23F9583C18A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{649C4E26-F55D-4296-A26E-F12775FC92A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{649C4E26-F55D-4296-A26E-F12775FC92A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{649C4E26-F55D-4296-A26E-F12775FC92A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C8C1CDF-A5C6-4FEF-B9DD-F23F9583C18A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C8C1CDF-A5C6-4FEF-B9DD-F23F9583C18A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C8C1CDF-A5C6-4FEF-B9DD-F23F9583C18A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C8C1CDF-A5C6-4FEF-B9DD-F23F9583C18A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{78C31E70-F439-48E8-B69B-A26E94BD168A} = {2C7F6051-95A5-46F3-8DC6-193F75546934}

@@ -44,6 +44,8 @@ namespace PierogiesBot.Controllers
         [HttpGet]
         public IActionResult GetHello() => Ok("Hello");
 
+        
+
         [AllowAnonymous]
         [HttpPost("auth")]
         public async Task<IActionResult> Authenticate([FromBody] AuthenticateRequest request)
@@ -67,11 +69,7 @@ namespace PierogiesBot.Controllers
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)  
             );
                 
-            return Ok(new  
-            {  
-                token = new JwtSecurityTokenHandler().WriteToken(token),  
-                expiration = token.ValidTo  
-            });
+            return Ok(new AuthenticateResponse(new JwtSecurityTokenHandler().WriteToken(token), user.Id, userName));
         }
         
         // GET: api/User/5
