@@ -1,5 +1,7 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Collections.Generic;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using PierogiesBot.Commons.Dtos.BotResponseRule;
 using PierogiesBot.Commons.Dtos.UserData;
 using RestEase;
 
@@ -15,5 +17,8 @@ namespace PierogiesBot.Commons.RestClient
 
         [Get("/api/User/{id}")]
         Task<GetUserDto> GetUser([Path] string id);
+
+        [Get("/api/BotResponseRule")]
+        Task<IEnumerable<GetBotResponseRuleDto>> GetBotResponseRules();
     }
 }

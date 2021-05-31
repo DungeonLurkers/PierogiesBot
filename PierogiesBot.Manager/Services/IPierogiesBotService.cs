@@ -1,5 +1,7 @@
 ﻿using System.Security;
 using System.Threading.Tasks;
+using PierogiesBot.Commons.Dtos.UserData;
+using RestEase;
 
 namespace PierogiesBot.Manager.Services
 {
@@ -9,5 +11,7 @@ namespace PierogiesBot.Manager.Services
         string? Token {get;}
 
         Task<bool> Authenticate(string userName, SecureString password);
+
+        Task<GetUserDto?> GetUserData(string userName);
     }
 }

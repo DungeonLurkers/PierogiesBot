@@ -9,7 +9,6 @@ using PierogiesBot.Manager.Views;
 using ReactiveUI;
 using RestEase.HttpClientFactory;
 using Splat;
-using Splat.Microsoft.Extensions.DependencyInjection;
 
 namespace PierogiesBot.Manager
 {
@@ -24,23 +23,12 @@ namespace PierogiesBot.Manager
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IPierogiesBotService, PierogiesBotService>();
+            services.AddHostedService<DataInitializeHostedService>();
             services.AddHostedService<UserLoginHostedService>();
-            services.AddTransient(typeof(IFactory<>), typeof(Factory<>));
 
-            services.AddScoped<MainWindowViewModel>();
-            services.AddScoped<IViewFor<MainWindowViewModel>, MainWindow>();
-            services.AddScoped<LoginViewModel>();
-            services.AddScoped<IViewFor<LoginViewModel>, LoginView>();
-
+            services.AddDbContext<AppDbContext>();
             services.AddRestEaseClient<IPierogiesBotApi>(Configuration["APIBaseAddress"]);
-            
             services.AddSingleton(MessageBus.Current);
-            
-            services.UseMicrosoftDependencyResolver();
-            
-            Locator.CurrentMutable.InitializeSplat();
-            Locator.CurrentMutable.InitializeReactiveUI();
         }
     }
 }

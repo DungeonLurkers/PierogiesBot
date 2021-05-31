@@ -16,6 +16,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
+using PierogiesBot.Commons.RestClient;
 using PierogiesBot.Data;
 using PierogiesBot.Data.Services;
 using PierogiesBot.Discord;
@@ -43,6 +44,7 @@ namespace PierogiesBot
             services.AddMongo();
             services.AddDataServices();
             services.AddDiscord();
+            services.AddAutoMapper(typeof(Startup), typeof(IPierogiesBotApi));
             
             services.AddHealthChecks()
                 .AddMongoDb(Configuration["MongoDBOption:ConnectionString"], Configuration["MongoDBOption:Database"], name: "MongoDB PierogiesBot collection health check")

@@ -8,12 +8,12 @@
                            xmlns:viewModels="clr-namespace:PierogiesBot.Manager.ViewModels"
                            xmlns:views="clr-namespace:PierogiesBot.Manager.Views"
                            mc:Ignorable="d"
-                           Title="MainWindow" Height="450" Width="800">
+                           Title="MainWindow" Height="450" Width="800" d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">
     <Grid>
         <!-- <Grid.ColumnDefinitions> -->
         <!--     <ColumnDefinition Width="*" /> -->
         <!-- </Grid.ColumnDefinitions> -->
         
-        <TabControl></TabControl>
+        <reactiveUi:RoutedViewHost x:Name="RoutedViewHost" Router="{Binding Router}"/>
     </Grid>
 </reactiveUi:ReactiveWindow>

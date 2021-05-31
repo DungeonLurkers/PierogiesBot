@@ -3,6 +3,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using PierogiesBot.Manager.Models.Messages;
 using PierogiesBot.Manager.ViewModels;
 using ReactiveUI;
 
@@ -10,7 +11,7 @@ namespace PierogiesBot.Manager.Views
 {
     public partial class LoginView
     {
-        public LoginView(LoginViewModel viewModel)
+        public LoginView(LoginViewModel viewModel, IMessageBus messageBus)
         {
             InitializeComponent();
             
@@ -20,7 +21,7 @@ namespace PierogiesBot.Manager.Views
             {
                 CancelButton
                     .Events().Click
-                    .Do(_ => Close())
+                    .Do(_ => messageBus.SendMessage(new CloseApplication()))
                     .Subscribe()
                     .DisposeWith(disposable);
 

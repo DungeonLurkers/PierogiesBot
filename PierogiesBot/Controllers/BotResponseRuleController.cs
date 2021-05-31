@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,20 +16,24 @@ namespace PierogiesBot.Controllers
     [ApiController]
     public class BotResponseRuleController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly ILogger<BotResponseRuleController> _logger;
         private readonly IRepository<BotResponseRule> _repository;
 
-        public BotResponseRuleController(ILogger<BotResponseRuleController> logger, IRepository<BotResponseRule> repository)
+        public BotResponseRuleController(IMapper mapper, ILogger<BotResponseRuleController> logger, IRepository<BotResponseRule> repository)
         {
+            _mapper = mapper;
             _logger = logger;
             _repository = repository;
         }
         // GET: api/BotResponseRule
         [HttpGet]
-        public async Task<IEnumerable<BotResponseRule>> Get()
+        public async Task<IEnumerable<GetBotResponseRuleDto>> Get()
         {
             _logger.LogTrace("{0}", nameof(Get));
-            return await _repository.GetAll();
+            var entities = await _repository.GetAll();
+
+            return _mapper.Map<List<GetBotResponseRuleDto>>(entities);
         }
 
         // GET: api/BotResponseRule/5
@@ -37,7 +42,7 @@ namespace PierogiesBot.Controllers
         {
             _logger.LogTrace("{0}: Rule id = {1}", nameof(GetResponseRuleById), id);
             var rule = await _repository.GetByIdAsync(id);
-            return rule is null ? NotFound(id) : Ok(rule);
+            return rule is null ? NotFound(id) : Ok(_mapper.Map<GetBotResponseRuleDto>(rule));
         }
 
         // POST: api/BotResponseRule
@@ -75,9 +80,10 @@ namespace PierogiesBot.Controllers
                         return NotFound(id);
                     default:
                     {
-                        var (respondWith, triggerText, stringComparison, isTriggerTextRegex, shouldTriggerOnContains) = ruleDto;
+                        var (responseMode, respondWith, triggerText, stringComparison, isTriggerTextRegex, shouldTriggerOnContains) = ruleDto;
                         var updatedRule = rule with
                         {
+                            ResponseMode = responseMode,
                             Responses = respondWith, 
                             TriggerText = triggerText, 
                             StringComparison = stringComparison, 

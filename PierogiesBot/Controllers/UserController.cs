@@ -44,8 +44,6 @@ namespace PierogiesBot.Controllers
         [HttpGet]
         public IActionResult GetHello() => Ok("Hello");
 
-        
-
         [AllowAnonymous]
         [HttpPost("auth")]
         public async Task<IActionResult> Authenticate([FromBody] AuthenticateRequest request)
@@ -73,12 +71,12 @@ namespace PierogiesBot.Controllers
         }
         
         // GET: api/User/5
-        [HttpGet("{id}", Name = "GetUserById")]
-        public async Task<IActionResult> GetUserById(string id)
+        [HttpGet("{userName}", Name = "GetUserByUserName")]
+        public async Task<IActionResult> GetUserByUserName(string userName)
         {
-            _logger.LogTrace("{0}: User id = {1}", nameof(GetUserById), id);
-            var user = await _userManager.FindByIdAsync(id);
-            return user is null ? NotFound(id) : Ok(user);
+            _logger.LogTrace("{0}: UserName = {1}", nameof(GetUserByUserName), userName);
+            var user = await _userManager.FindByNameAsync(userName);
+            return user is null ? NotFound(userName) : Ok(user);
         }
 
         // POST: api/User
