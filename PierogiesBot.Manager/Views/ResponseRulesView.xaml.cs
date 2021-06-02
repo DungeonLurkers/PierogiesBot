@@ -7,9 +7,9 @@ using ReactiveUI;
 
 namespace PierogiesBot.Manager.Views
 {
-    public partial class UserProfileView
+    public partial class ResponseRulesView
     {
-        public UserProfileView(UserProfileViewModel viewModel)
+        public ResponseRulesView(ResponseRulesViewModel viewModel)
         {
             InitializeComponent();
 
@@ -17,14 +17,13 @@ namespace PierogiesBot.Manager.Views
 
             this.WhenActivated(disposable =>
             {
-                this.OneWayBind(ViewModel, vm => vm.UserName, v => v.UserNameLabel.Content)
-                    .DisposeWith(disposable);
+                this.OneWayBind(ViewModel, vm => vm.ResponseRules, x => x.RulesDataGrid.ItemsSource).DisposeWith(disposable);
                 
-                ViewModel.LoadCurrentUserData.Execute().Subscribe().DisposeWith(disposable);
+                
             });
         }
 
-        public UserProfileView() : this(App.Container.GetRequiredService<UserProfileViewModel>())
+        public ResponseRulesView() : this(App.Container.GetRequiredService<ResponseRulesViewModel>())
         {
             
         }

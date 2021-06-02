@@ -16,14 +16,15 @@ namespace PierogiesBot.Manager.Services
     {
         private readonly ILogger<UserLoginHostedService> _logger;
         private readonly IMessageBus _messageBus;
+        private readonly INavigationService _navigationService;
         private readonly IFactory<IViewFor<LoginViewModel>> _loginViewFactory;
         private IDisposable? _subscription;
 
-        public UserLoginHostedService(ILogger<UserLoginHostedService> logger, IMessageBus messageBus, IFactory<IViewFor<LoginViewModel>> loginViewFactory)
+        public UserLoginHostedService(ILogger<UserLoginHostedService> logger, IMessageBus messageBus, INavigationService navigationService)
         {
             _logger = logger;
             _messageBus = messageBus;
-            _loginViewFactory = loginViewFactory;
+            _navigationService = navigationService;
         }
         public Task StartAsync(CancellationToken cancellationToken)
         {
@@ -33,17 +34,17 @@ namespace PierogiesBot.Manager.Services
                 .ListenIncludeLatest<NeedsUserLogin>()
                 .Where(x => x is { })
                 .ObserveOn(RxApp.MainThreadScheduler)
-                .Do(_ => ShowLoginView())
+                .Do(_ => NavigateToLogin())
                 .Subscribe();
             
             return Task.CompletedTask;
         }
 
-        private void ShowLoginView()
+        private void NavigateToLogin()
         {
             _logger.LogInformation("Showing login view");
-            var view = _loginViewFactory.Create();
-            if (view is Window window) window.Show();
+            _navigationService.NavigateTo<LoginViewModel>();
+            
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

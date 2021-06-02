@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,20 +17,24 @@ namespace PierogiesBot.Controllers
     [ApiController]
     public class BotReactRuleController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly ILogger<BotReactRuleController> _logger;
         private readonly IRepository<BotReactRule> _repository;
 
-        public BotReactRuleController(ILogger<BotReactRuleController> logger, IRepository<BotReactRule> repository)
+        public BotReactRuleController(IMapper mapper, ILogger<BotReactRuleController> logger, IRepository<BotReactRule> repository)
         {
+            _mapper = mapper;
             _logger = logger;
             _repository = repository;
         }
         // GET: api/BotResponseRule
         [HttpGet]
-        public async Task<IEnumerable<BotReactRule>> Get()
+        public async Task<IEnumerable<GetBotReactRuleDto>> Get()
         {
             _logger.LogTrace("{0}", nameof(Get));
-            return await _repository.GetAll();
+            var entities =  await _repository.GetAll();
+
+            return entities.Select(x => _mapper.Map<GetBotReactRuleDto>(x));
         }
 
         // GET: api/BotResponseRule/5
@@ -37,7 +43,7 @@ namespace PierogiesBot.Controllers
         {
             _logger.LogTrace("{0}: Rule id = {1}", nameof(GetReactRuleById), id);
             var rule = await _repository.GetByIdAsync(id);
-            return rule is null ? NotFound(id) : Ok(rule);
+            return rule is null ? NotFound(id) : Ok(_mapper.Map<GetBotReactRuleDto>(rule));
         }
 
         // POST: api/BotResponseRule
@@ -47,12 +53,12 @@ namespace PierogiesBot.Controllers
             _logger.LogTrace("{0}", nameof(Post));
             try
             {
-                var (reaction, triggerText, stringComparison, isTriggerTextRegex, shouldTriggerOnContains) = ruleDto;
+                var (reaction, triggerText, stringComparison, isTriggerTextRegex, shouldTriggerOnContains, responseMode) = ruleDto;
                 var rule = new BotReactRule(reaction, triggerText, stringComparison, isTriggerTextRegex,
-                    shouldTriggerOnContains);
+                    shouldTriggerOnContains, responseMode);
                 await _repository.InsertAsync(rule);
 
-                return Ok();
+                return Ok(rule.Id);
             }
             catch (Exception e)
             {
@@ -75,14 +81,15 @@ namespace PierogiesBot.Controllers
                         return NotFound(id);
                     default:
                     {
-                        var (reactions, triggerText, stringComparison, isTriggerTextRegex, shouldTriggerOnContains) = ruleDto;
+                        var (reactions, triggerText, stringComparison, isTriggerTextRegex, shouldTriggerOnContains, responseMode) = ruleDto;
                         var updatedRule = rule with
                         {
                             Reactions = reactions, 
                             TriggerText = triggerText, 
                             StringComparison = stringComparison, 
                             IsTriggerTextRegex = isTriggerTextRegex, 
-                            ShouldTriggerOnContains = shouldTriggerOnContains
+                            ShouldTriggerOnContains = shouldTriggerOnContains,
+                            ResponseMode = responseMode
                         };
                         
                         await _repository.UpdateAsync(updatedRule);

@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PierogiesBot.Commons.Dtos.BotCrontabRule;
+using PierogiesBot.Commons.Dtos.BotReactRule;
 using PierogiesBot.Data.Models;
 using PierogiesBot.Data.Services;
 
@@ -15,20 +18,23 @@ namespace PierogiesBot.Controllers
     [ApiController]
     public class BotCrontabRuleController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly ILogger<BotCrontabRuleController> _logger;
         private readonly IRepository<BotCrontabRule> _repository;
 
-        public BotCrontabRuleController(ILogger<BotCrontabRuleController> logger, IRepository<BotCrontabRule> repository)
+        public BotCrontabRuleController(IMapper mapper, ILogger<BotCrontabRuleController> logger, IRepository<BotCrontabRule> repository)
         {
+            _mapper = mapper;
             _logger = logger;
             _repository = repository;
         }
         // GET: api/BotCrontabRule
         [HttpGet]
-        public async Task<IEnumerable<BotCrontabRule>> Get()
+        public async Task<IEnumerable<GetBotCrontabRuleDto>> Get()
         {
             _logger.LogTrace("{0}", nameof(Get));
-            return await _repository.GetAll();
+            var entities = await _repository.GetAll();
+            return entities.Select(x => _mapper.Map<GetBotCrontabRuleDto>(x));
         }
 
         // GET: api/BotCrontabRule/5
@@ -37,7 +43,7 @@ namespace PierogiesBot.Controllers
         {
             _logger.LogTrace("{0}: Rule id = {1}", nameof(GetCrontabRuleById), id);
             var rule = await _repository.GetByIdAsync(id);
-            return rule is null ? NotFound(id) : Ok(rule);
+            return rule is null ? NotFound(id) : Ok(_mapper.Map<GetBotCrontabRuleDto>(rule));
         }
 
         // POST: api/BotCrontabRule
@@ -47,8 +53,8 @@ namespace PierogiesBot.Controllers
             _logger.LogTrace("{0}", nameof(Post));
             try
             {
-                var (isEmoji, crontab, replyMessage, replyEmoji) = ruleDto;
-                var rule = new BotCrontabRule(isEmoji, crontab, replyMessage, replyEmoji);
+                var (isEmoji, crontab, replyMessage, replyEmoji, responseMode) = ruleDto;
+                var rule = new BotCrontabRule(isEmoji, crontab, replyMessage, replyEmoji, responseMode);
                 await _repository.InsertAsync(rule);
 
                 return Ok();
@@ -74,13 +80,14 @@ namespace PierogiesBot.Controllers
                         return NotFound(id);
                     default:
                     {
-                        var (isEmoji, crontab, replyMessages, replyEmojis) = ruleDto;
+                        var (isEmoji, crontab, replyMessages, replyEmojis, responseMode) = ruleDto;
                         var updatedRule = rule with
                         {
                             IsEmoji = isEmoji,
                             Crontab = crontab,
                             ReplyMessages = replyMessages,
                             ReplyEmoji = replyEmojis,
+                            ResponseMode = responseMode
                         };
                         
                         await _repository.UpdateAsync(updatedRule);

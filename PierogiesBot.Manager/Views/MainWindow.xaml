@@ -8,7 +8,7 @@
                            xmlns:viewModels="clr-namespace:PierogiesBot.Manager.ViewModels"
                            xmlns:views="clr-namespace:PierogiesBot.Manager.Views"
                            mc:Ignorable="d"
-                           Title="MainWindow" Height="450" Width="800" d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">
+                           Title="PierogiesBot Rules Manager" Height="450" Width="800" d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">
     <Grid>
         <!-- <Grid.ColumnDefinitions> -->
         <!--     <ColumnDefinition Width="*" /> -->

@@ -2,6 +2,7 @@
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using PierogiesBot.Manager.Models.Messages;
 using PierogiesBot.Manager.ViewModels;
@@ -9,9 +10,9 @@ using ReactiveUI;
 
 namespace PierogiesBot.Manager.Views
 {
-    public partial class LoginView
+    public partial class DashboardView
     {
-        public LoginView(LoginViewModel viewModel, IMessageBus messageBus)
+        public DashboardView(DashboardViewModel viewModel, Lazy<UserProfileView> userProfileView, Lazy<ResponseRulesView> responseRulesView, IMessageBus messageBus)
         {
             InitializeComponent();
             
@@ -19,19 +20,14 @@ namespace PierogiesBot.Manager.Views
 
             this.WhenActivated(disposable =>
             {
-                CancelButton
+                ProfileTab.Content = userProfileView.Value;
+                ResponseRulesTab.Content = responseRulesView.Value;
+                
+                RefreshDataButton
                     .Events().Click
-                    .Do(_ => messageBus.SendMessage(new CloseApplication()))
+                    .Do(_ => messageBus.SendMessage(new RefreshData()))
                     .Subscribe()
                     .DisposeWith(disposable);
-
-                SignInButton
-                    .Events().Click
-                    .Select(_ => (UserNameBox.Text, PasswordBox.SecurePassword))
-                    .InvokeCommand(viewModel.SignInCommand)
-                    .DisposeWith(disposable);
-                
-                ViewModel.SignInFromSettingsCommand.Execute().Subscribe().DisposeWith(disposable);
             });
         }
     }

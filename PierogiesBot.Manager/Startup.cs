@@ -26,6 +26,8 @@ namespace PierogiesBot.Manager
             services.AddHostedService<DataInitializeHostedService>();
             services.AddHostedService<UserLoginHostedService>();
 
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddDbContext<AppDbContext>();
             services.AddRestEaseClient<IPierogiesBotApi>(Configuration["APIBaseAddress"]);
             services.AddSingleton(MessageBus.Current);

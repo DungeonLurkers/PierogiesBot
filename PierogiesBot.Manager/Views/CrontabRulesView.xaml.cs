@@ -7,9 +7,9 @@ using ReactiveUI;
 
 namespace PierogiesBot.Manager.Views
 {
-    public partial class UserProfileView
+    public partial class CrontabRulesView
     {
-        public UserProfileView(UserProfileViewModel viewModel)
+        public CrontabRulesView(CrontabRulesViewModel viewModel)
         {
             InitializeComponent();
 
@@ -17,14 +17,13 @@ namespace PierogiesBot.Manager.Views
 
             this.WhenActivated(disposable =>
             {
-                this.OneWayBind(ViewModel, vm => vm.UserName, v => v.UserNameLabel.Content)
-                    .DisposeWith(disposable);
+                this.OneWayBind(ViewModel, vm => vm.CrontabRules, x => x.RulesDataGrid.ItemsSource).DisposeWith(disposable);
                 
-                ViewModel.LoadCurrentUserData.Execute().Subscribe().DisposeWith(disposable);
+                
             });
         }
 
-        public UserProfileView() : this(App.Container.GetRequiredService<UserProfileViewModel>())
+        public CrontabRulesView() : this(App.Container.GetRequiredService<CrontabRulesViewModel>())
         {
             
         }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -33,7 +34,7 @@ namespace PierogiesBot.Controllers
             _logger.LogTrace("{0}", nameof(Get));
             var entities = await _repository.GetAll();
 
-            return _mapper.Map<List<GetBotResponseRuleDto>>(entities);
+            return entities.Select(e => _mapper.Map<GetBotResponseRuleDto>(e));
         }
 
         // GET: api/BotResponseRule/5

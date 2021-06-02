@@ -4,6 +4,8 @@
         <TargetFramework>net5.0</TargetFramework>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <Nullable>enable</Nullable>
+        <Configurations>Debug;Release;Manager Debug;Manager Release;Bot Debug;Bot Release</Configurations>
+        <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
 
     <ItemGroup>

@@ -27,8 +27,7 @@ namespace PierogiesBot.Manager.ViewModels
 
         private void Execute()
         {
-            if (_botService.IsAuthenticated) _navigationService.NavigateTo<UserProfileViewModel>();
-            else _navigationService.NavigateTo<LoginViewModel>();
+                _navigationService.NavigateTo<LoginViewModel>();
         }
 
         public RoutingState Router { get; }
