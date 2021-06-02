@@ -1,0 +1,2 @@
+# PierogiesBot
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/abdfc3918fdd497b8cc98118c989ceed)](https://app.codacy.com/gh/DungeonLurkers/PierogiesBot?utm_source=github.com&utm_medium=referral&utm_content=DungeonLurkers/PierogiesBot&utm_campaign=Badge_Grade_Settings)
