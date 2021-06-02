@@ -82,9 +82,8 @@ jobs:
     - name: Compress package
       run: Compress-Archive -Path target/* -DestinationPath "$($env:Wpf_Project_Directory)\manager.zip"
 
-    # Upload the MSIX package: https://github.com/marketplace/actions/upload-artifact
     - name: Upload build artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: Wpf zip
-        path: ${{ env.Wpf_Project_Directory }}\manager.zip
+        name: Manager ${{matrix.Configuration}}
+        path: target/*
