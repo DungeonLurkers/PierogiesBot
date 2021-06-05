@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Security;
 using System.Threading.Tasks;
 using PierogiesBot.Commons.Dtos.BotCrontabRule;
 using PierogiesBot.Commons.Dtos.BotReactRule;
 using PierogiesBot.Commons.Dtos.BotResponseRule;
 using PierogiesBot.Commons.Dtos.UserData;
+using PierogiesBot.Commons.Enums;
 using RestEase;
 
 namespace PierogiesBot.Manager.Services
@@ -21,5 +23,9 @@ namespace PierogiesBot.Manager.Services
         Task<IEnumerable<GetBotResponseRuleDto>?> GetBotResponseRules();
         Task<IEnumerable<GetBotReactRuleDto>?> GetBotReactRules();
         Task<IEnumerable<GetBotCrontabRuleDto>?> GetBotCrontabRules();
+
+        Task CreateBotResponseRule(bool shouldTriggerOnContains, bool isTriggerTextRegex,
+            StringComparison stringComparison, string triggerText, IEnumerable<string> responses,
+            ResponseMode responseMode);
     }
 }

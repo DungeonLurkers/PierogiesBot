@@ -76,7 +76,8 @@ namespace PierogiesBot.Discord.Services
             _logger.LogInformation("Subscribing to channel {0} in guild {1}", channel.Name, guild.Name);
             var existing = await _repository
                 .GetByPredicate(s => s.GuildId.Equals(guild.Id) 
-                                     && s.ChannelId.Equals(channel.Id));
+                                     && s.ChannelId.Equals(channel.Id)
+                                     && s.SubscriptionType == SubscriptionType.Responses);
             var existingList = existing?.ToList() ?? new ();
 
             if (!existingList.Any())
@@ -93,7 +94,8 @@ namespace PierogiesBot.Discord.Services
         {
             var existingEnumerable = await _repository
                 .GetByPredicate(s => s.GuildId.Equals(guild.Id) 
-                                     && s.ChannelId.Equals(channel.Id));
+                                     && s.ChannelId.Equals(channel.Id)
+                                     && s.SubscriptionType == SubscriptionType.Responses);
             var existing = existingEnumerable.FirstOrDefault();
 
             if (existing is not null)

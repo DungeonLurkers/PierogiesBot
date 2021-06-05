@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows;
@@ -28,6 +29,11 @@ namespace PierogiesBot.Manager.Views
                     .Do(_ => messageBus.SendMessage(new RefreshData()))
                     .Subscribe()
                     .DisposeWith(disposable);
+                    
+                   AddResponseRuleButton.Events().Click
+                       .Select(_ => Unit.Default)
+                       .InvokeCommand(ViewModel.GoToCreateResponseRuleCommand)
+                       .DisposeWith(disposable);
             });
         }
     }

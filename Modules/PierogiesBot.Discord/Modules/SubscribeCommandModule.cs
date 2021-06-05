@@ -79,14 +79,16 @@ namespace PierogiesBot.Discord.Modules
             }
         
             [Command("del")]
-            public async Task Unsubscribe(SocketTextChannel channel)
+            public async Task Unsubscribe(params SocketTextChannel[] channels)
             {
-                LogTrace($"Unsubscribing channel {channel}");
-                _logger.LogInformation("Del response subscription on channel {0} guild {1}", Context.Channel.Name, Context.Guild.Name);
-            
-                await _channelSubscribeService.Unsubscribe(Context.Guild, channel);
+                LogTrace($"Unsubscribing channels {string.Join(", ", channels.Select(x => x.Name))}");
 
-                await ReplyAsync($"I got bored watching you on {channel.Name}, bye");
+                foreach (var channel in channels)
+                {
+                    await _channelSubscribeService.Unsubscribe(Context.Guild, channel);
+                }
+
+                await ReplyAsync($"I got bored watching you on {string.Join(", ", channels.Select(x => x.Name))}, bye");
             }
         }
 

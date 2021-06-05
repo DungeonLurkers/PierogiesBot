@@ -9,6 +9,7 @@ using PierogiesBot.Commons.Dtos.BotCrontabRule;
 using PierogiesBot.Commons.Dtos.BotReactRule;
 using PierogiesBot.Commons.Dtos.BotResponseRule;
 using PierogiesBot.Commons.Dtos.UserData;
+using PierogiesBot.Commons.Enums;
 using PierogiesBot.Commons.RestClient;
 using PierogiesBot.Manager.Models.Messages;
 using ReactiveUI;
@@ -114,6 +115,13 @@ namespace PierogiesBot.Manager.Services
             return await Request(async api => await api.GetBotCrontabRules());
         }
 
+        public async Task CreateBotResponseRule(bool shouldTriggerOnContains, bool isTriggerTextRegex,
+            StringComparison stringComparison, string triggerText, IEnumerable<string> responses,
+            ResponseMode responseMode)
+        {
+            await Request(async api => await api.CreateBotResponseRule(new CreateBotResponseRuleDto(responseMode, responses, triggerText, stringComparison, isTriggerTextRegex, shouldTriggerOnContains)));
+        }
+
         private async Task<T?> Request<T>(Func<IPierogiesBotApi, Task<T>> func)
         {
             try
@@ -135,6 +143,27 @@ namespace PierogiesBot.Manager.Services
             }
 
             return default;
+        }
+        
+        private async Task Request(Func<IPierogiesBotApi, Task> func)
+        {
+            try
+            {
+                await func(_api);
+            }
+            catch (ApiException e)
+            {
+                if (e.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    _logger.LogInformation("Request needs authentication, but current credentials don't work");
+                    _logger.LogInformation("Requesting user login");
+                    _messageBus.SendMessage(new NeedsUserLogin());
+                }
+                else
+                {
+                    _logger.LogError(e, "ApiException while making request");
+                }
+            }
         }
     }
 }

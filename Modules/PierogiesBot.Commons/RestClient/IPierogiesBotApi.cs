@@ -32,5 +32,8 @@ namespace PierogiesBot.Commons.RestClient
         
         [Get("/api/BotCrontabRule")]
         Task<IEnumerable<GetBotCrontabRuleDto>> GetBotCrontabRules();
+
+        [Post("/api/BotResponseRule")]
+        Task CreateBotResponseRule([Body] CreateBotResponseRuleDto responseRuleDto);
     }
 }

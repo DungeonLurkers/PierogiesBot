@@ -18,7 +18,12 @@
         </Grid.RowDefinitions>
         
         <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
             <Button x:Name="RefreshDataButton">Refresh data</Button>
+            <Button Grid.Column="1" x:Name="AddResponseRuleButton">Add ResponseRule</Button>
         </Grid>
         <TabControl Grid.Row="1">
             <TabItem Header="Profile" x:Name="ProfileTab">
