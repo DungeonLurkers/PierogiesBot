@@ -43,21 +43,29 @@ namespace PierogiesBot.Manager.Services
 
         public string? Token { get; private set; }
 
-        public async Task<bool> Authenticate(string userName, SecureString password, bool renewToken = false)
+        public async Task<bool> Authenticate(string userName = "", SecureString? password = null, bool renewToken = false)
         {
             _logger.LogInformation("Authenticating as {0}", userName);
             try
             {
-                if (!renewToken)
-                {
-                    _logger.LogDebug("Trying old token...");
-                    if (!await CheckIsAuthenticated())
-                    {
-                        _logger.LogDebug("Old token is invalid! Trying to renew token...");
-                        return await Authenticate(userName, password, true);
-                    }
+                var settings = await _settingsService.Get();
 
-                    if (!string.IsNullOrEmpty(Token)) return true;
+                if (settings is not null && settings.ApiToken is not "" && settings.CurrentUserName is not "")
+                {
+                    if (!renewToken)
+                    {
+                        _logger.LogDebug("Trying old token...");
+                        if (!await CheckIsAuthenticated())
+                        {
+                            _logger.LogDebug("Old token is invalid! Trying to renew token...");
+                            if (password is not null)
+                                return await Authenticate(userName, password, true);
+                            else
+                                return false;
+                        }
+
+                        if (!string.IsNullOrEmpty(Token)) return true;
+                    }
                 }
 
                 var credentials = new NetworkCredential(userName, password);

@@ -4,16 +4,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
+using Microsoft.Extensions.Logging;
 
 namespace PierogiesBot.Discord.Modules
 {
     [Group("emoji")]
-    public class EmojiCommandModule : ModuleBase<SocketCommandContext>
+    public class EmojiCommandModule : LoggingModuleBase
     {
         [Command]
         [Summary("Sends a single message containing specified emojis")]
         public async Task Emoji([Summary("Emojis")] params string[] emojis)
         {
+            LogTrace($"Emoji {{{string.Join(", ", emojis)}}}");
             var emotes = Context.Guild.Emotes;
             IEnumerable<GuildEmote?> msgEmotes = emojis.Select(s =>
                 emotes.FirstOrDefault(emote => emote.Name.Equals(s, StringComparison.InvariantCultureIgnoreCase)));
@@ -30,6 +32,10 @@ namespace PierogiesBot.Discord.Modules
             var foundEmotes = guildEmotes.Where(x => x != null);
 
             await ReplyAsync(string.Join("", foundEmotes.Select(e => e!.ToString())));
+        }
+
+        public EmojiCommandModule(ILogger<EmojiCommandModule> logger) : base(logger)
+        {
         }
     }
 }

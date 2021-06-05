@@ -14,7 +14,7 @@ namespace PierogiesBot.Manager.Services
         Task<bool> CheckIsAuthenticated();
         string? Token {get;}
 
-        Task<bool> Authenticate(string userName, SecureString password, bool renewToken=false);
+        Task<bool> Authenticate(string userName = "", SecureString? password = null, bool renewToken=false);
 
         Task<GetUserDto?> GetUserData(string userName);
         

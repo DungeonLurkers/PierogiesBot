@@ -6,6 +6,7 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
+using Microsoft.Extensions.Logging;
 using PierogiesBot.Data.Models;
 using PierogiesBot.Data.Services;
 using PierogiesBot.Discord.Jobs;
@@ -21,15 +22,19 @@ namespace PierogiesBot.Discord.Services
         private readonly IRepository<BotCrontabRule> _ruleRepository;
         private readonly IRepository<GuildSettings> _settingsRepository;
         private readonly IRepository<BotMessageSubscription> _subscriptionRepository;
-        public CrontabSubscribeService(IScheduler scheduler, IRepository<BotCrontabRule> ruleRepository, IRepository<GuildSettings> settingsRepository, IRepository<BotMessageSubscription> subscriptionRepository)
+        private ILogger<CrontabSubscribeService> _logger;
+
+        public CrontabSubscribeService(IScheduler scheduler, IRepository<BotCrontabRule> ruleRepository, IRepository<GuildSettings> settingsRepository, IRepository<BotMessageSubscription> subscriptionRepository, ILogger<CrontabSubscribeService> logger)
         {
             _scheduler = scheduler;
             _ruleRepository = ruleRepository;
             _settingsRepository = settingsRepository;
             _subscriptionRepository = subscriptionRepository;
+            _logger = logger;
         }
         public async Task LoadSubscriptions()
         {
+            _logger.LogInformation("Loading Crontab subscriptions");
             var rules = await _ruleRepository.GetAll();
             var guilds = await _settingsRepository.GetAll();
 
@@ -37,6 +42,9 @@ namespace PierogiesBot.Discord.Services
                 foreach (var rule in rules)
                 {
                     var tzInfo = TimeZoneInfo.FromSerializedString(guildTimeZone);
+
+                    _logger.LogInformation("Creating job for guild {{{0}}} in TimeZone '{1}', Crontab = {{{2}}}", guildId, tzInfo.DisplayName, rule.Crontab);
+                    
                     var job = JobBuilder.Create<SendCrontabMessageToChannelsJob>()
                         .WithIdentity(id, rule.Crontab)
                         .SetJobData(new JobDataMap
@@ -51,6 +59,10 @@ namespace PierogiesBot.Discord.Services
                         .ForJob(job)
                         .WithCronSchedule(rule.Crontab, builder => builder.InTimeZone(tzInfo))
                         .Build();
+
+                    var triggerNextFire = trigger.GetNextFireTimeUtc();
+
+                    _logger.LogDebug($"Trigger '{rule.Crontab}' next fire time is {triggerNextFire:F}");
                     
                     await _scheduler.ScheduleJob(job, trigger);
                 }
@@ -64,10 +76,15 @@ namespace PierogiesBot.Discord.Services
             var existingList = existing?.ToList() ?? new ();
 
             if (!existingList.Any())
-                await _subscriptionRepository.InsertAsync(new BotMessageSubscription(guild.Id, channel.Id, SubscriptionType.Crontab));
+            {
+                _logger.LogInformation($"Subscription not found in database. Inserting new document for channel {channel} in guild {guild}");
+                await _subscriptionRepository.InsertAsync(new BotMessageSubscription(guild.Id, channel.Id,
+                    SubscriptionType.Crontab));
+            }
         }
         public async Task Unsubscribe(IGuild guild, IMessageChannel channel)
         {
+            _logger.LogInformation($"Unsubscribing channel {channel} in guild {guild}");
             var existingEnumerable = await _subscriptionRepository
                 .GetByPredicate(s => s.GuildId.Equals(guild.Id) 
                                      && s.ChannelId.Equals(channel.Id)

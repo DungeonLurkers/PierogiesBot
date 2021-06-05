@@ -32,7 +32,7 @@ namespace PierogiesBot.Controllers
         [HttpGet]
         public async Task<IEnumerable<GetBotCrontabRuleDto>> Get()
         {
-            _logger.LogTrace("{0}", nameof(Get));
+            _logger.LogTrace("{0} BotCrontabRules", nameof(Get));
             var entities = await _repository.GetAll();
             return entities.Select(x => _mapper.Map<GetBotCrontabRuleDto>(x));
         }
@@ -41,7 +41,7 @@ namespace PierogiesBot.Controllers
         [HttpGet("{id}", Name = "GetCrontabRuleById")]
         public async Task<IActionResult> GetCrontabRuleById(string id)
         {
-            _logger.LogTrace("{0}: Rule id = {1}", nameof(GetCrontabRuleById), id);
+            _logger.LogTrace("{0}: CrontabRule id = {1}", nameof(GetCrontabRuleById), id);
             var rule = await _repository.GetByIdAsync(id);
             return rule is null ? NotFound(id) : Ok(_mapper.Map<GetBotCrontabRuleDto>(rule));
         }
@@ -50,7 +50,7 @@ namespace PierogiesBot.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateBotCrontabRuleDto ruleDto)
         {
-            _logger.LogTrace("{0}", nameof(Post));
+            _logger.LogTrace("{0} BotCrontabRule", "Create");
             try
             {
                 var (isEmoji, crontab, replyMessage, replyEmoji, responseMode) = ruleDto;
@@ -69,7 +69,7 @@ namespace PierogiesBot.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(string id, [FromBody] UpdateBotCrontabRuleDto ruleDto)
         {
-            _logger.LogTrace("{0}: Rule id = {1}", nameof(Put), id);
+            _logger.LogTrace("{0}: CrontabRule id = {1}", "Update", id);
             try
             {
                 var rule = await _repository.GetByIdAsync(id);
@@ -107,7 +107,7 @@ namespace PierogiesBot.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
-            _logger.LogTrace("{0}: Rule id = {1}", nameof(Delete), id);
+            _logger.LogTrace("{0}: CrontabRule id = {1}", "Delete", id);
             try
             {
                 var user = await _repository.GetByIdAsync(id);

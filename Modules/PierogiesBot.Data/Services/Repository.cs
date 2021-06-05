@@ -34,14 +34,14 @@ namespace PierogiesBot.Data.Services
 
         public async Task InsertAsync(T doc)
         {
-            _logger.LogTrace("{0}: Doc Id = {1}", nameof(InsertAsync), doc.Id);
+            _logger.LogTrace("{0}: Doc Id = {1} of type {2}", nameof(InsertAsync), doc.Id, typeof(T).Name);
             await Collection.InsertOneAsync(doc);
             await _mediator.Publish(new AddEntity<T>(doc));
         }
 
         public async Task UpdateAsync(T doc)
         {
-            _logger.LogTrace("{0}: Doc Id = {1}", nameof(UpdateAsync), doc.Id);
+            _logger.LogTrace("{0}: Doc Id = {1} of type {2}", nameof(UpdateAsync), doc.Id, typeof(T).Name);
             Expression<Func<T, string>> func = f => f.Id;
             var value = (string) doc.GetType().GetProperty(func.Body.ToString().Split(".")[1]).GetValue(doc, null);
             if (func is not null)
@@ -55,28 +55,28 @@ namespace PierogiesBot.Data.Services
 
         public async Task DeleteAsync(string id)
         {
-            _logger.LogTrace("{0}: Doc Id = {1}", nameof(UpdateAsync), id);
+            _logger.LogTrace("{0}: Doc Id = {1} of type {3}", nameof(UpdateAsync), id, typeof(T).Name);
             await Collection.DeleteOneAsync(f => f.Id == id);
             await _mediator.Publish(new RemoveEntity<T>(id));
         }
 
         public async Task<T> GetByIdAsync(string id)
         {
-            _logger.LogTrace("{0}: id = {1}", nameof(GetByIdAsync), id);
+            _logger.LogTrace("{0}: id = {1} of type {2}", nameof(GetByIdAsync), id, typeof(T).Name);
             var filter = Builders<T>.Filter.Eq(s => s.Id, id);
             return await Collection.Find(filter).FirstOrDefaultAsync();
         }
         
         public async Task<T?> GetByProperty<TProp>(Expression<Func<T, TProp>> propertyAccessor, TProp value)
         {
-            _logger.LogTrace("{0}: Searching entity for property of type {1} and value {2}", nameof(GetByProperty), typeof(T).Name, value);
+            _logger.LogTrace("{0}: Searching entity for property of type {1} and value {2} of type {3}", nameof(GetByProperty), typeof(T).Name, value, typeof(T).Name);
             var filter = Builders<T>.Filter.Eq(propertyAccessor, value);
             return await Collection.Find(filter).FirstOrDefaultAsync();
         }
         
         public async Task<IEnumerable<T>> GetAllByProperty<TProp>(Expression<Func<T, TProp>> propertyAccessor, TProp value)
         {
-            _logger.LogTrace("{0}: Searching entity for property of type {1} and value {2}", nameof(GetByProperty), typeof(T).Name, value);
+            _logger.LogTrace("{0}: Searching entity for property of type {1} and value {2} of type {3}", nameof(GetByProperty), typeof(T).Name, value, typeof(T).Name);
             var filter = Builders<T>.Filter.Eq(propertyAccessor, value);
             return await Collection.Find(filter).ToListAsync();
         }
@@ -84,13 +84,14 @@ namespace PierogiesBot.Data.Services
         public async Task<IEnumerable<T>> GetByPredicate(
             Expression<Func<T, bool>> predicate)
         {
-            _logger.LogTrace("{0}", nameof(GetByPredicate));
+            _logger.LogTrace("{0} of {1}", nameof(GetByPredicate), typeof(T).Name);
             var filter = Builders<T>.Filter.Where(predicate);
             return await Collection.Find(filter).ToListAsync();
         }
 
         public async Task<IEnumerable<T>> GetAll()
         {
+            _logger.LogTrace("{0} of {1}", nameof(GetAll), typeof(T).Name);
             return await Collection.AsQueryable().ToListAsync();
         }
     }

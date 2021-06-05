@@ -31,7 +31,7 @@ namespace PierogiesBot.Controllers
         [HttpGet]
         public async Task<IEnumerable<GetBotResponseRuleDto>> Get()
         {
-            _logger.LogTrace("{0}", nameof(Get));
+            _logger.LogTrace("{0} ResponseRule", nameof(Get));
             var entities = await _repository.GetAll();
 
             return entities.Select(e => _mapper.Map<GetBotResponseRuleDto>(e));
@@ -41,7 +41,7 @@ namespace PierogiesBot.Controllers
         [HttpGet("{id}", Name = "GetResponseRuleById")]
         public async Task<IActionResult> GetResponseRuleById(string id)
         {
-            _logger.LogTrace("{0}: Rule id = {1}", nameof(GetResponseRuleById), id);
+            _logger.LogTrace("{0}: ResponseRule id = {1}", nameof(GetResponseRuleById), id);
             var rule = await _repository.GetByIdAsync(id);
             return rule is null ? NotFound(id) : Ok(_mapper.Map<GetBotResponseRuleDto>(rule));
         }
@@ -50,7 +50,7 @@ namespace PierogiesBot.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateBotResponseRuleDto ruleDto)
         {
-            _logger.LogTrace("{0}", nameof(Post));
+            _logger.LogTrace("{0} ResponseRule", "Create");
             try
             {
                 var (responseMode, respondWith, triggerText, stringComparison, isTriggerTextRegex, shouldTriggerOnContains) = ruleDto;
@@ -70,7 +70,7 @@ namespace PierogiesBot.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(string id, [FromBody] UpdateBotResponseRuleDto ruleDto)
         {
-            _logger.LogTrace("{0}: Rule id = {1}", nameof(Put), id);
+            _logger.LogTrace("{0}: ResponseRule id = {1}", "Update", id);
             try
             {
                 var rule = await _repository.GetByIdAsync(id);

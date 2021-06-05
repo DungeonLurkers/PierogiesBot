@@ -8,20 +8,19 @@ using PierogiesBot.Data.Services;
 namespace PierogiesBot.Discord.Modules
 {
     [Group("settings")]
-    public class GuildSettingsCommandModule : ModuleBase
+    public class GuildSettingsCommandModule : LoggingModuleBase
     {
-        private readonly ILogger<GuildSettingsCommandModule> _logger;
         private readonly IRepository<GuildSettings> _repository;
 
-        public GuildSettingsCommandModule(ILogger<GuildSettingsCommandModule> logger, IRepository<GuildSettings> repository)
+        public GuildSettingsCommandModule(ILogger<GuildSettingsCommandModule> logger, IRepository<GuildSettings> repository) : base(logger)
         {
-            _logger = logger;
             _repository = repository;
         }
 
         [Command("set_timezone")]
         public async Task SetTimeZone(TimeZoneInfo tzInfo)
         {
+            LogTrace($"Set TimeZone {tzInfo.DisplayName}");
             var guildId = Context.Guild.Id;
             var settings = await _repository.GetByProperty(s => s.GuildId, guildId);
 
@@ -40,6 +39,7 @@ namespace PierogiesBot.Discord.Modules
         [Command("get_timezone")]
         public async Task GetTimeZone()
         {
+            LogTrace("Get TimeZone");
             var guildId = Context.Guild.Id;
             var settings = await _repository.GetByProperty(s => s.GuildId, guildId);
 

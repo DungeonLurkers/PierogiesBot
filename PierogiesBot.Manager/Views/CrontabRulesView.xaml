@@ -14,11 +14,11 @@
         <DataGrid AutoGenerateColumns="False" AlternatingRowBackground="#8D8E8E" RowBackground="#CFD0D0" IsReadOnly="True" x:Name="RulesDataGrid"
                   d:DataContext="{d:DesignInstance models:CrontabRuleModel}">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Crontab}" Header="Crontab"/>
-                <DataGridCheckBoxColumn Binding="{Binding IsEmoji}" Header="Is responses emoji"/>
-                <DataGridCheckBoxColumn Binding="{Binding EmojisAsString}" Header="Emojis"/>
-                <DataGridTextColumn Binding="{Binding ResponseMode}" Header="Response mode"/>
-                <DataGridTextColumn Binding="{Binding ResponsesAsString}" Header="Responses"/>
+                <DataGridTextColumn Binding="{Binding Crontab, Mode=OneWay}" Header="Crontab"/>
+                <DataGridCheckBoxColumn Binding="{Binding IsEmoji, Mode=OneWay}" Header="Is responses emoji"/>
+                <DataGridTextColumn Binding="{Binding EmojisAsString, Mode=OneWay}" Header="Emojis"/>
+                <DataGridTextColumn Binding="{Binding ResponseMode, Mode=OneWay}" Header="Response mode"/>
+                <DataGridTextColumn Binding="{Binding ResponsesAsString, Mode=OneWay}" Header="Responses"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

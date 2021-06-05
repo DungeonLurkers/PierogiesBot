@@ -27,7 +27,7 @@ namespace PierogiesBot.Manager.ViewModels
 
         private void Execute()
         {
-                _navigationService.NavigateTo<LoginViewModel>();
+            _navigationService.NavigateTo<LoginViewModel>();
         }
 
         public RoutingState Router { get; }

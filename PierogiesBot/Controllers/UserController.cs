@@ -48,9 +48,14 @@ namespace PierogiesBot.Controllers
         [HttpPost("auth")]
         public async Task<IActionResult> Authenticate([FromBody] AuthenticateRequest request)
         {
+            _logger.LogInformation("Authenticating user {0}", request.UserName);
             var (userName, password) = request;
             var user = await _userManager.FindByNameAsync(userName);
-            if (user is null || !await _userManager.CheckPasswordAsync(user, password)) return Unauthorized();
+            if (user is null || !await _userManager.CheckPasswordAsync(user, password))
+            {
+                _logger.LogInformation("Authorization of user {0} failed!", request.UserName);
+                return Unauthorized();
+            }
             var utcNow = DateTime.UtcNow;
 
             var authClaims = user.Claims.Select(c => new Claim(c.Type, c.Value));
@@ -66,6 +71,8 @@ namespace PierogiesBot.Controllers
                 claims: authClaims,  
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)  
             );
+
+            _logger.LogInformation("Authorization of user {request.UserName} is successful. Returning JWT");
                 
             return Ok(new AuthenticateResponse(new JwtSecurityTokenHandler().WriteToken(token), user.Id, userName));
         }
@@ -83,7 +90,7 @@ namespace PierogiesBot.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateUserDto userDto)
         {
-            _logger.LogTrace("{0}", nameof(Post));
+            _logger.LogTrace("{0} User", "Create");
             try
             {
                 var (userName,email, password, roles) = userDto;
@@ -126,7 +133,7 @@ namespace PierogiesBot.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(string id, [FromBody] UpdateUserDto userDto)
         {
-            _logger.LogTrace("{0}: User id = {1}", nameof(Put), id);
+            _logger.LogTrace("{0}: User id = {1}", "Update", id);
             try
             {
                 var user = await _userManager.FindByIdAsync(id);
@@ -134,14 +141,16 @@ namespace PierogiesBot.Controllers
                 switch (user)
                 {
                     case null:
+                        _logger.LogInformation("User to update not found! Id = {0}", id);
                         return NotFound(id);
                     default:
                     {
                         var (userName, email, roles) = userDto;
-                        
-                        user.UserName = userName;
-                        user.Email = email;
-                        user.Roles = roles.ToList();
+                        _logger.LogInformation("Found user {0} to update", userName);
+
+                        if (userName != null) user.UserName = userName;
+                        if (email != null) user.Email = email;
+                        if (roles != null) user.Roles = roles.ToList();
 
                         await _userManager.UpdateAsync(user);
                         
@@ -169,11 +178,13 @@ namespace PierogiesBot.Controllers
                 switch (user)
                 {
                     case null:
+                        _logger.LogInformation("Not found user to remove. User Id = {0}", id);
                         return NotFound(id);
                     default:
                     {
+                        _logger.LogInformation("User to remove found. UserName = {0}, UserId = {1}", user.UserName, id);
                         await _userManager.DeleteAsync(user);
-                        
+                        _logger.LogInformation("User removed. User Id = {0}", id);
                         return Ok();
                     }
                 }

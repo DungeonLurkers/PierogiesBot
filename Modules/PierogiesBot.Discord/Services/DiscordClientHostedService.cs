@@ -11,8 +11,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using PierogiesBot.Commons.Enums;
-using PierogiesBot.Data.Models;
-using PierogiesBot.Data.Services;
 using PierogiesBot.Discord.Jobs;
 using PierogiesBot.Discord.Settings;
 using PierogiesBot.Discord.TypeReaders;
@@ -31,21 +29,18 @@ namespace PierogiesBot.Discord.Services
         private readonly IServiceProvider _serviceProvider;
         private readonly CommandService _commandService;
         private DiscordSocketClient _client;
-        private readonly IRepository<BotCrontabRule> _repository;
         private readonly ChannelSubscribeService _channelSubscribeService;
         private readonly CrontabSubscribeService _crontabSubscribeService;
         private DiscordSettings _settings;
 
         public DiscordClientHostedService(IScheduler scheduler, ILoggerFactory loggerfactory, IServiceProvider serviceProvider, 
-            CommandService commandService, IOptions<DiscordSettings> discordOptions, DiscordSocketClient client,
-            IRepository<BotCrontabRule> repository, ChannelSubscribeService channelSubscribeService, CrontabSubscribeService crontabSubscribeService)
+            CommandService commandService, IOptions<DiscordSettings> discordOptions, DiscordSocketClient client, ChannelSubscribeService channelSubscribeService, CrontabSubscribeService crontabSubscribeService)
         {
             _scheduler = scheduler;
             _loggerfactory = loggerfactory;
             _serviceProvider = serviceProvider;
             _commandService = commandService;
             _client = client;
-            _repository = repository;
             _channelSubscribeService = channelSubscribeService;
             _crontabSubscribeService = crontabSubscribeService;
 
@@ -61,6 +56,7 @@ namespace PierogiesBot.Discord.Services
             var eventAwaiter = new TaskCompletionSource<bool>(false);
             void ClientOnReady() => eventAwaiter.SetResult(true);
 
+            _logger.LogInformation("Attaching logger to Discord services");
             _client.Log += message => Task.Run(() =>
             {
                 var logLevel = message.Severity switch
@@ -79,31 +75,40 @@ namespace PierogiesBot.Discord.Services
             
             _commandService.AddTypeReader<TimeZoneInfo>(new TimeZoneInfoTypeReader());
             
+            _logger.LogInformation("Loggind to Discord");
             await _client.LoginAsync(TokenType.Bot, _settings.Token);
             await _client.StartAsync();
 
             _client.Ready += () => Task.Run(ClientOnReady);
 
+            _logger.LogInformation("Waiting for Discord to be ready...");
             await eventAwaiter.Task;
 
+            _logger.LogInformation("Installing Discord commands");
             await InstallCommandsAsync();
 
+            _logger.LogInformation("Initializing subscriptions");
             await InitializeSubscriptions();
             
+            _logger.LogInformation("Starting job scheduler");
             await _scheduler.Start();
 
         }
         
         public async Task StopAsync(CancellationToken cancellationToken)
         {
+            _logger.LogInformation("Stopping Discord services");
             await _client.StopAsync();
             await _client.LogoutAsync();
+            _logger.LogInformation("Discord services stopped");
             
         }
         
         private async Task InitializeSubscriptions()
         {
+            _logger.LogInformation("Initializing channel subscriptions");
             await _channelSubscribeService.LoadSubscriptions();
+            _logger.LogInformation("Initializing Crontab subscriptions");
             await _crontabSubscribeService.LoadSubscriptions();
         }
         

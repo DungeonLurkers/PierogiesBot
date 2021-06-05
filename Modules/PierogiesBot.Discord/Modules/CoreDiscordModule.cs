@@ -1,12 +1,22 @@
 using System.Threading.Tasks;
 using Discord.Commands;
+using Microsoft.Extensions.Logging;
 
 namespace PierogiesBot.Discord.Modules
 {
-    public class CoreDiscordModule : ModuleBase<SocketCommandContext>
+    public class CoreDiscordModule : LoggingModuleBase
     {
+
+        public CoreDiscordModule(ILogger<CoreDiscordModule> logger) : base(logger)
+        {
+        }
+
         [Command("ping")]
         [Summary("Ping command")]
-        public async Task Ping() => await ReplyAsync("Pong!");
+        public async Task Ping()
+        {
+            LogTrace($"Ping");
+            await ReplyAsync("Pong!");
+        }
     }
 }
