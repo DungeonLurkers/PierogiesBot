@@ -38,10 +38,10 @@ namespace PierogiesBot.Discord.Services
             var rules = await _ruleRepository.GetAll();
             var guilds = await _settingsRepository.GetAll();
 
-            foreach (var (id, guildId, guildTimeZone) in guilds)
+            foreach (var (id, guildId, guildTimeZoneId) in guilds)
                 foreach (var rule in rules)
                 {
-                    var tzInfo = TimeZoneInfo.FromSerializedString(guildTimeZone);
+                    var tzInfo = TimeZoneInfo.FindSystemTimeZoneById(guildTimeZoneId);
 
                     _logger.LogInformation("Creating job for guild {{{0}}} in TimeZone '{1}', Crontab = {{{2}}}", guildId, tzInfo.DisplayName, rule.Crontab);
                     

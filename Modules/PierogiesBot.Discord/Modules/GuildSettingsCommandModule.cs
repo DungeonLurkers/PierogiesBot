@@ -26,11 +26,11 @@ namespace PierogiesBot.Discord.Modules
 
             if (settings == null)
             {
-                await _repository.InsertAsync(new GuildSettings(guildId, tzInfo.ToSerializedString()));
+                await _repository.InsertAsync(new GuildSettings(guildId, tzInfo.Id));
             }
             else
             {
-                await _repository.UpdateAsync(settings with {GuildTimeZone = tzInfo.ToSerializedString()});
+                await _repository.UpdateAsync(settings with {GuildTimeZone = tzInfo.Id});
             }
 
             await ReplyAsync($"Server timezone set to {tzInfo}");
@@ -45,7 +45,7 @@ namespace PierogiesBot.Discord.Modules
 
             if (settings == null) return;
 
-            await ReplyAsync($"Server timezone is {TimeZoneInfo.FromSerializedString(settings.GuildTimeZone)}");
+            await ReplyAsync($"Server timezone is {TimeZoneInfo.FindSystemTimeZoneById(settings.GuildTimeZone)}");
         }
     }
 }
