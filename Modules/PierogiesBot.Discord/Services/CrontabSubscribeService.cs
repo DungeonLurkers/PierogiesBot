@@ -12,6 +12,7 @@ using PierogiesBot.Data.Services;
 using PierogiesBot.Discord.Jobs;
 using Quartz;
 using Quartz.Impl;
+using TimeZoneConverter;
 using IScheduler = Quartz.IScheduler;
 
 namespace PierogiesBot.Discord.Services
@@ -41,7 +42,7 @@ namespace PierogiesBot.Discord.Services
             foreach (var (id, guildId, guildTimeZoneId) in guilds)
                 foreach (var rule in rules)
                 {
-                    var tzInfo = TimeZoneInfo.FindSystemTimeZoneById(guildTimeZoneId);
+                    var tzInfo = TZConvert.GetTimeZoneInfo(guildTimeZoneId);
 
                     _logger.LogInformation("Creating job for guild {{{0}}} in TimeZone '{1}', Crontab = {{{2}}}", guildId, tzInfo.DisplayName, rule.Crontab);
                     
@@ -59,12 +60,11 @@ namespace PierogiesBot.Discord.Services
                         .ForJob(job)
                         .WithCronSchedule(rule.Crontab, builder => builder.InTimeZone(tzInfo))
                         .Build();
-
-                    var triggerNextFire = trigger.GetNextFireTimeUtc();
-
-                    _logger.LogDebug($"Trigger '{rule.Crontab}' next fire time is {triggerNextFire:F}");
                     
                     await _scheduler.ScheduleJob(job, trigger);
+                    
+                    var triggerNextFire = trigger.GetNextFireTimeUtc();
+                    _logger.LogDebug($"Trigger '{rule.Crontab}' next fire time is {triggerNextFire:F}");
                 }
         }
         public async Task Subscribe(IGuild guild, IMessageChannel channel)

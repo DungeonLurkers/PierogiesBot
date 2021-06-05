@@ -4,6 +4,7 @@ using Discord.Commands;
 using Microsoft.Extensions.Logging;
 using PierogiesBot.Data.Models;
 using PierogiesBot.Data.Services;
+using TimeZoneConverter;
 
 namespace PierogiesBot.Discord.Modules
 {
@@ -45,7 +46,7 @@ namespace PierogiesBot.Discord.Modules
 
             if (settings == null) return;
 
-            await ReplyAsync($"Server timezone is {TimeZoneInfo.FindSystemTimeZoneById(settings.GuildTimeZone)}");
+            await ReplyAsync($"Server timezone is {TZConvert.GetTimeZoneInfo(settings.GuildTimeZone)}");
         }
     }
 }

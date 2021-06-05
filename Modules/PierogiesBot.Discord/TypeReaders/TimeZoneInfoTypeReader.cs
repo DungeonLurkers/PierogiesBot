@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Discord.Commands;
+using TimeZoneConverter;
 
 namespace PierogiesBot.Discord.TypeReaders
 {
@@ -10,7 +11,7 @@ namespace PierogiesBot.Discord.TypeReaders
         {
             try
             {
-                var tzInfo = TimeZoneInfo.FindSystemTimeZoneById(input);
+                var tzInfo = TZConvert.GetTimeZoneInfo(input);
                 return Task.FromResult(TypeReaderResult.FromSuccess(tzInfo));
             }
             catch (Exception e)

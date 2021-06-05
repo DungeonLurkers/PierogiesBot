@@ -36,7 +36,6 @@ namespace PierogiesBot.Discord
                 configurator.UseMicrosoftDependencyInjectionJobFactory();
                 configurator.UseSimpleTypeLoader();
                 configurator.UseInMemoryStore();
-                configurator.UseTimeZoneConverter();
 
                 // configurator.UseJobFactory<MicrosoftDependencyInjectionJobFactory>();
 
@@ -47,7 +46,6 @@ namespace PierogiesBot.Discord
             {
                 var config = SchedulerBuilder.Create();
                 
-                config.UseTimeZoneConverter();
                 var scheduler = config.Build().GetScheduler().GetAwaiter().GetResult();
 
                 scheduler.JobFactory = new DependencyInjectionJobFactory(serviceProvider);
