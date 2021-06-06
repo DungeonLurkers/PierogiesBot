@@ -10,7 +10,7 @@ namespace PierogiesBot.Manager.Services
         Task Set(string userName = "", string token = "");
 
         Task<Settings?> Get();
-        
+
         Task<string> GetToken();
     }
 }

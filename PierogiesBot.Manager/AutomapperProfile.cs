@@ -2,7 +2,6 @@
 using PierogiesBot.Commons.Dtos.BotCrontabRule;
 using PierogiesBot.Commons.Dtos.BotReactRule;
 using PierogiesBot.Commons.Dtos.BotResponseRule;
-using PierogiesBot.Commons.Dtos.UserData;
 using PierogiesBot.Manager.Models;
 
 namespace PierogiesBot.Manager

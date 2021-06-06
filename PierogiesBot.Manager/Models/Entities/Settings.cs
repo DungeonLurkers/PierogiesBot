@@ -6,7 +6,6 @@ namespace PierogiesBot.Manager.Models.Entities
     {
         public Settings(string currentUserName, string apiToken) : this(Guid.Empty, currentUserName, apiToken)
         {
-            
         }
 
         public Settings(Guid id, string currentUserName, string apiToken) : base(id)

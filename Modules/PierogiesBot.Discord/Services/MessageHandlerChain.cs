@@ -12,11 +12,13 @@ namespace PierogiesBot.Discord.Services
         private readonly ILogger<MessageHandlerChain> _logger;
         private readonly IEnumerable<IUserSocketMessageHandler> _messageHandlers;
 
-        public MessageHandlerChain(ILogger<MessageHandlerChain> logger, IEnumerable<IUserSocketMessageHandler> messageHandlers)
+        public MessageHandlerChain(ILogger<MessageHandlerChain> logger,
+            IEnumerable<IUserSocketMessageHandler> messageHandlers)
         {
             _logger = logger;
             _messageHandlers = messageHandlers;
         }
+
         public async Task<IResult> HandleAsync(SocketCommandContext context, int argPos = 0)
         {
             try
@@ -27,7 +29,9 @@ namespace PierogiesBot.Discord.Services
                     if (result.IsSuccess)
                         return ExecuteResult.FromSuccess();
                 }
-                return ExecuteResult.FromError(CommandError.UnmetPrecondition, "There is no currently registered handler for that message");
+
+                return ExecuteResult.FromError(CommandError.UnmetPrecondition,
+                    "There is no currently registered handler for that message");
             }
             catch (Exception e)
             {

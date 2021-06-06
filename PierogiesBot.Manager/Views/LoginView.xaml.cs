@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Windows;
 using System.Windows.Controls.Primitives;
 using PierogiesBot.Manager.Models.Messages;
 using PierogiesBot.Manager.ViewModels;
@@ -14,7 +14,7 @@ namespace PierogiesBot.Manager.Views
         public LoginView(LoginViewModel viewModel, IMessageBus messageBus)
         {
             InitializeComponent();
-            
+
             ViewModel = viewModel;
 
             this.WhenActivated(disposable =>
@@ -30,8 +30,12 @@ namespace PierogiesBot.Manager.Views
                     .Select(_ => (UserNameBox.Text, PasswordBox.SecurePassword))
                     .InvokeCommand(viewModel.SignInCommand)
                     .DisposeWith(disposable);
-                
-                ViewModel.SignInFromSettingsCommand.Execute().Subscribe().DisposeWith(disposable);
+
+                SignAsSavedButton
+                    .Events().Click
+                    .Select(_ => Unit.Default)
+                    .InvokeCommand(viewModel.SignInFromSettingsCommand)
+                    .DisposeWith(disposable);
             });
         }
     }

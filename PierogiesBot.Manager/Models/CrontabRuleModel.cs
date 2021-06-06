@@ -10,8 +10,8 @@ namespace PierogiesBot.Manager.Models
         ReplyMessages, ReplyEmoji, ResponseMode)
     {
         public string ResponsesAsString =>
-                    ResponseMode == ResponseMode.First ? ReplyMessages.First() : $"'{string.Join(", ", ReplyMessages)}'";
-        
+            ResponseMode == ResponseMode.First ? ReplyMessages.First() : $"'{string.Join(", ", ReplyMessages)}'";
+
         public string EmojisAsString =>
             ResponseMode == ResponseMode.First ? ReplyEmoji.First() : $"'{string.Join(", ", ReplyEmoji)}'";
     }

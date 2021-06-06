@@ -11,7 +11,6 @@ namespace PierogiesBot.Manager.Models
         ResponseMode ResponseMode) : GetBotReactRuleDto(
         Id, Reactions, TriggerText, StringComparison, IsTriggerTextRegex, ShouldTriggerOnContains, ResponseMode)
     {
-        
         public string ReactionsAsString =>
             ResponseMode == ResponseMode.First ? Reactions.First() : $"'{string.Join(", ", Reactions)}'";
     }

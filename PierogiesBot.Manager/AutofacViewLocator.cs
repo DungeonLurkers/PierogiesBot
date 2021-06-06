@@ -1,7 +1,4 @@
-﻿using System;
-using Autofac;
-using Microsoft.Extensions.DependencyInjection;
-using ReactiveUI;
+﻿using ReactiveUI;
 
 namespace PierogiesBot.Manager
 {

@@ -17,22 +17,24 @@ namespace PierogiesBot.Controllers
     [ApiController]
     public class BotReactRuleController : ControllerBase
     {
-        private readonly IMapper _mapper;
         private readonly ILogger<BotReactRuleController> _logger;
+        private readonly IMapper _mapper;
         private readonly IRepository<BotReactRule> _repository;
 
-        public BotReactRuleController(IMapper mapper, ILogger<BotReactRuleController> logger, IRepository<BotReactRule> repository)
+        public BotReactRuleController(IMapper mapper, ILogger<BotReactRuleController> logger,
+            IRepository<BotReactRule> repository)
         {
             _mapper = mapper;
             _logger = logger;
             _repository = repository;
         }
+
         // GET: api/BotResponseRule
         [HttpGet]
         public async Task<IEnumerable<GetBotReactRuleDto>> Get()
         {
             _logger.LogTrace("{0} BotReactRule", nameof(Get));
-            var entities =  await _repository.GetAll();
+            var entities = await _repository.GetAll();
 
             return entities.Select(x => _mapper.Map<GetBotReactRuleDto>(x));
         }
@@ -53,7 +55,8 @@ namespace PierogiesBot.Controllers
             _logger.LogTrace("{0} ReactRule", "Create");
             try
             {
-                var (reaction, triggerText, stringComparison, isTriggerTextRegex, shouldTriggerOnContains, responseMode) = ruleDto;
+                var (reaction, triggerText, stringComparison, isTriggerTextRegex, shouldTriggerOnContains, responseMode
+                    ) = ruleDto;
                 var rule = new BotReactRule(reaction, triggerText, stringComparison, isTriggerTextRegex,
                     shouldTriggerOnContains, responseMode);
                 await _repository.InsertAsync(rule);
@@ -81,26 +84,26 @@ namespace PierogiesBot.Controllers
                         return NotFound(id);
                     default:
                     {
-                        var (reactions, triggerText, stringComparison, isTriggerTextRegex, shouldTriggerOnContains, responseMode) = ruleDto;
+                        var (reactions, triggerText, stringComparison, isTriggerTextRegex, shouldTriggerOnContains,
+                            responseMode) = ruleDto;
                         var updatedRule = rule with
                         {
-                            Reactions = reactions, 
-                            TriggerText = triggerText, 
-                            StringComparison = stringComparison, 
-                            IsTriggerTextRegex = isTriggerTextRegex, 
+                            Reactions = reactions,
+                            TriggerText = triggerText,
+                            StringComparison = stringComparison,
+                            IsTriggerTextRegex = isTriggerTextRegex,
                             ShouldTriggerOnContains = shouldTriggerOnContains,
                             ResponseMode = responseMode
                         };
-                        
+
                         await _repository.UpdateAsync(updatedRule);
-                        
+
                         return Ok();
                     }
                 }
             }
             catch (Exception e)
             {
-
                 return BadRequest(e);
             }
         }
@@ -121,7 +124,7 @@ namespace PierogiesBot.Controllers
                     default:
                     {
                         await _repository.DeleteAsync(id);
-                        
+
                         return Ok();
                     }
                 }

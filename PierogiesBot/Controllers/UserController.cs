@@ -5,10 +5,10 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AspNetCore.Identity.MongoDB;
+using AutoMapper.Configuration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -24,25 +24,29 @@ namespace PierogiesBot.Controllers
     public class UserController : ControllerBase
     {
         private readonly ILogger<UserController> _logger;
-        private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<MongoIdentityRole> _roleManager;
+        private readonly UserManager<AppUser> _userManager;
         private IConfiguration _configuration;
-        private JwtSettings _jwtSettings;
+        private readonly JwtSettings _jwtSettings;
 
-        public UserController(ILogger<UserController> logger, UserManager<AppUser> userManager, RoleManager<MongoIdentityRole> roleManager,
+        public UserController(ILogger<UserController> logger, UserManager<AppUser> userManager,
+            RoleManager<MongoIdentityRole> roleManager,
             IConfiguration configuration, IOptions<JwtSettings> jwtOptions)
         {
             _logger = logger;
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
-            
+
             _jwtSettings = jwtOptions.Value;
         }
 
         [Authorize(Roles = "user,admin")]
         [HttpGet]
-        public IActionResult GetHello() => Ok("Hello");
+        public IActionResult GetHello()
+        {
+            return Ok("Hello");
+        }
 
         [AllowAnonymous]
         [HttpPost("auth")]
@@ -56,6 +60,7 @@ namespace PierogiesBot.Controllers
                 _logger.LogInformation("Authorization of user {0} failed!", request.UserName);
                 return Unauthorized();
             }
+
             var utcNow = DateTime.UtcNow;
 
             var authClaims = user.Claims.Select(c => new Claim(c.Type, c.Value));
@@ -68,15 +73,15 @@ namespace PierogiesBot.Controllers
                 notBefore: utcNow,
                 audience: _jwtSettings.ValidAudience,
                 issuer: _jwtSettings.ValidIssuer,
-                claims: authClaims,  
-                signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)  
+                claims: authClaims,
+                signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
             );
 
             _logger.LogInformation("Authorization of user {request.UserName} is successful. Returning JWT");
-                
+
             return Ok(new AuthenticateResponse(new JwtSecurityTokenHandler().WriteToken(token), user.Id, userName));
         }
-        
+
         // GET: api/User/5
         [HttpGet("{userName}", Name = "GetUserByUserName")]
         public async Task<IActionResult> GetUserByUserName(string userName)
@@ -93,8 +98,8 @@ namespace PierogiesBot.Controllers
             _logger.LogTrace("{0} User", "Create");
             try
             {
-                var (userName,email, password, roles) = userDto;
-                var user = new AppUser()
+                var (userName, email, password, roles) = userDto;
+                var user = new AppUser
                 {
                     UserName = userName,
                     Email = email,
@@ -108,20 +113,18 @@ namespace PierogiesBot.Controllers
                     var roleList = roles.ToList();
                     if (!roleList.Any()) roleList.Add("user");
                     foreach (var role in roleList)
-                    {
                         if (await _roleManager.RoleExistsAsync(role))
                         {
                             await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, role));
                             await _userManager.AddToRoleAsync(user, role);
                         }
-                    }
 
                     await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Name, userName));
 
                     return Ok(new {UserName = userName, Email = email, Roles = roleList});
                 }
-                else
-                    return BadRequest(new {Errors = result.Errors.Select(e => e.Description)});
+
+                return BadRequest(new {Errors = result.Errors.Select(e => e.Description)});
             }
             catch (Exception e)
             {
@@ -153,14 +156,13 @@ namespace PierogiesBot.Controllers
                         if (roles != null) user.Roles = roles.ToList();
 
                         await _userManager.UpdateAsync(user);
-                        
+
                         return Ok();
                     }
                 }
             }
             catch (Exception e)
             {
-
                 return BadRequest(e);
             }
         }

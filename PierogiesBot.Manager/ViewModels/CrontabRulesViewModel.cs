@@ -1,14 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Linq;
 using System.Reactive;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using DynamicData;
 using DynamicData.Binding;
-using PierogiesBot.Commons.Dtos.BotResponseRule;
 using PierogiesBot.Manager.Models;
 using PierogiesBot.Manager.Models.Messages;
 using PierogiesBot.Manager.Services;
@@ -19,12 +14,11 @@ namespace PierogiesBot.Manager.ViewModels
     public class CrontabRulesViewModel : ReactiveObject, IRoutableViewModel
     {
         private readonly IPierogiesBotService _botService;
-        private readonly IMessageBus _messageBus;
         private readonly IMapper _mapper;
-        public ObservableCollectionExtended<CrontabRuleModel> CrontabRules {get; set; }
-        
-        public ReactiveCommand<Unit, Unit> LoadRules { get; }
-        public CrontabRulesViewModel(IScreen hostScreen, IPierogiesBotService botService, IMessageBus messageBus, IMapper mapper)
+        private readonly IMessageBus _messageBus;
+
+        public CrontabRulesViewModel(IScreen hostScreen, IPierogiesBotService botService, IMessageBus messageBus,
+            IMapper mapper)
         {
             _botService = botService;
             _messageBus = messageBus;
@@ -40,6 +34,13 @@ namespace PierogiesBot.Manager.ViewModels
                 .InvokeCommand(LoadRules);
         }
 
+        public ObservableCollectionExtended<CrontabRuleModel> CrontabRules { get; set; }
+
+        public ReactiveCommand<Unit, Unit> LoadRules { get; }
+
+        public string? UrlPathSegment => "reactionRules";
+        public IScreen HostScreen { get; }
+
         private async Task Execute()
         {
             var rules = await _botService.GetBotCrontabRules();
@@ -50,8 +51,5 @@ namespace PierogiesBot.Manager.ViewModels
                 CrontabRules.AddRange(rulesMapped);
             }
         }
-
-        public string? UrlPathSegment => "reactionRules";
-        public IScreen HostScreen { get; }
     }
 }

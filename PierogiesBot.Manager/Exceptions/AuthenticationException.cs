@@ -6,7 +6,6 @@ namespace PierogiesBot.Manager.Exceptions
     {
         public AuthenticationException(string message) : base(message)
         {
-            
         }
     }
 }

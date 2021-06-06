@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using MongoDB.Bson;
 using PierogiesBot.Models;
 using PierogiesBot.Settings;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
@@ -17,8 +16,8 @@ namespace PierogiesBot.Middlewares
 {
     public class JwtMiddleware
     {
-        private readonly RequestDelegate _next;
         private readonly JwtSettings _jwtSettings;
+        private readonly RequestDelegate _next;
 
         public JwtMiddleware(RequestDelegate next, IOptions<JwtSettings> appSettings)
         {
@@ -58,7 +57,7 @@ namespace PierogiesBot.Middlewares
                 var userName = jwtToken.Claims.First(x => x.Type == ClaimTypes.Name).Value;
 
                 var user = await signInManager.UserManager.FindByNameAsync(userName);
-                
+
                 // attach user to context on successful jwt validation
                 context.User = await signInManager.CreateUserPrincipalAsync(user);
             }

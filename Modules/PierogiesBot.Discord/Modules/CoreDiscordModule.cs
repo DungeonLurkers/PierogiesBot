@@ -6,7 +6,6 @@ namespace PierogiesBot.Discord.Modules
 {
     public class CoreDiscordModule : LoggingModuleBase
     {
-
         public CoreDiscordModule(ILogger<CoreDiscordModule> logger) : base(logger)
         {
         }
@@ -15,7 +14,7 @@ namespace PierogiesBot.Discord.Modules
         [Summary("Ping command")]
         public async Task Ping()
         {
-            LogTrace($"Ping");
+            LogTrace("Ping");
             await ReplyAsync("Pong!");
         }
     }

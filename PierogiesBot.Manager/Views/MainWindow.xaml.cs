@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Windows;
 using PierogiesBot.Manager.Models.Messages;
 using PierogiesBot.Manager.ViewModels;
 using ReactiveUI;
@@ -9,7 +8,7 @@ using ReactiveUI;
 namespace PierogiesBot.Manager.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow
     {
@@ -19,7 +18,7 @@ namespace PierogiesBot.Manager.Views
         {
             _messageBus = messageBus;
             InitializeComponent();
-            
+
             ViewModel = viewModel;
 
             this.WhenActivated(disposable =>

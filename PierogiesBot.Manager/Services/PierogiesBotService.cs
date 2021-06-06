@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Security;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using PierogiesBot.Commons.Dtos;
 using PierogiesBot.Commons.Dtos.BotCrontabRule;
 using PierogiesBot.Commons.Dtos.BotReactRule;
 using PierogiesBot.Commons.Dtos.BotResponseRule;
@@ -35,16 +36,22 @@ namespace PierogiesBot.Manager.Services
 
         public async Task<bool> CheckIsAuthenticated()
         {
+            var token = await _settingsService.GetToken();
+            if (token is not "")
+            {
+                _api.AuthenticationHeaderValue = AuthenticationHeaderValue.Parse($"Bearer {token}");
+                Token = token;
+            }
+
             var result = await Request(api => api.Ping());
 
-            if (result is null) return false;
-
-            return result.ResponseMessage.StatusCode != HttpStatusCode.Unauthorized;
+            return result is not null && result.ResponseMessage.StatusCode != HttpStatusCode.Unauthorized;
         }
 
         public string? Token { get; private set; }
 
-        public async Task<bool> Authenticate(string userName = "", SecureString? password = null, bool renewToken = false)
+        public async Task<bool> Authenticate(string userName = "", SecureString? password = null,
+            bool renewToken = false)
         {
             _logger.LogInformation("Authenticating as {0}", userName);
             try
@@ -52,7 +59,6 @@ namespace PierogiesBot.Manager.Services
                 var settings = await _settingsService.Get();
 
                 if (settings is not null && settings.ApiToken is not "" && settings.CurrentUserName is not "")
-                {
                     if (!renewToken)
                     {
                         _logger.LogDebug("Trying old token...");
@@ -61,13 +67,11 @@ namespace PierogiesBot.Manager.Services
                             _logger.LogDebug("Old token is invalid! Trying to renew token...");
                             if (password is not null)
                                 return await Authenticate(userName, password, true);
-                            else
-                                return false;
+                            return false;
                         }
 
                         if (!string.IsNullOrEmpty(Token)) return true;
                     }
-                }
 
                 var credentials = new NetworkCredential(userName, password);
                 var authResponse =
@@ -119,7 +123,25 @@ namespace PierogiesBot.Manager.Services
             StringComparison stringComparison, string triggerText, IEnumerable<string> responses,
             ResponseMode responseMode)
         {
-            await Request(async api => await api.CreateBotResponseRule(new CreateBotResponseRuleDto(responseMode, responses, triggerText, stringComparison, isTriggerTextRegex, shouldTriggerOnContains)));
+            var rule = new CreateBotResponseRuleDto(responseMode,
+                responses, triggerText, stringComparison, isTriggerTextRegex, shouldTriggerOnContains);
+            await Request(async api => await api.CreateBotResponseRule(rule));
+        }
+
+        public async Task UploadRule<TRule>(TRule rule) where TRule : ICreateRuleDto
+        {
+            switch (rule)
+            {
+                case CreateBotResponseRuleDto responseRule:
+                    await Request(async api => await api.CreateBotResponseRule(responseRule));
+                    break;
+                case CreateBotReactRuleDto reactRule:
+                    await Request(async api => await api.CreateBotReactRule(reactRule));
+                    break;
+                case CreateBotCrontabRuleDto crontabRule:
+                    await Request(async api => await api.CreateBotCrontabRule(crontabRule));
+                    break;
+            }
         }
 
         private async Task<T?> Request<T>(Func<IPierogiesBotApi, Task<T>> func)
@@ -144,7 +166,7 @@ namespace PierogiesBot.Manager.Services
 
             return default;
         }
-        
+
         private async Task Request(Func<IPierogiesBotApi, Task> func)
         {
             try

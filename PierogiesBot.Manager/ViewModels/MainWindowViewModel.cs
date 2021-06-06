@@ -1,19 +1,13 @@
-﻿using System;
-using System.Reactive;
-using System.Reactive.Linq;
-using Microsoft.Extensions.Logging;
+﻿using System.Reactive;
 using PierogiesBot.Manager.Services;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 
 namespace PierogiesBot.Manager.ViewModels
 {
     public class MainWindowViewModel : ReactiveObject, IScreen
     {
-        private readonly INavigationService _navigationService;
         private readonly IPierogiesBotService _botService;
-
-        public ReactiveCommand<Unit, Unit> CheckIsAuthenticated {get; private set;}
+        private readonly INavigationService _navigationService;
 
         public MainWindowViewModel(INavigationService navigationService, IPierogiesBotService botService)
         {
@@ -25,11 +19,13 @@ namespace PierogiesBot.Manager.ViewModels
             CheckIsAuthenticated = ReactiveCommand.Create(Execute);
         }
 
+        public ReactiveCommand<Unit, Unit> CheckIsAuthenticated { get; }
+
+        public RoutingState Router { get; }
+
         private void Execute()
         {
             _navigationService.NavigateTo<LoginViewModel>();
         }
-
-        public RoutingState Router { get; }
     }
 }

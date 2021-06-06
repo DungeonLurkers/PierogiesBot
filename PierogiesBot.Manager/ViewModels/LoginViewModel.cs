@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Reactive;
-using System.Reactive.Linq;
-using System.Reactive.Threading.Tasks;
 using System.Security;
 using System.Threading.Tasks;
-using System.Windows;
+using System.Windows.Forms;
 using Microsoft.Extensions.Logging;
-using PierogiesBot.Manager.Models.Messages;
 using PierogiesBot.Manager.Services;
-using PierogiesBot.Manager.Views;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -18,8 +14,8 @@ namespace PierogiesBot.Manager.ViewModels
     {
         private readonly IPierogiesBotService _botService;
         private readonly ILogger<LoginViewModel> _logger;
-        private readonly INavigationService _navigationService;
         private readonly IMessageBus _messageBus;
+        private readonly INavigationService _navigationService;
         private readonly ISettingsService _settingsService;
 
         public LoginViewModel(ILogger<LoginViewModel> logger, IPierogiesBotService botService, IScreen hostScreen,
@@ -36,8 +32,15 @@ namespace PierogiesBot.Manager.ViewModels
             SignInFromSettingsCommand = ReactiveCommand.CreateFromTask(Execute);
 
             SignInCommand.IsExecuting.ToPropertyEx(this, x => x.IsLogging);
-            
         }
+
+        public ReactiveCommand<(string, SecureString), Unit> SignInCommand { get; }
+        public ReactiveCommand<Unit, Unit> SignInFromSettingsCommand { get; }
+
+        [ObservableAsProperty] public bool IsLogging { get; }
+
+        public string? UrlPathSegment => "login";
+        public IScreen HostScreen { get; }
 
         private async Task Execute()
         {
@@ -47,14 +50,6 @@ namespace PierogiesBot.Manager.ViewModels
 
             if (await _botService.CheckIsAuthenticated()) _navigationService.NavigateToAndReset<DashboardViewModel>();
         }
-
-        public ReactiveCommand<(string, SecureString), Unit> SignInCommand { get; }
-        public ReactiveCommand<Unit, Unit> SignInFromSettingsCommand { get; }
-        
-        [ObservableAsProperty] public bool IsLogging { get; }
-
-        public string? UrlPathSegment => "login";
-        public IScreen HostScreen { get; }
 
         private async Task SignIn((string, SecureString) credentials)
         {
@@ -66,9 +61,7 @@ namespace PierogiesBot.Manager.ViewModels
 
                 if (isSuccess) _navigationService.NavigateToAndReset<DashboardViewModel>();
                 else
-                {
                     MessageBox.Show("Authentication failed");
-                }
             }
             catch (Exception e)
             {

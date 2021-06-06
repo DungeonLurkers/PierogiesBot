@@ -1,42 +1,50 @@
-﻿<reactiveUi:ReactiveUserControl x:TypeArguments="viewModels:DashboardViewModel" x:Class="PierogiesBot.Manager.Views.DashboardView"
+﻿<reactiveUi:ReactiveUserControl x:TypeArguments="viewModels:DashboardViewModel"
+                                x:Class="PierogiesBot.Manager.Views.Dashboard.DashboardView"
                                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                                xmlns:local="clr-namespace:PierogiesBot.Manager.Views"
                                 xmlns:reactiveUi="http://reactiveui.net"
                                 xmlns:viewModels="clr-namespace:PierogiesBot.Manager.ViewModels"
+                                xmlns:dashboard="clr-namespace:PierogiesBot.Manager.Views.Dashboard"
                                 mc:Ignorable="d"
                                 d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        
+
         <Grid.ColumnDefinitions></Grid.ColumnDefinitions>
-        
+
         <Grid.RowDefinitions>
-            <RowDefinition  Height="1*"/>
-            <RowDefinition  Height="5*"/>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="5*" />
         </Grid.RowDefinitions>
-        
+
         <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="RefreshDataButton">Refresh data</Button>
-            <Button Grid.Column="1" x:Name="AddResponseRuleButton">Add ResponseRule</Button>
+            <Button Grid.RowSpan="2" x:Name="RefreshDataButton">Refresh data</Button>
+            <Button Grid.Row="0" Grid.Column="1" x:Name="AddResponseRuleButton">Add ResponseRule</Button>
+            <Button Grid.Row="1" Grid.Column="2" x:Name="AddReactionRuleButton">Add ReactionRule</Button>
+            <Button Grid.Row="1" Grid.Column="1" x:Name="AddCrontabRuleButton">Add CrontabRule</Button>
         </Grid>
         <TabControl Grid.Row="1">
             <TabItem Header="Profile" x:Name="ProfileTab">
-                <local:UserProfileView />
+                <dashboard:UserProfileView />
             </TabItem>
             <TabItem Header="Response rules" x:Name="ResponseRulesTab">
-                <local:ResponseRulesView />
+                <dashboard:ResponseRulesView />
             </TabItem>
             <TabItem Header="Reaction rules" x:Name="ReactionRulesTab">
-                <local:ReactionRulesView />
+                <dashboard:ReactionRulesView />
             </TabItem>
             <TabItem Header="Crontab rules">
-                <local:CrontabRulesView />
+                <dashboard:CrontabRulesView />
             </TabItem>
             <TabItem Header="Options" />
         </TabControl>

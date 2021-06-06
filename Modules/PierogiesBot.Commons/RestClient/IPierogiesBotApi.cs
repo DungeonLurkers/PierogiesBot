@@ -11,8 +11,7 @@ namespace PierogiesBot.Commons.RestClient
 {
     public interface IPierogiesBotApi
     {
-        [Header("Authorization")]
-        AuthenticationHeaderValue AuthenticationHeaderValue {get; set; }
+        [Header("Authorization")] AuthenticationHeaderValue AuthenticationHeaderValue { get; set; }
 
         [Post("/api/User/auth")]
         public Task<AuthenticateResponse> Authenticate([Body] AuthenticateRequest request);
@@ -29,11 +28,17 @@ namespace PierogiesBot.Commons.RestClient
 
         [Get("/api/BotReactRule")]
         Task<IEnumerable<GetBotReactRuleDto>> GetBotReactRules();
-        
+
         [Get("/api/BotCrontabRule")]
         Task<IEnumerable<GetBotCrontabRuleDto>> GetBotCrontabRules();
 
         [Post("/api/BotResponseRule")]
         Task CreateBotResponseRule([Body] CreateBotResponseRuleDto responseRuleDto);
+
+        [Post("/api/BotReactRule")]
+        Task CreateBotReactRule([Body] CreateBotReactRuleDto reactRuleDto);
+
+        [Post("/api/BotCrontabRule")]
+        Task CreateBotCrontabRule([Body] CreateBotCrontabRuleDto crontabRuleDto);
     }
 }

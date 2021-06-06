@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 using Quartz.Simpl;
 using Quartz.Spi;
@@ -14,7 +13,7 @@ namespace PierogiesBot.Discord.JobFactory
         {
             _serviceProvider = serviceProvider;
         }
-        
+
         public override IJob NewJob(TriggerFiredBundle bundle, IScheduler scheduler)
         {
             var job = _serviceProvider.GetService(bundle.JobDetail.JobType);

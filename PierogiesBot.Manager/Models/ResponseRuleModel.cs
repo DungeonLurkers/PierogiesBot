@@ -6,7 +6,8 @@ using PierogiesBot.Commons.Enums;
 
 namespace PierogiesBot.Manager.Models
 {
-    public record ResponseRuleModel(string Id, ResponseMode ResponseMode, IEnumerable<string> Responses, string TriggerText,
+    public record ResponseRuleModel(string Id, ResponseMode ResponseMode, IEnumerable<string> Responses,
+        string TriggerText,
         StringComparison StringComparison, bool IsTriggerTextRegex, bool ShouldTriggerOnContains) :
         GetBotResponseRuleDto(Id, ResponseMode, Responses, TriggerText, StringComparison, IsTriggerTextRegex,
             ShouldTriggerOnContains)

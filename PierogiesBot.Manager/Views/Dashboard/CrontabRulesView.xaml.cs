@@ -1,11 +1,9 @@
-﻿using System;
-using System.Reactive.Disposables;
-using System.Windows.Controls;
+﻿using System.Reactive.Disposables;
 using Microsoft.Extensions.DependencyInjection;
 using PierogiesBot.Manager.ViewModels;
 using ReactiveUI;
 
-namespace PierogiesBot.Manager.Views
+namespace PierogiesBot.Manager.Views.Dashboard
 {
     public partial class CrontabRulesView
     {
@@ -17,15 +15,13 @@ namespace PierogiesBot.Manager.Views
 
             this.WhenActivated(disposable =>
             {
-                this.OneWayBind(ViewModel, vm => vm.CrontabRules, x => x.RulesDataGrid.ItemsSource).DisposeWith(disposable);
-                
-                
+                this.OneWayBind(ViewModel, vm => vm.CrontabRules, x => x.RulesDataGrid.ItemsSource)
+                    .DisposeWith(disposable);
             });
         }
 
         public CrontabRulesView() : this(App.Container.GetRequiredService<CrontabRulesViewModel>())
         {
-            
         }
     }
 }

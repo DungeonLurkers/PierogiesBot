@@ -12,6 +12,9 @@ namespace PierogiesBot.Manager.Services
             _provider = provider;
         }
 
-        public T? Create() => _provider.GetService<T>();
+        public T? Create()
+        {
+            return _provider.GetService<T>();
+        }
     }
 }

@@ -10,14 +10,15 @@ namespace PierogiesBot.Manager.Services
 {
     public class DataInitializeHostedService : IHostedService
     {
-        private readonly ILogger<DataInitializeHostedService> _logger;
         private readonly AppDbContext _context;
+        private readonly ILogger<DataInitializeHostedService> _logger;
 
         public DataInitializeHostedService(ILogger<DataInitializeHostedService> logger, AppDbContext context)
         {
             _logger = logger;
             _context = context;
         }
+
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             await InitializeData();
@@ -37,6 +38,9 @@ namespace PierogiesBot.Manager.Services
             }
         }
 
-        public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+        public Task StopAsync(CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
     }
 }

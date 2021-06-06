@@ -15,11 +15,14 @@ namespace PierogiesBot.Manager.Services
             _dbContext = dbContext;
         }
 
-        public async Task Set(string userName = "", string token = "") => await Set(settings =>
+        public async Task Set(string userName = "", string token = "")
         {
-            settings.CurrentUserName = userName;
-            settings.ApiToken = token;
-        });
+            await Set(settings =>
+            {
+                settings.CurrentUserName = userName;
+                settings.ApiToken = token;
+            });
+        }
 
         public async Task Set(Action<Settings> configure)
         {
@@ -35,14 +38,21 @@ namespace PierogiesBot.Manager.Services
                 var settings = new Settings("", "");
 
                 configure(settings);
-                
+
                 await _dbContext.Settings.AddAsync(settings);
             }
-            
+
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<Settings?> Get() => await _dbContext.Settings.SingleOrDefaultAsync();
-        public async Task<string> GetToken() => await _dbContext.Settings.Select(x => x.ApiToken).SingleOrDefaultAsync();
+        public async Task<Settings?> Get()
+        {
+            return await _dbContext.Settings.SingleOrDefaultAsync();
+        }
+
+        public async Task<string> GetToken()
+        {
+            return await _dbContext.Settings.Select(x => x.ApiToken).SingleOrDefaultAsync();
+        }
     }
 }

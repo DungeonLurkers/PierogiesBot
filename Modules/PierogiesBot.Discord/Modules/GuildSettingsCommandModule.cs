@@ -13,7 +13,8 @@ namespace PierogiesBot.Discord.Modules
     {
         private readonly IRepository<GuildSettings> _repository;
 
-        public GuildSettingsCommandModule(ILogger<GuildSettingsCommandModule> logger, IRepository<GuildSettings> repository) : base(logger)
+        public GuildSettingsCommandModule(ILogger<GuildSettingsCommandModule> logger,
+            IRepository<GuildSettings> repository) : base(logger)
         {
             _repository = repository;
         }
@@ -26,17 +27,13 @@ namespace PierogiesBot.Discord.Modules
             var settings = await _repository.GetByProperty(s => s.GuildId, guildId);
 
             if (settings == null)
-            {
                 await _repository.InsertAsync(new GuildSettings(guildId, tzInfo.Id));
-            }
             else
-            {
                 await _repository.UpdateAsync(settings with {GuildTimeZone = tzInfo.Id});
-            }
 
             await ReplyAsync($"Server timezone set to {tzInfo}");
         }
-        
+
         [Command("get_timezone")]
         public async Task GetTimeZone()
         {

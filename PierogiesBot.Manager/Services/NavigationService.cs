@@ -5,13 +5,15 @@ namespace PierogiesBot.Manager.Services
 {
     public class NavigationService : INavigationService
     {
-        private readonly ILifetimeScope  _container;
-        public RoutingState Router { get; } = new();
+        private readonly ILifetimeScope _container;
 
-        public NavigationService(ILifetimeScope  container)
+        public NavigationService(ILifetimeScope container)
         {
             _container = container;
         }
+
+        public RoutingState Router { get; } = new();
+
         public void NavigateTo<T>() where T : IRoutableViewModel
         {
             var next = _container.Resolve<T>();

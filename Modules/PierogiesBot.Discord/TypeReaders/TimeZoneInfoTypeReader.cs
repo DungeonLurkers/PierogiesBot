@@ -7,7 +7,8 @@ namespace PierogiesBot.Discord.TypeReaders
 {
     public class TimeZoneInfoTypeReader : TypeReader
     {
-        public override Task<TypeReaderResult> ReadAsync(ICommandContext context, string input, IServiceProvider services)
+        public override Task<TypeReaderResult> ReadAsync(ICommandContext context, string input,
+            IServiceProvider services)
         {
             try
             {

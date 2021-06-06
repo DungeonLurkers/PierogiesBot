@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Discord;
@@ -16,8 +15,11 @@ namespace PierogiesBot.Discord.HealthChecks
         {
             _client = client;
         }
-        public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = new()) =>
-            _client.ConnectionState switch
+
+        public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context,
+            CancellationToken cancellationToken = new())
+        {
+            return _client.ConnectionState switch
             {
                 ConnectionState.Disconnected => Task.FromResult(
                     HealthCheckResult.Unhealthy("Discord client is disconnected")),
@@ -28,5 +30,6 @@ namespace PierogiesBot.Discord.HealthChecks
                     HealthCheckResult.Degraded("Discord client is disconnecting")),
                 _ => throw new ArgumentOutOfRangeException(nameof(_client.ConnectionState))
             };
+        }
     }
 }

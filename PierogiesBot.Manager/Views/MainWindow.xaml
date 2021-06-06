@@ -1,19 +1,19 @@
-﻿<reactiveUi:ReactiveWindow x:TypeArguments="viewModels:MainWindowViewModel" x:Class="PierogiesBot.Manager.Views.MainWindow"
+﻿<reactiveUi:ReactiveWindow x:TypeArguments="viewModels:MainWindowViewModel"
+                           x:Class="PierogiesBot.Manager.Views.MainWindow"
                            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                           xmlns:local="clr-namespace:PierogiesBot.Manager"
                            xmlns:reactiveUi="http://reactiveui.net"
                            xmlns:viewModels="clr-namespace:PierogiesBot.Manager.ViewModels"
-                           xmlns:views="clr-namespace:PierogiesBot.Manager.Views"
                            mc:Ignorable="d"
-                           Title="PierogiesBot Rules Manager" Height="450" Width="800" d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">
+                           Title="PierogiesBot Rules Manager" Height="450" Width="800"
+                           d:DataContext="{d:DesignInstance viewModels:MainWindowViewModel}">
     <Grid>
         <!-- <Grid.ColumnDefinitions> -->
         <!--     <ColumnDefinition Width="*" /> -->
         <!-- </Grid.ColumnDefinitions> -->
-        
-        <reactiveUi:RoutedViewHost x:Name="RoutedViewHost" Router="{Binding Router}"/>
+
+        <reactiveUi:RoutedViewHost x:Name="RoutedViewHost" Router="{Binding Router}" />
     </Grid>
 </reactiveUi:ReactiveWindow>

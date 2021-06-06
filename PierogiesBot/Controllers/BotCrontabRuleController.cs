@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PierogiesBot.Commons.Dtos.BotCrontabRule;
-using PierogiesBot.Commons.Dtos.BotReactRule;
 using PierogiesBot.Data.Models;
 using PierogiesBot.Data.Services;
 
@@ -18,16 +17,18 @@ namespace PierogiesBot.Controllers
     [ApiController]
     public class BotCrontabRuleController : ControllerBase
     {
-        private readonly IMapper _mapper;
         private readonly ILogger<BotCrontabRuleController> _logger;
+        private readonly IMapper _mapper;
         private readonly IRepository<BotCrontabRule> _repository;
 
-        public BotCrontabRuleController(IMapper mapper, ILogger<BotCrontabRuleController> logger, IRepository<BotCrontabRule> repository)
+        public BotCrontabRuleController(IMapper mapper, ILogger<BotCrontabRuleController> logger,
+            IRepository<BotCrontabRule> repository)
         {
             _mapper = mapper;
             _logger = logger;
             _repository = repository;
         }
+
         // GET: api/BotCrontabRule
         [HttpGet]
         public async Task<IEnumerable<GetBotCrontabRuleDto>> Get()
@@ -89,16 +90,15 @@ namespace PierogiesBot.Controllers
                             ReplyEmoji = replyEmojis,
                             ResponseMode = responseMode
                         };
-                        
+
                         await _repository.UpdateAsync(updatedRule);
-                        
+
                         return Ok();
                     }
                 }
             }
             catch (Exception e)
             {
-
                 return BadRequest(e);
             }
         }
@@ -119,7 +119,7 @@ namespace PierogiesBot.Controllers
                     default:
                     {
                         await _repository.DeleteAsync(id);
-                        
+
                         return Ok();
                     }
                 }

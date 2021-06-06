@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
@@ -10,43 +6,42 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using PierogiesBot.Manager.Services;
 using PierogiesBot.Manager.ViewModels;
-using PierogiesBot.Manager.Views;
 using ReactiveUI;
 using Splat.Microsoft.Extensions.Logging;
 
 namespace PierogiesBot.Manager
 {
     /// <summary>
-    /// Interaction logic for App.xaml
+    ///     Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
     {
-        public static IServiceProvider Container { get; private set; }
         private IHost _host;
 
-        private static IHostBuilder DefaultHostBuilder => 
+        public App()
+        {
+            _host = DefaultHostBuilder.Build();
+            Initialize().ConfigureAwait(false).GetAwaiter().GetResult();
+
+            Container = _host.Services;
+            ;
+        }
+
+        public static IServiceProvider Container { get; private set; }
+
+        private static IHostBuilder DefaultHostBuilder =>
             Host.CreateDefaultBuilder()
                 .UseStartup<Startup>()
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .ConfigureContainer<ContainerBuilder>((context, builder) =>
                 {
                     builder.RegisterModule<AutofacModule>();
-                })
-                .ConfigureLogging(b => 
+                }).ConfigureLogging(b =>
                     b.AddDebug()
-                     .AddSimpleConsole()
-                     .AddSplat())
-                .UseConsoleLifetime(); 
-
-        public App()
-        {
-            _host = DefaultHostBuilder.Build();
-            Initialize().ConfigureAwait(false).GetAwaiter().GetResult();
-            
-            Container = _host.Services;;
-        }
+                        .AddSimpleConsole()
+                        .AddSplat())
+                .UseConsoleLifetime();
 
         public async Task Initialize()
         {
@@ -57,7 +52,8 @@ namespace PierogiesBot.Manager
             logger.LogInformation("Starting PierogiesBot Manager");
             try
             {
-                MainWindow = scope.ServiceProvider.GetRequiredService<IViewFor<MainWindowViewModel>>() as Window;;
+                MainWindow = scope.ServiceProvider.GetRequiredService<IViewFor<MainWindowViewModel>>() as Window;
+                ;
             }
             catch (Exception e)
             {
@@ -74,7 +70,7 @@ namespace PierogiesBot.Manager
         private void App_OnExit(object sender, ExitEventArgs e)
         {
             _host.StopAsync(TimeSpan.FromSeconds(3)).ConfigureAwait(false).GetAwaiter().GetResult();
-            
+
             _host.Dispose();
         }
     }
