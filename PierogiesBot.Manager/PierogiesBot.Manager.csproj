@@ -28,6 +28,8 @@
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
       <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="5.0.0" />
       <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.0" />
+      <PackageReference Include="NLog.Extensions.Logging" Version="1.7.2" />
+      <PackageReference Include="NLog.Schema" Version="4.7.10" />
       <PackageReference Include="ReactiveUI" Version="13.3.2" />
       <PackageReference Include="ReactiveUI.Events.WPF" Version="13.3.2" />
       <PackageReference Include="ReactiveUI.Fody" Version="13.3.2" />
@@ -45,6 +47,9 @@
     <ItemGroup>
       <None Update="appsettings.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="NLog.config">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
 

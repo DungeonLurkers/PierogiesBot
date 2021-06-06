@@ -3,9 +3,12 @@ using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
+using PierogiesBot.Manager.Services;
 using PierogiesBot.Manager.ViewModels;
 using ReactiveUI;
 using Splat.Microsoft.Extensions.Logging;
@@ -22,6 +25,12 @@ namespace PierogiesBot.Manager
         public App()
         {
             _host = DefaultHostBuilder.Build();
+            using (var serviceScope = _host.Services.CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
+                context.Database.Migrate();
+            }
+            
             Initialize().ConfigureAwait(false).GetAwaiter().GetResult();
 
             Container = _host.Services;
@@ -38,8 +47,7 @@ namespace PierogiesBot.Manager
                 {
                     builder.RegisterModule<AutofacModule>();
                 }).ConfigureLogging(b =>
-                    b.AddDebug()
-                        .AddSimpleConsole()
+                    b.AddNLog("NLog.config")
                         .AddSplat())
                 .UseConsoleLifetime();
 

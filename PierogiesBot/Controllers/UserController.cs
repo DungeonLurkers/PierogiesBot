@@ -5,7 +5,6 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AspNetCore.Identity.MongoDB;
-using AutoMapper.Configuration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,17 +25,14 @@ namespace PierogiesBot.Controllers
         private readonly ILogger<UserController> _logger;
         private readonly RoleManager<MongoIdentityRole> _roleManager;
         private readonly UserManager<AppUser> _userManager;
-        private IConfiguration _configuration;
         private readonly JwtSettings _jwtSettings;
 
         public UserController(ILogger<UserController> logger, UserManager<AppUser> userManager,
-            RoleManager<MongoIdentityRole> roleManager,
-            IConfiguration configuration, IOptions<JwtSettings> jwtOptions)
+            RoleManager<MongoIdentityRole> roleManager, IOptions<JwtSettings> jwtOptions)
         {
             _logger = logger;
             _userManager = userManager;
             _roleManager = roleManager;
-            _configuration = configuration;
 
             _jwtSettings = jwtOptions.Value;
         }

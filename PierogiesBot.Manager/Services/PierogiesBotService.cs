@@ -12,6 +12,7 @@ using PierogiesBot.Commons.Dtos.BotResponseRule;
 using PierogiesBot.Commons.Dtos.UserData;
 using PierogiesBot.Commons.Enums;
 using PierogiesBot.Commons.RestClient;
+using PierogiesBot.Manager.Models.Entities;
 using PierogiesBot.Manager.Models.Messages;
 using ReactiveUI;
 using RestEase;
@@ -56,7 +57,15 @@ namespace PierogiesBot.Manager.Services
             _logger.LogInformation("Authenticating as {0}", userName);
             try
             {
-                var settings = await _settingsService.Get();
+                Settings? settings = null;
+                try
+                {
+                    settings = await _settingsService.Get();
+                }
+                catch (Exception e)
+                {
+                    _logger.LogDebug("Exception while getting settings");
+                }
 
                 if (settings is not null && settings.ApiToken is not "" && settings.CurrentUserName is not "")
                     if (!renewToken)
