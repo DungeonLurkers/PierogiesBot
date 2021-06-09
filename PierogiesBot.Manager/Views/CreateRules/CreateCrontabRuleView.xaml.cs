@@ -1,11 +1,11 @@
-﻿using System;
-using System.Reactive.Disposables;
-using PierogiesBot.Commons.Enums;
-using PierogiesBot.Manager.ViewModels.CreateRules;
-using ReactiveUI;
-
-namespace PierogiesBot.Manager.Views.CreateRules
+﻿namespace PierogiesBot.Manager.Views.CreateRules
 {
+    using System;
+    using System.Reactive.Disposables;
+    using PierogiesBot.Commons.Enums;
+    using PierogiesBot.Manager.ViewModels.CreateRules;
+    using ReactiveUI;
+
     public partial class CreateCrontabRuleView
     {
         public CreateCrontabRuleView(CreateCrontabRuleViewModel viewModel)
@@ -30,8 +30,7 @@ namespace PierogiesBot.Manager.Views.CreateRules
             this.Bind(ViewModel, vm => vm.Crontab, v => v.TriggerTextBox.Text)
                 .DisposeWith(disposable);
 
-            this.Bind(ViewModel, vm => vm.ResponseMode,
-                    v => (ResponseMode) v.ResponseModeComboBox.SelectedItem)
+            this.Bind(ViewModel, vm => vm.ResponseMode, v => (ResponseMode)v.ResponseModeComboBox.SelectedItem)
                 .DisposeWith(disposable);
 
             this.Bind(ViewModel, vm => vm.IsEmoji, v => v.IsRegexCheckBox.IsChecked)

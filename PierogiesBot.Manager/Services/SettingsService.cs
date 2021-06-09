@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PierogiesBot.Manager.Models.Entities;
 
 namespace PierogiesBot.Manager.Services
@@ -9,24 +11,26 @@ namespace PierogiesBot.Manager.Services
     public class SettingsService : ISettingsService
     {
         private readonly AppDbContext _dbContext;
+        private ILogger<SettingsService> _logger;
 
-        public SettingsService(AppDbContext dbContext)
+        public SettingsService(AppDbContext dbContext, ILogger<SettingsService> logger)
         {
             _dbContext = dbContext;
+            _logger = logger;
         }
 
-        public async Task Set(string userName = "", string token = "")
+        public Task Set(string userName = "", string token = "")
         {
-            await Set(settings =>
-            {
-                settings.CurrentUserName = userName;
-                settings.ApiToken = token;
-            });
+            return Set(settings =>
+             {
+                 settings.CurrentUserName = userName;
+                 settings.ApiToken = token;
+             });
         }
 
         public async Task Set(Action<Settings> configure)
         {
-            var existing = await Get();
+            var existing = await Get().ConfigureAwait(false);
 
             if (existing is not null)
             {
@@ -39,20 +43,33 @@ namespace PierogiesBot.Manager.Services
 
                 configure(settings);
 
-                await _dbContext.Settings.AddAsync(settings);
+                await _dbContext.Settings.AddAsync(settings).ConfigureAwait(false);
             }
 
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task<Settings?> Get()
+        public Task<Settings?> Get()
         {
-            return await _dbContext.Settings.SingleOrDefaultAsync();
+            return Request(async ctx => await ctx.Settings.SingleOrDefaultAsync().ConfigureAwait(false));
         }
 
-        public async Task<string> GetToken()
+        public Task<string?> GetToken()
         {
-            return await _dbContext.Settings.Select(x => x.ApiToken).SingleOrDefaultAsync();
+            return Request(async ctx => await ctx.Settings.Select(x => x.ApiToken).SingleOrDefaultAsync().ConfigureAwait(false));
+        }
+
+        private async Task<T?> Request<T>(Func<AppDbContext, Task<T>> func, [CallerMemberName] string? callerMemberName = null)
+        {
+            try
+            {
+                return await func(_dbContext).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "Exception while {0}", callerMemberName ?? "Request");
+                return default;
+            }
         }
     }
 }
