@@ -51,40 +51,40 @@ namespace PierogiesBot.Discord.Services
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Starting Discord services");
-            var eventAwaiter = new TaskCompletionSource<bool>(false);
-
-            void ClientOnReady()
-            {
-                eventAwaiter.SetResult(true);
-            }
+            // var eventAwaiter = new TaskCompletionSource<bool>(false);
+            //
+            // void ClientOnReady()
+            // {
+            //     eventAwaiter.SetResult(true);
+            // }
 
             _logger.LogInformation("Attaching logger to Discord services");
-            _client.Log += message => Task.Run(() =>
-            {
-                var logLevel = message.Severity switch
-                {
-                    LogSeverity.Critical => LogLevel.Critical,
-                    LogSeverity.Error => LogLevel.Error,
-                    LogSeverity.Warning => LogLevel.Warning,
-                    LogSeverity.Info => LogLevel.Information,
-                    LogSeverity.Verbose => LogLevel.Debug,
-                    LogSeverity.Debug => LogLevel.Trace,
-                    _ => throw new ArgumentOutOfRangeException(nameof(message), "has wrong LogSeverity!")
-                };
-                if (message.Exception is not null) _discordLogger.LogError(message.Exception, message.Message);
-                else _discordLogger.Log(logLevel, message.Message);
-            });
+            // _client.Log += message => Task.Run(() =>
+            // {
+            //     var logLevel = message.Severity switch
+            //     {
+            //         LogSeverity.Critical => LogLevel.Critical,
+            //         LogSeverity.Error => LogLevel.Error,
+            //         LogSeverity.Warning => LogLevel.Warning,
+            //         LogSeverity.Info => LogLevel.Information,
+            //         LogSeverity.Verbose => LogLevel.Debug,
+            //         LogSeverity.Debug => LogLevel.Trace,
+            //         _ => throw new ArgumentOutOfRangeException(nameof(message), "has wrong LogSeverity!")
+            //     };
+            //     if (message.Exception is not null) _discordLogger.LogError(message.Exception, message.Message);
+            //     else _discordLogger.Log(logLevel, message.Message);
+            // });
 
-            _commandService.AddTypeReader<TimeZoneInfo>(new TimeZoneInfoTypeReader());
+            // _commandService.AddTypeReader<TimeZoneInfo>(new TimeZoneInfoTypeReader());
 
             _logger.LogInformation("Loggind to Discord");
-            await _client.LoginAsync(TokenType.Bot, _settings.Token);
-            await _client.StartAsync();
+            // await _client.LoginAsync(TokenType.Bot, _settings.Token);
+            // await _client.StartAsync();
 
-            _client.Ready += () => Task.Run(ClientOnReady);
+            // _client.Ready += () => Task.Run(ClientOnReady);
 
             _logger.LogInformation("Waiting for Discord to be ready...");
-            await eventAwaiter.Task;
+            // await eventAwaiter.Task;
 
             _logger.LogInformation("Installing Discord commands");
             await InstallCommandsAsync();
@@ -106,28 +106,28 @@ namespace PierogiesBot.Discord.Services
 
         private async Task InitializeSubscriptions()
         {
-            _logger.LogInformation("Initializing channel subscriptions");
-            await _channelSubscribeService.LoadSubscriptions();
-            _logger.LogInformation("Initializing Crontab subscriptions");
-            await _crontabSubscribeService.LoadSubscriptions();
+            // _logger.LogInformation("Initializing channel subscriptions");
+            // await _channelSubscribeService.LoadSubscriptions();
+            // _logger.LogInformation("Initializing Crontab subscriptions");
+            // await _crontabSubscribeService.LoadSubscriptions();
         }
 
         private async Task InstallCommandsAsync()
         {
-            // Hook the MessageReceived event into our command handler
-            _client.MessageReceived += HandleCommandAsync;
-            _commandService.CommandExecuted += CommandServiceOnCommandExecuted;
-
-            // Here we discover all of the command modules in the entry 
-            // assembly and load them. Starting from Discord.NET 2.0, a
-            // service provider is required to be passed into the
-            // module registration method to inject the 
-            // required dependencies.
+            // // Hook the MessageReceived event into our command handler
+            // _client.MessageReceived += HandleCommandAsync;
+            // _commandService.CommandExecuted += CommandServiceOnCommandExecuted;
             //
-            // If you do not use Dependency Injection, pass null.
-            // See Dependency Injection guide for more information.
-            await _commandService.AddModulesAsync(assembly: Assembly.GetAssembly(GetType()),
-                services: _serviceProvider);
+            // // Here we discover all of the command modules in the entry 
+            // // assembly and load them. Starting from Discord.NET 2.0, a
+            // // service provider is required to be passed into the
+            // // module registration method to inject the 
+            // // required dependencies.
+            // //
+            // // If you do not use Dependency Injection, pass null.
+            // // See Dependency Injection guide for more information.
+            // await _commandService.AddModulesAsync(assembly: Assembly.GetAssembly(GetType()),
+            //     services: _serviceProvider);
         }
 
         private Task CommandServiceOnCommandExecuted(Optional<CommandInfo> commandInfo, ICommandContext ctx,

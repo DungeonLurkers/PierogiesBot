@@ -13,7 +13,6 @@ namespace PierogiesBot.Discord
     {
         public static IServiceCollection AddDiscord(this IServiceCollection services)
         {
-            services.AddSingleton<DiscordSocketClient>();
             services.AddTransient<CommandService>();
             services.AddTransient<ChannelSubscribeService>();
             services.AddTransient<CrontabSubscribeService>();

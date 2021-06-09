@@ -47,6 +47,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Modules\Orleans\PierogiesBot.GrainsInterfaces\PierogiesBot.GrainsInterfaces.csproj" />
+      <ProjectReference Include="..\Modules\Orleans\PierogiesBot.Grains\PierogiesBot.Grains.csproj" />
+      <ProjectReference Include="..\Modules\Orleans\PierogiesBot.Silo\PierogiesBot.Silo.csproj" />
       <ProjectReference Include="..\Modules\PierogiesBot.Commons\PierogiesBot.Commons.csproj" />
       <ProjectReference Include="..\Modules\PierogiesBot.Data\PierogiesBot.Data.csproj" />
       <ProjectReference Include="..\Modules\PierogiesBot.Discord\PierogiesBot.Discord.csproj" />
