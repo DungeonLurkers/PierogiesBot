@@ -24,6 +24,7 @@ namespace PierogiesBot.Manager.ViewModels.CreateRules
             Crontab = "* * * * * ?";
             ResponseMode = ResponseMode.First;
             IsEmoji = false;
+            CanUpload = true;
         }
 
         public string? UrlPathSegment { get; } = "createBotCrontabRule";
@@ -36,7 +37,7 @@ namespace PierogiesBot.Manager.ViewModels.CreateRules
 
         protected override CreateBotCrontabRuleDto CreateEntityInstance()
         {
-            return new(IsEmoji, Crontab, Responses.Select(x => x.Value), Emojis.Select(x => x.Value), ResponseMode);
+            return new (IsEmoji, Crontab, Responses.Select(x => x.Value), Emojis.Select(x => x.Value), ResponseMode);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace PierogiesBot.Controllers
 
             return Ok(await grain.GetGuildsAsync());
         }
-        
+
         [HttpGet("{id}", Name = "GetGuildById")]
         public async Task<IActionResult> GetGuildById(ulong id)
         {

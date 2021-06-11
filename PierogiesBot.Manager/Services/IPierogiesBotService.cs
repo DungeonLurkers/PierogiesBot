@@ -28,6 +28,6 @@ namespace PierogiesBot.Manager.Services
             StringComparison stringComparison, string triggerText, IEnumerable<string> responses,
             ResponseMode responseMode);
 
-        Task UploadRule<TRule>(TRule rule) where TRule : ICreateRuleDto;
+        Task UploadRule<TRule>(TRule rule) where TRule : ICreateEntityDto;
     }
 }

@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AspNetCore.Identity.MongoDB;
+using Autofac;
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +21,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Orleans.Http;
 using PierogiesBot.Commons.RestClient;
 using PierogiesBot.Data;
 using PierogiesBot.Discord;
@@ -39,10 +42,26 @@ namespace PierogiesBot
         }
 
         public IConfiguration Configuration { get; }
+        
+        // ConfigureContainer is where you can register things directly
+        // with Autofac. This runs after ConfigureServices so the things
+        // here will override registrations made in ConfigureServices.
+        // Don't build the container; that gets done for you by the factory.
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            // Register your own things directly with Autofac here. Don't
+            // call builder.Populate(), that happens in AutofacServiceProviderFactory
+            // for you.
+            builder.RegisterModule<AutofacModule>();
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services
+                .AddGrainRouter()
+                .AddJsonMediaType();
             services.AddSingleton(sp =>
             {
                 var eventAwaiter = new TaskCompletionSource<bool>(false);
@@ -159,7 +178,7 @@ namespace PierogiesBot
                         ValidAudience = Configuration["JwtSettings:ValidAudience"],
                         ClockSkew = TimeSpan.Zero,
                         NameClaimType = ClaimTypes.Name,
-                        RoleClaimType = ClaimTypes.Role
+                        RoleClaimType = ClaimTypes.Role,
                     };
                 });
 
@@ -184,11 +203,11 @@ namespace PierogiesBot
                             Reference = new OpenApiReference
                             {
                                 Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
+                                Id = "Bearer",
+                            },
                         },
                         Array.Empty<string>()
-                    }
+                    },
                 });
             });
         }
@@ -216,6 +235,7 @@ namespace PierogiesBot
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapGrains("Grains");
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/health", new HealthCheckOptions
                     {

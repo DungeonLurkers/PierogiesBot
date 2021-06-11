@@ -1,6 +1,7 @@
 ﻿namespace PierogiesBot.Commons.Dtos
 {
-    public interface ICreateRuleDto
+    public interface IDto
     {
+        
     }
 }

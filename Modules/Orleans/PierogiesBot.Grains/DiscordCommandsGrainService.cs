@@ -33,13 +33,13 @@ namespace PierogiesBot.Grains
         public override async Task Init(IServiceProvider serviceProvider)
         {
             _services = serviceProvider;
-            _client = serviceProvider.GetService<DiscordSocketClient>();
-            _commandService = serviceProvider.GetService<CommandService>();
+            _client = serviceProvider.GetRequiredService<DiscordSocketClient>();
+            _commandService = serviceProvider.GetRequiredService<CommandService>();
             _commandLogger = _loggerFactory.CreateLogger<CommandService>();
             
             _commandService.AddTypeReader<TimeZoneInfo>(new TimeZoneInfoTypeReader());
             
-            await  base.Init(serviceProvider);
+            await base.Init(serviceProvider);
         }
 
         public override async Task Start()

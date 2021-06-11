@@ -144,7 +144,7 @@ namespace PierogiesBot.Manager.Services
             await Request(async api => await api.CreateBotResponseRule(rule));
         }
 
-        public async Task UploadRule<TRule>(TRule rule) where TRule : ICreateRuleDto
+        public async Task UploadRule<TRule>(TRule rule) where TRule : ICreateEntityDto
         {
             switch (rule)
             {

@@ -9,7 +9,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace PierogiesBot.Manager.ViewModels.CreateRules
 {
-    public abstract class CreateRuleViewModelBase<T> : ReactiveObject where T : ICreateRuleDto
+    public abstract class CreateRuleViewModelBase<T> : ReactiveObject where T : ICreateEntityDto
     {
         private readonly IPierogiesBotService _botService;
         private readonly ILogger<CreateRuleViewModelBase<T>> _logger;

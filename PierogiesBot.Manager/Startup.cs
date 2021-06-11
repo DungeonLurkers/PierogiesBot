@@ -18,6 +18,7 @@ namespace PierogiesBot.Manager
 
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddHostedService<DataInitializeHostedService>();
             services.AddHostedService<UserLoginHostedService>();
 

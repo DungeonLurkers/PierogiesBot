@@ -29,11 +29,11 @@ namespace PierogiesBot.Grains
 
         public override async Task Init(IServiceProvider serviceProvider)
         {
-            _client = serviceProvider.GetService<DiscordSocketClient>();
-            _messageHandlerChain = serviceProvider.GetService<IMessageHandlerChain>();
+            _client = serviceProvider.GetRequiredService<DiscordSocketClient>();
+            _messageHandlerChain = serviceProvider.GetRequiredService<IMessageHandlerChain>();
             _logger = _loggerFactory.CreateLogger<DiscordMessageHandlerGrainService>();
             
-            await  base.Init(serviceProvider);
+            await base.Init(serviceProvider);
         }
 
         public override Task Start()

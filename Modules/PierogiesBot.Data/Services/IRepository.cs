@@ -7,7 +7,7 @@ namespace PierogiesBot.Data.Services
 {
     public interface IRepository<T>
     {
-        Task InsertAsync(T doc);
+        Task<string> InsertAsync(T doc);
         Task UpdateAsync(T doc);
         Task DeleteAsync(string id);
         Task<T> GetByIdAsync(string id);
