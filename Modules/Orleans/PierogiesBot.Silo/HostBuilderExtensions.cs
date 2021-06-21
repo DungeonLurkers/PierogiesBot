@@ -18,7 +18,6 @@ namespace PierogiesBot.Silo
         {
             builder.UseLocalhostClustering()
                 .AddGrainService<DiscordCommandsGrainService>()
-                .AddGrainService<DiscordMessageHandlerGrainService>()
                 .AddGrainService<DiscordSubscriptionsGrainService>()
                 .Configure<ClusterOptions>(options =>
                 {

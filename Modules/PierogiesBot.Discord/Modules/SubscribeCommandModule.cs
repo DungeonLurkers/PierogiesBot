@@ -11,7 +11,8 @@ namespace PierogiesBot.Discord.Modules
     [Group("sub")]
     public class SubscribeCommandModule : LoggingModuleBase
     {
-        public SubscribeCommandModule(ILogger<SubscribeCommandModule> logger) : base(logger)
+        public SubscribeCommandModule(ILogger<SubscribeCommandModule> logger)
+            : base(logger)
         {
         }
 
@@ -37,7 +38,7 @@ namespace PierogiesBot.Discord.Modules
 
                 foreach (var guildChannel in await ((IGuild) Context.Guild).GetChannelsAsync())
                     if (guildChannel is SocketTextChannel channel)
-                        await _channelSubscribeService.Subscribe(Context.Guild, channel);
+                        await _channelSubscribeService.SubscribeAsync(channel);
 
                 await ReplyAsync("I will watch ALL channels from now on...");
             }
@@ -48,7 +49,7 @@ namespace PierogiesBot.Discord.Modules
                 LogTrace($"Subscribe to channel {channel}");
                 _logger.LogInformation("New response subscription on channel {0} guild {1}", Context.Channel.Name,
                     Context.Guild.Name);
-                await _channelSubscribeService.Subscribe(Context.Guild, channel);
+                await _channelSubscribeService.SubscribeAsync(channel);
 
                 await ReplyAsync($"I will watch channel {channel.Name} from now on...");
             }
@@ -61,7 +62,7 @@ namespace PierogiesBot.Discord.Modules
                     Context.Guild.Name);
 
                 foreach (var channel in channels)
-                    await _channelSubscribeService.Subscribe(Context.Guild, channel);
+                    await _channelSubscribeService.SubscribeAsync(channel);
 
                 await ReplyAsync(
                     $"I will watch channels {string.Join(", ", channels.Select(c => c.Name))} from now on...");
@@ -75,7 +76,7 @@ namespace PierogiesBot.Discord.Modules
 
                 foreach (var guildChannel in await ((IGuild) Context.Guild).GetChannelsAsync())
                     if (guildChannel is SocketTextChannel channel)
-                        await _channelSubscribeService.Unsubscribe(Context.Guild, channel);
+                        await _channelSubscribeService.UnsubscribeAsync(channel);
 
                 await ReplyAsync("I got bored watching you, bye");
             }
@@ -85,7 +86,7 @@ namespace PierogiesBot.Discord.Modules
             {
                 LogTrace($"Unsubscribing channels {string.Join(", ", channels.Select(x => x.Name))}");
 
-                foreach (var channel in channels) await _channelSubscribeService.Unsubscribe(Context.Guild, channel);
+                foreach (var channel in channels) await _channelSubscribeService.UnsubscribeAsync(channel);
 
                 await ReplyAsync($"I got bored watching you on {string.Join(", ", channels.Select(x => x.Name))}, bye");
             }
@@ -113,15 +114,15 @@ namespace PierogiesBot.Discord.Modules
 
                 if (!channels.Any())
                 {
-                    var channel = Context.Channel;
-                    await _crontabSubscribeService.Subscribe(Context.Guild, channel);
+                    var channel = (SocketGuildChannel) Context.Channel;
+                    await _crontabSubscribeService.SubscribeAsync(channel);
 
                     await ReplyAsync($"I will post scheduled messages in {channel}");
                     return;
                 }
 
                 foreach (var channel in channels)
-                    await _crontabSubscribeService.Subscribe(Context.Guild, channel);
+                    await _crontabSubscribeService.SubscribeAsync(channel);
 
                 await ReplyAsync(
                     $"I will post scheduled messages on {string.Join(", ", channels.Select(c => c.ToString()))} from now on");
@@ -135,7 +136,7 @@ namespace PierogiesBot.Discord.Modules
 
                 foreach (var guildChannel in await ((IGuild) Context.Guild).GetChannelsAsync())
                     if (guildChannel is SocketTextChannel channel)
-                        await _crontabSubscribeService.Unsubscribe(Context.Guild, channel);
+                        await _crontabSubscribeService.UnsubscribeAsync(channel);
 
                 await ReplyAsync("I got bored posting here, bye");
             }
@@ -147,7 +148,7 @@ namespace PierogiesBot.Discord.Modules
                 _logger.LogInformation("Del response subscription on channel {0} guild {1}", Context.Channel.Name,
                     Context.Guild.Name);
 
-                await _crontabSubscribeService.Unsubscribe(Context.Guild, channel);
+                await _crontabSubscribeService.UnsubscribeAsync(channel);
 
                 await ReplyAsync($"I got bored posting on {channel}, bye");
             }

@@ -39,9 +39,11 @@ namespace PierogiesBot.Grains.Discord
         public override async Task Start()
         {
             _logger.LogDebug("Loading discord subscriptions");
-            await _channelSubscribeService.LoadSubscriptions();
-            await _crontabSubscribeService.LoadSubscriptions();
+            await _channelSubscribeService.LoadSubscriptionsAsync();
+            await _crontabSubscribeService.LoadSubscriptionsAsync();
             await base.Start();
+            
+            _logger.LogDebug("Discord subscriptions loaded");
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Discord;
+using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
 using PierogiesBot.Data.Enums;
 using PierogiesBot.Data.Models;
@@ -11,7 +12,7 @@ using TimeZoneConverter;
 
 namespace PierogiesBot.Discord.Services
 {
-    public class CrontabSubscribeService
+    public class CrontabSubscribeService : IChannelSubscribeService
     {
         private readonly IRepository<BotCrontabRule> _ruleRepository;
         private readonly IScheduler _scheduler;
@@ -33,14 +34,15 @@ namespace PierogiesBot.Discord.Services
             _logger = logger;
         }
 
-        public async Task LoadSubscriptions()
+        /// <inheritdoc/>
+        public async Task LoadSubscriptionsAsync()
         {
             _logger.LogInformation("Loading Crontab subscriptions");
             var rules = await _ruleRepository.GetAll();
             var guilds = await _settingsRepository.GetAll();
 
             var botCrontabRules = rules.ToList();
-            foreach (var (id, guildId, guildTimeZoneId) in guilds)
+            foreach (var (_, guildId, guildTimeZoneId) in guilds)
             foreach (var rule in botCrontabRules)
             {
                 var tzInfo = TZConvert.GetTimeZoneInfo(guildTimeZoneId);
@@ -73,8 +75,10 @@ namespace PierogiesBot.Discord.Services
             }
         }
 
-        public async Task Subscribe(IGuild guild, IMessageChannel channel)
+        /// <inheritdoc/>
+        public async Task SubscribeAsync(SocketGuildChannel channel)
         {
+            var guild = channel.Guild!;
             var existing = await _subscriptionRepository
                 .GetByPredicate(s => s.GuildId.Equals(guild.Id)
                                      && s.ChannelId.Equals(channel.Id)
@@ -90,8 +94,10 @@ namespace PierogiesBot.Discord.Services
             }
         }
 
-        public async Task Unsubscribe(IGuild guild, IMessageChannel channel)
+        /// <inheritdoc/>
+        public async Task UnsubscribeAsync(SocketGuildChannel channel)
         {
+            var guild = channel.Guild!;
             _logger.LogInformation($"Unsubscribing channel {channel} in guild {guild}");
             var existingEnumerable = await _subscriptionRepository
                 .GetByPredicate(s => s.GuildId.Equals(guild.Id)
