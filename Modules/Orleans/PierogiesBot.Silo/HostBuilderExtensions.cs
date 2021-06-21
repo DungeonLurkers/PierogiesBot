@@ -36,6 +36,7 @@ namespace PierogiesBot.Silo
                 })
                 .UseDashboard(options =>
                 {
+                    options.BasePath = "/grains";
                     options.Username = "USERNAME";
                     options.Password = "PASSWORD";
                     options.Host = "*";

@@ -31,7 +31,14 @@ namespace PierogiesBot.Discord.Jobs
                 _logger.LogDebug("Running job trigger fron crontab rule {0}", rule.Crontab);
                 var subs = await _subscriptions.GetByPredicate(x => x.GuildId.Equals(guildId) && x.SubscriptionType == SubscriptionType.Crontab);
 
-                foreach (var sub in subs) await HandleSubscription(sub, rule);
+                var subsList = subs.ToList();
+                if (subsList.Any())
+                {
+                    foreach (var sub in subsList)
+                    {
+                        await HandleSubscription(sub, rule);
+                    }
+                }
             }
         }
 

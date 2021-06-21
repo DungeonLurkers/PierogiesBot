@@ -19,8 +19,11 @@ namespace PierogiesBot.Discord.Services
         private readonly IRepository<BotMessageSubscription> _subscriptionRepository;
         private readonly ILogger<CrontabSubscribeService> _logger;
 
-        public CrontabSubscribeService(IScheduler scheduler, IRepository<BotCrontabRule> ruleRepository,
-            IRepository<GuildSettings> settingsRepository, IRepository<BotMessageSubscription> subscriptionRepository,
+        public CrontabSubscribeService(
+            IScheduler scheduler,
+            IRepository<BotCrontabRule> ruleRepository,
+            IRepository<GuildSettings> settingsRepository,
+            IRepository<BotMessageSubscription> subscriptionRepository,
             ILogger<CrontabSubscribeService> logger)
         {
             _scheduler = scheduler;
@@ -36,25 +39,29 @@ namespace PierogiesBot.Discord.Services
             var rules = await _ruleRepository.GetAll();
             var guilds = await _settingsRepository.GetAll();
 
+            var botCrontabRules = rules.ToList();
             foreach (var (id, guildId, guildTimeZoneId) in guilds)
-            foreach (var rule in rules)
+            foreach (var rule in botCrontabRules)
             {
                 var tzInfo = TZConvert.GetTimeZoneInfo(guildTimeZoneId);
 
-                _logger.LogInformation("Creating job for guild {{{0}}} in TimeZone '{1}', Crontab = {{{2}}}", guildId,
-                    tzInfo.DisplayName, rule.Crontab);
+                _logger.LogInformation("Creating job for guild {{{0}}} in TimeZone '{1}', Crontab = {{{2}}}", 
+                    guildId,
+                    tzInfo.DisplayName,
+                    rule.Crontab);
 
+                var guildIdS = guildId.ToString();
                 var job = JobBuilder.Create<SendCrontabMessageToChannelsJob>()
-                    .WithIdentity(id, rule.Crontab)
+                    .WithIdentity(guildIdS, rule.Id)
                     .SetJobData(new JobDataMap
                     {
-                        {"Rule", rule},
-                        {"GuildId", guildId}
+                        { "Rule", rule },
+                        { "GuildId", guildId },
                     }).Build();
 
                 var trigger = TriggerBuilder
                     .Create()
-                    .WithIdentity(id, rule.Crontab)
+                    .WithIdentity(guildIdS, rule.Id)
                     .ForJob(job)
                     .WithCronSchedule(rule.Crontab, builder => builder.InTimeZone(tzInfo))
                     .Build();
