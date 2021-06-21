@@ -16,7 +16,7 @@ namespace PierogiesBot.Grains.Discord
     public class DiscordSubscriptionsGrainService : GrainService, IDiscordSubscriptionsGrainService
     {
         private readonly IServiceProvider _services;
-        private ILoggerFactory _loggerFactory;
+        private readonly ILoggerFactory _loggerFactory;
         private ChannelSubscribeService _channelSubscribeService;
         private CrontabSubscribeService _crontabSubscribeService;
         private ILogger<DiscordSubscriptionsGrainService> _logger;

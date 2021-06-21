@@ -84,7 +84,7 @@ namespace PierogiesBot.Grains.Discord
             var cmd = commandInfo.Value!;
 
             if (result.IsSuccess)
-                _commandLogger.LogTrace("Command {0} execution was succesful", cmd.Name);
+                _commandLogger.LogTrace("<{0}|>{1}|{2}>{3}", ctx.Guild, ctx.Channel, ctx.User, cmd.Name);
             else
                 _commandLogger.LogError(result.ErrorReason);
 

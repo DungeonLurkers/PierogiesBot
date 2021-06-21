@@ -11,7 +11,7 @@ namespace PierogiesBot.Manager.Services
     public class SettingsService : ISettingsService
     {
         private readonly AppDbContext _dbContext;
-        private ILogger<SettingsService> _logger;
+        private readonly ILogger<SettingsService> _logger;
 
         public SettingsService(AppDbContext dbContext, ILogger<SettingsService> logger)
         {

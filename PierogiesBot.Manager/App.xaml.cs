@@ -38,7 +38,7 @@ namespace PierogiesBot.Manager
             Host.CreateDefaultBuilder()
                 .UseStartup<Startup>()
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-                .ConfigureContainer<ContainerBuilder>((context, builder) =>
+                .ConfigureContainer<ContainerBuilder>((_, builder) =>
                 {
                     builder.RegisterModule<AutofacModule>();
                 }).ConfigureLogging(b =>
