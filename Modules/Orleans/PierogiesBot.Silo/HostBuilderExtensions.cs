@@ -7,6 +7,7 @@ using Orleans;
 using Orleans.Configuration;
 using Orleans.Hosting;
 using PierogiesBot.Grains;
+using PierogiesBot.Grains.Discord;
 using TelemetryConsumer.Any;
 
 namespace PierogiesBot.Silo

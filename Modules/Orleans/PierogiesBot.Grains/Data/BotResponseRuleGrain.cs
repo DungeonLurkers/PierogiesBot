@@ -1,14 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Orleans;
 using PierogiesBot.Commons.Dtos.BotResponseRule;
 using PierogiesBot.Data.Models;
 using PierogiesBot.Data.Services;
-using PierogiesBot.GrainsInterfaces.v1;
+using PierogiesBot.GrainsInterfaces.Data;
 
-namespace PierogiesBot.Grains.v1
+namespace PierogiesBot.Grains.Data
 {
     public class BotResponseRuleGrain : EntityGrainBase<BotResponseRule>, IBotResponseRuleGrain
     {
@@ -21,8 +19,8 @@ namespace PierogiesBot.Grains.v1
 
         public async Task<IEnumerable<GetBotResponseRuleDto>> Find() => await Find<GetBotResponseRuleDto>();
 
-        public async Task<string> Create(CreateBotResponseRuleDto ruleDto) => await Create<CreateBotResponseRuleDto>(ruleDto);
+        public async Task<string> Create(CreateBotResponseRuleDto ruleDto) => await base.Create(ruleDto);
 
-        public async Task<string> Update(string id, UpdateBotResponseRuleDto ruleDto) => await Update<UpdateBotResponseRuleDto>(id, ruleDto);
+        public async Task<string> Update(string id, UpdateBotResponseRuleDto ruleDto) => await base.Update(id, ruleDto);
     }
 }

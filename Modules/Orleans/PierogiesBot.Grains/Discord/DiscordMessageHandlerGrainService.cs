@@ -9,21 +9,21 @@ using Orleans.Core;
 using Orleans.Runtime;
 using PierogiesBot.Discord.Services;
 using PierogiesBot.GrainsInterfaces;
+using PierogiesBot.GrainsInterfaces.Discord;
 
-namespace PierogiesBot.Grains
+namespace PierogiesBot.Grains.Discord
 {
+    [StatelessWorker(1)]
     [Reentrant]
     public class DiscordMessageHandlerGrainService : GrainService, IDiscordMessageHandlerGrainService
     {
-        private readonly IServiceProvider _services;
         private readonly ILoggerFactory _loggerFactory;
         private DiscordSocketClient _client;
         private ILogger<DiscordMessageHandlerGrainService> _logger;
         private IMessageHandlerChain _messageHandlerChain;
 
-        public DiscordMessageHandlerGrainService(IServiceProvider services, IGrainIdentity id, Silo silo, ILoggerFactory loggerFactory) : base(id, silo, loggerFactory)
+        public DiscordMessageHandlerGrainService(IGrainIdentity id, Silo silo, ILoggerFactory loggerFactory) : base(id, silo, loggerFactory)
         {
-            _services = services;
             _loggerFactory = loggerFactory;
         }
 

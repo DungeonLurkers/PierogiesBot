@@ -1,8 +1,11 @@
 using System;
+using System.Net;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AspNetCore.Identity.MongoDB;
+using AspNetCore.Proxy;
 using Autofac;
 using Discord;
 using Discord.Commands;
@@ -59,9 +62,6 @@ namespace PierogiesBot
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services
-                .AddGrainRouter()
-                .AddJsonMediaType();
             services.AddSingleton(sp =>
             {
                 var eventAwaiter = new TaskCompletionSource<bool>(false);
@@ -235,7 +235,6 @@ namespace PierogiesBot
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrains("Grains");
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/health", new HealthCheckOptions
                     {

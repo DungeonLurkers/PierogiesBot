@@ -6,8 +6,9 @@ using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
 using Orleans;
 using PierogiesBot.GrainsInterfaces;
+using PierogiesBot.GrainsInterfaces.Discord;
 
-namespace PierogiesBot.Grains
+namespace PierogiesBot.Grains.Discord
 {
     public class DiscordGuildGrain : Grain, IDiscordGuildGrain
     {

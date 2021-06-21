@@ -6,53 +6,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d4804b5d-0b61-4d2b-9a54-644cfbc8a495" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/QuartzSchedulerGrainService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/v1/BotCrontabRuleGrain.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/v1/BotReactRuleGrain.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/v1/BotResponseRuleGrain.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/v1/EntityGrainBase.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/IQuartzSchedulerGrainService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/v1/IBotCrontabRuleGrain.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/v1/IBotReactRuleGrain.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/v1/IBotResponseRuleGrain.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/BotCrontabRule/BotCrontabRuleDtoBase.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/BotReactRule/BotReactRuleDtoBase.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/BotResponseRule/BotResponseRuleDtoBase.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/IDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/IFindEntityDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/IUpdateEntityDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PierogiesBot/AutofacModule.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.PierogiesBot/.idea/dataSources.local.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/PierogiesBot/Controllers/BotCrontabRuleController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PierogiesBot/Controllers/BotReactRuleController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PierogiesBot/Controllers/BotResponseRuleController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.PierogiesBot/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PierogiesBot/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/DiscordCommandsGrainService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/DiscordCommandsGrainService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/DiscordGuildGrain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/DiscordGuildGrain.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/DiscordMessageHandlerGrainService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/DiscordMessageHandlerGrainService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/PierogiesBot.Grains.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/PierogiesBot.Grains.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/PierogiesBot.GrainsInterfaces.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/PierogiesBot.GrainsInterfaces.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Silo/PierogiesBot.Silo.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Silo/PierogiesBot.Silo.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/BotCrontabRule/CreateBotCrontabRuleDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/BotCrontabRule/CreateBotCrontabRuleDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/BotCrontabRule/GetBotCrontabRuleDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/BotCrontabRule/GetBotCrontabRuleDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/BotCrontabRule/UpdateBotCrontabRuleDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/BotCrontabRule/UpdateBotCrontabRuleDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/BotReactRule/CreateBotReactRuleDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/BotReactRule/CreateBotReactRuleDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/BotReactRule/GetBotReactRuleDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/BotReactRule/GetBotReactRuleDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/BotReactRule/UpdateBotReactRuleDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/BotReactRule/UpdateBotReactRuleDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/BotResponseRule/CreateBotResponseRuleDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/BotResponseRule/CreateBotResponseRuleDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/BotResponseRule/GetBotResponseRuleDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/BotResponseRule/GetBotResponseRuleDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/BotResponseRule/UpdateBotResponseRuleDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/BotResponseRule/UpdateBotResponseRuleDto.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/ICreateRuleDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/ICreateEntityDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/DiscordCommandsGrainService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Discord/DiscordCommandsGrainService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/DiscordGuildGrain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Discord/DiscordGuildGrain.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/DiscordMessageHandlerGrainService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Discord/DiscordMessageHandlerGrainService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/DiscordSubscriptionsGrainService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Discord/DiscordSubscriptionsGrainService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/QuartzSchedulerGrainService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/QuartzSchedulerGrainService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/v1/BotCrontabRuleGrain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Data/BotCrontabRuleGrain.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/v1/BotReactRuleGrain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Data/BotReactRuleGrain.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/v1/BotResponseRuleGrain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Data/BotResponseRuleGrain.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/v1/EntityGrainBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Data/EntityGrainBase.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/DiscordGuild.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/Discord/DiscordGuild.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/IDiscordGuildGrain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/Discord/IDiscordGuildGrain.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/IDiscordMessageHandlerGrain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/Discord/IDiscordMessageHandlerGrain.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/IDiscordMessageHandlerGrainService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/Discord/IDiscordMessageHandlerGrainService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/IDiscordSubscriptionsGrainService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/Discord/IDiscordSubscriptionsGrainService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/v1/IBotCrontabRuleGrain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/Data/IBotCrontabRuleGrain.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/v1/IBotReactRuleGrain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/Data/IBotReactRuleGrain.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/v1/IBotResponseRuleGrain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/Data/IBotResponseRuleGrain.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Silo/HostBuilderExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Silo/HostBuilderExtensions.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/RestClient/IPierogiesBotApi.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/RestClient/IPierogiesBotApi.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/PierogiesBot.Data/Services/IRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/PierogiesBot.Data/Services/IRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/PierogiesBot.Data/Services/Repository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/PierogiesBot.Data/Services/Repository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/PierogiesBot.Discord/Services/DiscordClientHostedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/PierogiesBot.Discord/Services/DiscordClientHostedService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PierogiesBot.Manager/Services/IPierogiesBotService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PierogiesBot.Manager/Services/IPierogiesBotService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PierogiesBot.Manager/Services/PierogiesBotService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PierogiesBot.Manager/Services/PierogiesBotService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PierogiesBot.Manager/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PierogiesBot.Manager/Startup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PierogiesBot.Manager/ViewModels/CreateRules/CreateCrontabRuleViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PierogiesBot.Manager/ViewModels/CreateRules/CreateCrontabRuleViewModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PierogiesBot.Manager/ViewModels/CreateRules/CreateReactRuleViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PierogiesBot.Manager/ViewModels/CreateRules/CreateReactRuleViewModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PierogiesBot.Manager/ViewModels/CreateRules/CreateResponseRuleViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PierogiesBot.Manager/ViewModels/CreateRules/CreateResponseRuleViewModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PierogiesBot.Manager/ViewModels/CreateRules/CreateRuleViewModelBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PierogiesBot.Manager/ViewModels/CreateRules/CreateRuleViewModelBase.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PierogiesBot.Manager/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/PierogiesBot.Manager/appsettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PierogiesBot/Controllers/BotCrontabRuleController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PierogiesBot/Controllers/BotCrontabRuleController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PierogiesBot/Controllers/GuildsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PierogiesBot/Controllers/GuildsController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PierogiesBot/PierogiesBot.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/PierogiesBot/PierogiesBot.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PierogiesBot/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PierogiesBot/Program.cs" afterDir="false" />
@@ -76,46 +52,28 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock://C:/Users/avabi/RiderProjects/PierogiesBot/Modules/PierogiesBot.Commons/RestClient/IPierogiesBotApi.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4F744D24-74F9-401E-983D-775AE0AD702B/15/d2175e71/HostingExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/B3603CE8-BBAF-451C-A496-C1B8F8AC1704/e9/a31a18d4/IGrain.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/avabi/RiderProjects/PierogiesBot/Modules/PierogiesBot.Commons/RestClient/IPierogiesBotApi.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/avabi/RiderProjects/PierogiesBot/Modules/PierogiesBot.Commons/RestClient/IPierogiesBotApi.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/avabi/RiderProjects/PierogiesBot/Modules/PierogiesBot.Commons/RestClient/IPierogiesBotApi.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/E23DABA8-7AB2-4105-9D4F-E2707357D39E/c8/5ed60c65/GrainRouteAttributeBase.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/ICreateEntityDto.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5D126C5A-9C53-4BCE-9F49-6BDE953FB92E/63/RxApp.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/avabi/RiderProjects/PierogiesBot/Modules/PierogiesBot.Commons/RestClient/IPierogiesBotApi.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/avabi/RiderProjects/PierogiesBot/Modules/PierogiesBot.Commons/RestClient/IPierogiesBotApi.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/E6E6B40B-308C-4FE1-9C93-7C26C144C865/233/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/E23DABA8-7AB2-4105-9D4F-E2707357D39E/0a/678c9fa6/RouteAttribute.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/avabi/RiderProjects/PierogiesBot/Modules/Orleans/PierogiesBot.Grains/DiscordMessageHandlerGrainService.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/avabi/RiderProjects/PierogiesBot/Modules/Orleans/PierogiesBot.Grains/DiscordCommandsGrainService.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/avabi/RiderProjects/PierogiesBot/Modules/PierogiesBot.Commons/RestClient/IPierogiesBotApi.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/E23DABA8-7AB2-4105-9D4F-E2707357D39E/4b/8f88f24b/AuthorizeAttribute.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/avabi/RiderProjects/PierogiesBot/Modules/PierogiesBot.Discord/Services/DiscordClientHostedService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/avabi/RiderProjects/PierogiesBot/Modules/PierogiesBot.Commons/RestClient/IPierogiesBotApi.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/avabi/RiderProjects/PierogiesBot/Modules/PierogiesBot.Commons/RestClient/IPierogiesBotApi.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
-      <option value="$PROJECT_DIR$/PierogiesBot/Controllers/GuildsController.cs" />
-      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/DiscordGuildGrain.cs" />
-      <option value="$PROJECT_DIR$/Modules/PierogiesBot.Data/Services/Repository.cs" />
-      <option value="$PROJECT_DIR$/PierogiesBot/appsettings.Development.json" />
-      <option value="$PROJECT_DIR$/PierogiesBot.Manager/appsettings.json" />
-      <option value="$PROJECT_DIR$/PierogiesBot.Manager/ViewModels/CreateRules/CreateCrontabRuleViewModel.cs" />
-      <option value="$PROJECT_DIR$/PierogiesBot.Manager/ViewModels/CreateRules/CreateReactRuleViewModel.cs" />
-      <option value="$PROJECT_DIR$/PierogiesBot.Manager/ViewModels/CreateRules/CreateResponseRuleViewModel.cs" />
-      <option value="$PROJECT_DIR$/PierogiesBot/Controllers/BotCrontabRuleController.cs" />
-      <option value="$PROJECT_DIR$/PierogiesBot.Manager/Startup.cs" />
-      <option value="$PROJECT_DIR$/PierogiesBot/Services/GrainRouter.cs" />
-      <option value="$PROJECT_DIR$/PierogiesBot/Program.cs" />
-      <option value="$PROJECT_DIR$/PierogiesBot/AutofacModule.cs" />
-      <option value="$PROJECT_DIR$/PierogiesBot/Startup.cs" />
-      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/BotCrontabRuleGrain.cs" />
-      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/IBotCrontabRuleGrain.cs" />
-      <option value="$PROJECT_DIR$/PierogiesBot/Services/RouteGrainProvider.cs" />
-      <option value="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/BotCrontabRule/CreateBotCrontabRuleDto.cs" />
       <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/IEntityGrain.cs" />
       <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/Api/IBotResponseRuleGrain.cs" />
-      <option value="$PROJECT_DIR$/Modules/PierogiesBot.Commons/RestClient/IPierogiesBotApi.cs" />
-      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/v1/IBotCrontabRuleGrain.cs" />
-      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/v1/IBotResponseRuleGrain.cs" />
-      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/v1/IBotReactRuleGrain.cs" />
       <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/v1/EntityGrainBase.cs" />
       <option value="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/ICreateDto.cs" />
       <option value="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/ICreateRuleDto.cs" />
@@ -132,7 +90,6 @@
       <option value="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/BotReactRule/GetBotReactRuleDto.cs" />
       <option value="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/BotReactRule/UpdateBotReactRuleDto.cs" />
       <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/v1/IEntityGrain.cs" />
-      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/v1/EntityGrainBase.cs" />
       <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/v1/BotReactRuleGrain.cs" />
       <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/v1/BotCrontabRuleGrain.cs" />
       <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/v1/BotResponseRuleGrain.cs" />
@@ -140,6 +97,32 @@
       <option value="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/BotResponseRule/CreateBotResponseRuleDto.cs" />
       <option value="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/BotResponseRule/GetBotResponseRuleDto.cs" />
       <option value="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/BotResponseRule/UpdateBotResponseRuleDto.cs" />
+      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/v1/EntityGrainBase.cs" />
+      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/v1/IBotResponseRuleGrain.cs" />
+      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/v1/IBotReactRuleGrain.cs" />
+      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/v1/IBotCrontabRuleGrain.cs" />
+      <option value="$PROJECT_DIR$/PierogiesBot/Controllers/BotCrontabRuleController.cs" />
+      <option value="$PROJECT_DIR$/Modules/PierogiesBot.Commons/RestClient/IPierogiesBotApi.cs" />
+      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Data/BotCrontabRuleGrain.cs" />
+      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Data/BotReactRuleGrain.cs" />
+      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Data/BotResponseRuleGrain.cs" />
+      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Data/EntityGrainBase.cs" />
+      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Discord/DiscordCommandsGrainService.cs" />
+      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Discord/DiscordGuildGrain.cs" />
+      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Discord/DiscordMessageHandlerGrainService.cs" />
+      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Discord/DiscordSubscriptionsGrainService.cs" />
+      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/QuartzSchedulerGrainService.cs" />
+      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/Discord/IDiscordGuildGrain.cs" />
+      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/Data/IBotCrontabRuleGrain.cs" />
+      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/Data/IBotReactRuleGrain.cs" />
+      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/Data/IBotResponseRuleGrain.cs" />
+      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/Discord/DiscordGuild.cs" />
+      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/Discord/IDiscordMessageHandlerGrain.cs" />
+      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/Discord/IDiscordMessageHandlerGrainService.cs" />
+      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/Discord/IDiscordSubscriptionsGrainService.cs" />
+      <option value="$PROJECT_DIR$/PierogiesBot/Program.cs" />
+      <option value="$PROJECT_DIR$/PierogiesBot/Startup.cs" />
+      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Silo/HostBuilderExtensions.cs" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1tnMKmsr2rjoZuvSswBGsSaDrLd" />
@@ -229,14 +212,31 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1623400345196</updated>
-      <workItem from="1623400359720" duration="10793000" />
+      <workItem from="1623400359720" duration="11177000" />
+      <workItem from="1623422186858" duration="493000" />
+      <workItem from="1624260411815" duration="6560000" />
     </task>
+    <task id="LOCAL-00001" summary="Implement HTTP api for rules using Orleans.HTTP">
+      <created>1623421920128</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1623421920128</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Implement HTTP api for rules using Orleans.HTTP">
+      <created>1623421930953</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1623421930953</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-  <component name="UnityProjectConfiguration" hasMinimizedUI="null" />
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -248,9 +248,12 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="Implement HTTP api for rules using Orleans.HTTP" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implement HTTP api for rules using Orleans.HTTP" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

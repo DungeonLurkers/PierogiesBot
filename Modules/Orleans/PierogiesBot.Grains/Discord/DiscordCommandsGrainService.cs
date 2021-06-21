@@ -6,14 +6,14 @@ using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Orleans;
 using Orleans.Concurrency;
 using Orleans.Core;
 using Orleans.Runtime;
 using PierogiesBot.Discord.TypeReaders;
 using PierogiesBot.GrainsInterfaces;
+using PierogiesBot.GrainsInterfaces.Discord;
 
-namespace PierogiesBot.Grains
+namespace PierogiesBot.Grains.Discord
 {
     [StatelessWorker(1)]
     [Reentrant]
@@ -72,7 +72,7 @@ namespace PierogiesBot.Grains
             // If you do not use Dependency Injection, pass null.
             // See Dependency Injection guide for more information.
             await _commandService.AddModulesAsync(
-                assembly: Assembly.GetAssembly(typeof(Discord.ServiceCollectionExtensions)),
+                assembly: Assembly.GetAssembly(typeof(PierogiesBot.Discord.ServiceCollectionExtensions)),
                 services: _services);
         }
 

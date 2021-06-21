@@ -1,7 +1,7 @@
 using System;
 using Orleans.Concurrency;
 
-namespace PierogiesBot.GrainsInterfaces
+namespace PierogiesBot.GrainsInterfaces.Discord
 {
     [Serializable]
     [Immutable]

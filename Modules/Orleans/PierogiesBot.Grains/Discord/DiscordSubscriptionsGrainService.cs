@@ -2,13 +2,17 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Orleans.Concurrency;
 using Orleans.Core;
 using Orleans.Runtime;
 using PierogiesBot.Discord.Services;
 using PierogiesBot.GrainsInterfaces;
+using PierogiesBot.GrainsInterfaces.Discord;
 
-namespace PierogiesBot.Grains
+namespace PierogiesBot.Grains.Discord
 {
+    [StatelessWorker(1)]
+    [Reentrant]
     public class DiscordSubscriptionsGrainService : GrainService, IDiscordSubscriptionsGrainService
     {
         private readonly IServiceProvider _services;

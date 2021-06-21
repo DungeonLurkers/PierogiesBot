@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Orleans;
 
-namespace PierogiesBot.GrainsInterfaces
+namespace PierogiesBot.GrainsInterfaces.Discord
 {
     public interface IDiscordGuildGrain : IGrainWithStringKey
     {

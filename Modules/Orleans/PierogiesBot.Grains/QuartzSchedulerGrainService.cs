@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Orleans.Concurrency;
 using Orleans.Core;
 using Orleans.Runtime;
 using PierogiesBot.GrainsInterfaces;
@@ -9,6 +10,8 @@ using Quartz;
 
 namespace PierogiesBot.Grains
 {
+    [StatelessWorker(1)]
+    [Reentrant]
     public class QuartzSchedulerGrainService : GrainService, IQuartzSchedulerGrainService
     {
         private IScheduler _scheduler;

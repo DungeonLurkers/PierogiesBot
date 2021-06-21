@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Orleans;
 using PierogiesBot.GrainsInterfaces;
+using PierogiesBot.GrainsInterfaces.Discord;
+
 // ReSharper disable VSTHRD200
 
 namespace PierogiesBot.Controllers

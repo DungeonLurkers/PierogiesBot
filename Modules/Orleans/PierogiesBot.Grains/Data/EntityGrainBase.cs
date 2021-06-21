@@ -6,40 +6,41 @@ using Orleans;
 using PierogiesBot.Commons.Dtos;
 using PierogiesBot.Data.Models;
 using PierogiesBot.Data.Services;
-using PierogiesBot.GrainsInterfaces.v1;
 
-namespace PierogiesBot.Grains.v1
+namespace PierogiesBot.Grains.Data
 {
     public abstract class EntityGrainBase<TEntity> : Grain where TEntity : EntityBase
     {
         private readonly IRepository<TEntity> _repository;
         private readonly IMapper _mapper;
-        public EntityGrainBase(IRepository<TEntity> repository, IMapper mapper)
+
+        protected EntityGrainBase(IRepository<TEntity> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
-        public async Task<TDto?> FindById<TDto>(string id) where TDto : IFindEntityDto
+
+        protected async Task<TDto?> FindById<TDto>(string id) where TDto : IFindEntityDto
         {
             var rule = await _repository.GetByIdAsync(id);
             
             return rule is not null ? _mapper.Map<TDto>(rule) : default;
         }
 
-        public async Task<IEnumerable<TDto>> Find<TDto>() where TDto : IFindEntityDto
+        protected async Task<IEnumerable<TDto>> Find<TDto>() where TDto : IFindEntityDto
         {
             var rules = await _repository.GetAll();
             
             return rules.Select(x => _mapper.Map<TDto>(x));
         }
 
-        public async Task<string> Create<TDto>(ICreateEntityDto ruleDto) where TDto : ICreateEntityDto
+        protected async Task<string> Create(ICreateEntityDto ruleDto)
         {
-            var rule = _mapper.Map<BotReactRule>(ruleDto);
+            var rule = _mapper.Map<TEntity>(ruleDto);
             return await _repository.InsertAsync(rule);
         }
 
-        public async Task<string> Update<TDto>(string id, IUpdateEntityDto ruleDto)
+        protected async Task<string> Update(string id, IUpdateEntityDto ruleDto)
         {
             var rule = await _repository.GetByIdAsync(id);
             

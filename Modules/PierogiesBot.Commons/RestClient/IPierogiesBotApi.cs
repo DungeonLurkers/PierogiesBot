@@ -23,22 +23,22 @@ namespace PierogiesBot.Commons.RestClient
         [AllowAnyStatusCode]
         Task<Response<string>> Ping();
 
-        [Get("/Grains/PierogiesBot.GrainsInterfaces.v1.IBotResponseRuleGrain/a/Find")]
+        [Get("/Grains/BotResponseRule")]
         Task<IEnumerable<GetBotResponseRuleDto>> GetBotResponseRules();
 
-        [Get("/Grains/PierogiesBot.GrainsInterfaces.v1.IBotReactRuleGrain/a/Find")]
+        [Get("/api/BotReactRule")]
         Task<IEnumerable<GetBotReactRuleDto>> GetBotReactRules();
 
-        [Get("/Grains/PierogiesBot.GrainsInterfaces.v1.IBotCrontabRuleGrain/a/Find")]
+        [Get("/api/BotCrontabRule")]
         Task<IEnumerable<GetBotCrontabRuleDto>> GetBotCrontabRules();
 
-        [Post("/Grains/PierogiesBot.GrainsInterfaces.v1.IBotResponseRuleGrain/a/Create")]
+        [Post("/api/BotResponseRule")]
         Task CreateBotResponseRule([Body] CreateBotResponseRuleDto responseRuleDto);
 
-        [Post("/Grains/PierogiesBot.GrainsInterfaces.v1.IBotReactRuleGrain/a/Create")]
+        [Post("/api/BotReactRule")]
         Task CreateBotReactRule([Body] CreateBotReactRuleDto reactRuleDto);
 
-        [Post("/Grains/PierogiesBot.GrainsInterfaces.v1.IBotCrontabRuleGrain/a/Create")]
+        [Post("/api/BotCrontabRule")]
         Task CreateBotCrontabRule([Body] CreateBotCrontabRuleDto crontabRuleDto);
     }
 }
