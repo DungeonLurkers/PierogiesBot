@@ -17,7 +17,7 @@ namespace TelemetryConsumer.Any
 #if _WINDOWS
             builder.AddWindowsTelemetryConsumer();
 #else
-            collection.AddLinuxTelemetryConsumer();
+            builder.AddLinuxTelemetryConsumer();
 #endif
             return builder;
         }
@@ -27,7 +27,7 @@ namespace TelemetryConsumer.Any
 #if _WINDOWS
             builder.AddWindowsTelemetryConsumer();
 #else
-            collection.AddLinuxTelemetryConsumer();
+            builder.AddLinuxTelemetryConsumer();
 #endif
             return builder;
         }
