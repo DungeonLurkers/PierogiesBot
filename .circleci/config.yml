@@ -3,12 +3,14 @@ version: 2.1
 orbs:
   discord: teka23/discord@0.0.1
 
+triggers:
+  filters:
+    branches:
+      only:
+        - master
+
 jobs:
   build:
-    filters:
-        branches:
-          only:
-            - master
     docker:
       - image: cimg/base:2020.01
     steps:
