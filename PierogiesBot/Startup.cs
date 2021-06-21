@@ -1,19 +1,30 @@
 using System;
+using System.Net;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using AspNetCore.Identity.MongoDB;
+using AspNetCore.Proxy;
+using Autofac;
+using Discord;
 using Discord.Commands;
+using Discord.WebSocket;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Orleans.Http;
 using PierogiesBot.Commons.RestClient;
 using PierogiesBot.Data;
 using PierogiesBot.Discord;
@@ -34,10 +45,64 @@ namespace PierogiesBot
         }
 
         public IConfiguration Configuration { get; }
+        
+        // ConfigureContainer is where you can register things directly
+        // with Autofac. This runs after ConfigureServices so the things
+        // here will override registrations made in ConfigureServices.
+        // Don't build the container; that gets done for you by the factory.
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            // Register your own things directly with Autofac here. Don't
+            // call builder.Populate(), that happens in AutofacServiceProviderFactory
+            // for you.
+            builder.RegisterModule<AutofacModule>();
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton(sp =>
+            {
+                var eventAwaiter = new TaskCompletionSource<bool>(false);
+
+                void ClientOnReady()
+                {
+                    eventAwaiter.SetResult(true);
+                }
+
+                var options = sp.GetRequiredService<IOptions<DiscordSettings>>();
+                var discordLogger = sp.GetRequiredService<ILogger<DiscordSocketClient>>();
+                var settings = options.Value;
+
+                var client = new DiscordSocketClient();
+
+                client.Log += message => Task.Run(() =>
+                {
+
+                    var logLevel = message.Severity switch
+                    {
+                        LogSeverity.Critical => LogLevel.Critical,
+                        LogSeverity.Error => LogLevel.Error,
+                        LogSeverity.Warning => LogLevel.Warning,
+                        LogSeverity.Info => LogLevel.Information,
+                        LogSeverity.Verbose => LogLevel.Debug,
+                        LogSeverity.Debug => LogLevel.Trace,
+                        _ => throw new ArgumentOutOfRangeException(nameof(message), "has wrong LogSeverity!")
+                    };
+                    if (message.Exception is not null) discordLogger.LogError(message.Exception, message.Message);
+                    else discordLogger.Log(logLevel, message.Message);
+                });
+
+                client.LoginAsync(TokenType.Bot, settings.Token).ConfigureAwait(false).GetAwaiter().GetResult();
+                client.StartAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                client.Ready += () => Task.Run(ClientOnReady);
+
+                eventAwaiter.Task.ConfigureAwait(false).GetAwaiter().GetResult();
+
+                return client!;
+            });
+
             services.AddMongo();
             services.AddDataServices();
             services.AddDiscord();
@@ -113,7 +178,7 @@ namespace PierogiesBot
                         ValidAudience = Configuration["JwtSettings:ValidAudience"],
                         ClockSkew = TimeSpan.Zero,
                         NameClaimType = ClaimTypes.Name,
-                        RoleClaimType = ClaimTypes.Role
+                        RoleClaimType = ClaimTypes.Role,
                     };
                 });
 
@@ -138,11 +203,11 @@ namespace PierogiesBot
                             Reference = new OpenApiReference
                             {
                                 Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
+                                Id = "Bearer",
+                            },
                         },
                         Array.Empty<string>()
-                    }
+                    },
                 });
             });
         }

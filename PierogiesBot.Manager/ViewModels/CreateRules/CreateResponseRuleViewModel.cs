@@ -31,6 +31,8 @@ namespace PierogiesBot.Manager.ViewModels.CreateRules
             TriggerText = "";
             IsTriggerTextRegex = false;
             ShouldTriggerOnContains = false;
+            
+            CanUpload = true;
         }
 
         [Reactive] public ResponseMode ResponseMode { get; set; }

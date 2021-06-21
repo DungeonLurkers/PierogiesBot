@@ -13,19 +13,45 @@
         <PackageReference Include="AspNetCore.HealthChecks.UI" Version="5.0.1" />
         <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="5.0.1" />
         <PackageReference Include="AspNetCore.HealthChecks.UI.InMemory.Storage" Version="5.0.1" />
+        <PackageReference Include="AspNetCore.Proxy" Version="4.2.0" />
+        <PackageReference Include="AsyncFixer" Version="1.5.1">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
         <PackageReference Include="BCrypt.Net-Next" Version="4.0.2" />
         <PackageReference Include="FB.AspNetCore.Identity.MongoDB" Version="2.0.0" />
+        <PackageReference Include="Meziantou.Analyzer" Version="1.0.665">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.6" />
+        <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="5.0.3">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.11.1" />
+        <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.10.56">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
         <PackageReference Include="MongoDB.Bson" Version="2.12.3" />
         <PackageReference Include="MongoDB.Driver" Version="2.12.3" />
+        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.11.1" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Modules\Orleans\PierogiesBot.GrainsInterfaces\PierogiesBot.GrainsInterfaces.csproj" />
+      <ProjectReference Include="..\Modules\Orleans\PierogiesBot.Grains\PierogiesBot.Grains.csproj" />
+      <ProjectReference Include="..\Modules\Orleans\PierogiesBot.Silo\PierogiesBot.Silo.csproj" />
       <ProjectReference Include="..\Modules\PierogiesBot.Commons\PierogiesBot.Commons.csproj" />
       <ProjectReference Include="..\Modules\PierogiesBot.Data\PierogiesBot.Data.csproj" />
       <ProjectReference Include="..\Modules\PierogiesBot.Discord\PierogiesBot.Discord.csproj" />

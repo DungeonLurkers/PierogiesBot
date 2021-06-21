@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="10.1.1" />
+      <PackageReference Include="Discord.Net.Commands" Version="2.4.0" />
+      <PackageReference Include="Discord.Net.WebSocket" Version="2.4.0" />
+      <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="3.4.3">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.Orleans.Core.Abstractions" Version="3.4.3" />
+      <PackageReference Include="Microsoft.Orleans.OrleansRuntime" Version="3.4.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\PierogiesBot.Discord\PierogiesBot.Discord.csproj" />
+      <ProjectReference Include="..\PierogiesBot.GrainsInterfaces\PierogiesBot.GrainsInterfaces.csproj" />
+    </ItemGroup>
+
+</Project>

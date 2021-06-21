@@ -31,11 +31,12 @@ namespace PierogiesBot.Data.Services
         protected virtual IMongoCollection<T> Collection =>
             _client.GetDatabase(Database).GetCollection<T>(_collection);
 
-        public async Task InsertAsync(T doc)
+        public async Task<string> InsertAsync(T doc)
         {
             _logger.LogTrace("{0}: Doc Id = {1} of type {2}", nameof(InsertAsync), doc.Id, typeof(T).Name);
             await Collection.InsertOneAsync(doc);
             _messageBus.SendEntityChanged(new AddEntity<T>(doc));
+            return doc.Id;
         }
 
         public async Task UpdateAsync(T doc)

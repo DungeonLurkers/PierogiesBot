@@ -11,6 +11,6 @@ namespace PierogiesBot.Manager.Services
 
         Task<Settings?> Get();
 
-        Task<string> GetToken();
+        Task<string?> GetToken();
     }
 }

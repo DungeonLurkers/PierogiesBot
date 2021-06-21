@@ -23,7 +23,7 @@ namespace PierogiesBot.Commons.RestClient
         [AllowAnyStatusCode]
         Task<Response<string>> Ping();
 
-        [Get("/api/BotResponseRule")]
+        [Get("/Grains/BotResponseRule")]
         Task<IEnumerable<GetBotResponseRuleDto>> GetBotResponseRules();
 
         [Get("/api/BotReactRule")]

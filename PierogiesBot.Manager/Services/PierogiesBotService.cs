@@ -88,7 +88,14 @@ namespace PierogiesBot.Manager.Services
 
                 if (authResponse?.Token is null) return false;
                 Token = authResponse.Token;
-                await _settingsService.Set(userName, Token);
+                try
+                {
+                    await _settingsService.Set(userName, Token);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, "Exception while saving token in settings");
+                }
 
                 _api.AuthenticationHeaderValue = AuthenticationHeaderValue.Parse($"Bearer {Token}");
 
@@ -137,7 +144,7 @@ namespace PierogiesBot.Manager.Services
             await Request(async api => await api.CreateBotResponseRule(rule));
         }
 
-        public async Task UploadRule<TRule>(TRule rule) where TRule : ICreateRuleDto
+        public async Task UploadRule<TRule>(TRule rule) where TRule : ICreateEntityDto
         {
             switch (rule)
             {

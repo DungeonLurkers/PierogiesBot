@@ -9,7 +9,7 @@ COPY ["PierogiesBot/PierogiesBot.csproj", "PierogiesBot/"]
 RUN dotnet restore "PierogiesBot/PierogiesBot.csproj"
 COPY . .
 WORKDIR "/src/PierogiesBot"
-RUN dotnet build "PierogiesBot.csproj" -c Release -o /app/build
+RUN dotnet build "PierogiesBot.csproj" -c "Bot Release" -o /app/build
 
 FROM build AS publish
 RUN dotnet publish "PierogiesBot.csproj" -c Release -o /app/publish

@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Orleans;
 using PierogiesBot.Commons.Dtos.BotCrontabRule;
-using PierogiesBot.Data.Models;
-using PierogiesBot.Data.Services;
+using PierogiesBot.GrainsInterfaces;
+using PierogiesBot.GrainsInterfaces.Data;
 
 namespace PierogiesBot.Controllers
 {
@@ -18,15 +18,12 @@ namespace PierogiesBot.Controllers
     public class BotCrontabRuleController : ControllerBase
     {
         private readonly ILogger<BotCrontabRuleController> _logger;
-        private readonly IMapper _mapper;
-        private readonly IRepository<BotCrontabRule> _repository;
+        private readonly IClusterClient _clusterClient;
 
-        public BotCrontabRuleController(IMapper mapper, ILogger<BotCrontabRuleController> logger,
-            IRepository<BotCrontabRule> repository)
+        public BotCrontabRuleController(ILogger<BotCrontabRuleController> logger, IClusterClient clusterClient)
         {
-            _mapper = mapper;
             _logger = logger;
-            _repository = repository;
+            _clusterClient = clusterClient;
         }
 
         // GET: api/BotCrontabRule
@@ -34,8 +31,11 @@ namespace PierogiesBot.Controllers
         public async Task<IEnumerable<GetBotCrontabRuleDto>> Get()
         {
             _logger.LogTrace("{0} BotCrontabRules", nameof(Get));
-            var entities = await _repository.GetAll();
-            return entities.Select(x => _mapper.Map<GetBotCrontabRuleDto>(x));
+            var grain = _clusterClient.GetGrain<IBotCrontabRuleGrain>(HttpContext.TraceIdentifier);
+
+            var rules = await grain.Find();
+
+            return rules;
         }
 
         // GET: api/BotCrontabRule/5
@@ -43,8 +43,9 @@ namespace PierogiesBot.Controllers
         public async Task<IActionResult> GetCrontabRuleById(string id)
         {
             _logger.LogTrace("{0}: CrontabRule id = {1}", nameof(GetCrontabRuleById), id);
-            var rule = await _repository.GetByIdAsync(id);
-            return rule is null ? NotFound(id) : Ok(_mapper.Map<GetBotCrontabRuleDto>(rule));
+            var grain = _clusterClient.GetGrain<IBotCrontabRuleGrain>(HttpContext.TraceIdentifier);
+            var rule = await grain.FindById(id);
+            return rule is null ? NotFound(id) : Ok(rule);
         }
 
         // POST: api/BotCrontabRule
@@ -54,11 +55,10 @@ namespace PierogiesBot.Controllers
             _logger.LogTrace("{0} BotCrontabRule", "Create");
             try
             {
-                var (isEmoji, crontab, replyMessage, replyEmoji, responseMode) = ruleDto;
-                var rule = new BotCrontabRule(isEmoji, crontab, replyMessage, replyEmoji, responseMode);
-                await _repository.InsertAsync(rule);
+                var grain = _clusterClient.GetGrain<IBotCrontabRuleGrain>(HttpContext.TraceIdentifier);
 
-                return Ok();
+                var id = await grain.Create(ruleDto);
+                return Ok(new { Id = id });
             }
             catch (Exception e)
             {
@@ -73,29 +73,11 @@ namespace PierogiesBot.Controllers
             _logger.LogTrace("{0}: CrontabRule id = {1}", "Update", id);
             try
             {
-                var rule = await _repository.GetByIdAsync(id);
+                var grain = _clusterClient.GetGrain<IBotCrontabRuleGrain>(HttpContext.TraceIdentifier);
 
-                switch (rule)
-                {
-                    case null:
-                        return NotFound(id);
-                    default:
-                    {
-                        var (isEmoji, crontab, replyMessages, replyEmojis, responseMode) = ruleDto;
-                        var updatedRule = rule with
-                        {
-                            IsEmoji = isEmoji,
-                            Crontab = crontab,
-                            ReplyMessages = replyMessages,
-                            ReplyEmoji = replyEmojis,
-                            ResponseMode = responseMode
-                        };
+                var result = await grain.Update(id, ruleDto);
 
-                        await _repository.UpdateAsync(updatedRule);
-
-                        return Ok();
-                    }
-                }
+                return result is "" ? NotFound() : Ok(new { Id = id });
             }
             catch (Exception e)
             {
@@ -110,19 +92,10 @@ namespace PierogiesBot.Controllers
             _logger.LogTrace("{0}: CrontabRule id = {1}", "Delete", id);
             try
             {
-                var user = await _repository.GetByIdAsync(id);
+                var grain = _clusterClient.GetGrain<IBotCrontabRuleGrain>(HttpContext.TraceIdentifier);
 
-                switch (user)
-                {
-                    case null:
-                        return NotFound(id);
-                    default:
-                    {
-                        await _repository.DeleteAsync(id);
-
-                        return Ok();
-                    }
-                }
+                var result = await grain.Delete(id);
+                return result is "" ? NotFound() : Ok(new { Id = id });
             }
             catch (Exception e)
             {
