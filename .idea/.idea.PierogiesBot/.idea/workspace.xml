@@ -5,34 +5,11 @@
     <projectFile>PierogiesBot.Manager/PierogiesBot.Manager.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d4804b5d-0b61-4d2b-9a54-644cfbc8a495" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/PierogiesBot/Controllers/BotCrontabRuleController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PierogiesBot/Controllers/BotReactRuleController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/PierogiesBot/Controllers/BotResponseRuleController.cs" afterDir="false" />
+    <list default="true" id="d4804b5d-0b61-4d2b-9a54-644cfbc8a495" name="Default Changelist" comment="Cleanup code">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.PierogiesBot/.idea/codestream.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PierogiesBot/.idea/codestream.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.PierogiesBot/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.PierogiesBot/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/DiscordCommandsGrainService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Discord/DiscordCommandsGrainService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/DiscordGuildGrain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Discord/DiscordGuildGrain.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/DiscordMessageHandlerGrainService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Discord/DiscordMessageHandlerGrainService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/DiscordSubscriptionsGrainService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Discord/DiscordSubscriptionsGrainService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/QuartzSchedulerGrainService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/QuartzSchedulerGrainService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/v1/BotCrontabRuleGrain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Data/BotCrontabRuleGrain.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/v1/BotReactRuleGrain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Data/BotReactRuleGrain.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/v1/BotResponseRuleGrain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Data/BotResponseRuleGrain.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/v1/EntityGrainBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Data/EntityGrainBase.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/DiscordGuild.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/Discord/DiscordGuild.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/IDiscordGuildGrain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/Discord/IDiscordGuildGrain.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/IDiscordMessageHandlerGrain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/Discord/IDiscordMessageHandlerGrain.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/IDiscordMessageHandlerGrainService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/Discord/IDiscordMessageHandlerGrainService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/IDiscordSubscriptionsGrainService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/Discord/IDiscordSubscriptionsGrainService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/v1/IBotCrontabRuleGrain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/Data/IBotCrontabRuleGrain.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/v1/IBotReactRuleGrain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/Data/IBotReactRuleGrain.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/v1/IBotResponseRuleGrain.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/Data/IBotResponseRuleGrain.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Silo/HostBuilderExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Silo/HostBuilderExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/RestClient/IPierogiesBotApi.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/PierogiesBot.Commons/RestClient/IPierogiesBotApi.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PierogiesBot/Controllers/GuildsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PierogiesBot/Controllers/GuildsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PierogiesBot/PierogiesBot.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/PierogiesBot/PierogiesBot.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PierogiesBot/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PierogiesBot/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PierogiesBot/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/PierogiesBot/Startup.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/PierogiesBot.Discord/Services/DiscordClientHostedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/PierogiesBot.Discord/Services/DiscordClientHostedService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PierogiesBot/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/PierogiesBot/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/PierogiesBot/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/PierogiesBot/appsettings.Development.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -52,18 +29,22 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock://C:/Users/avabi/RiderProjects/PierogiesBot/PierogiesBot.Manager/Services/SettingsService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/avabi/RiderProjects/PierogiesBot/Modules/PierogiesBot.Commons/RestClient/IPierogiesBotApi.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4F744D24-74F9-401E-983D-775AE0AD702B/15/d2175e71/HostingExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/B3603CE8-BBAF-451C-A496-C1B8F8AC1704/e9/a31a18d4/IGrain.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/avabi/RiderProjects/PierogiesBot/Modules/PierogiesBot.Commons/RestClient/IPierogiesBotApi.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/avabi/RiderProjects/PierogiesBot/Modules/PierogiesBot.Commons/RestClient/IPierogiesBotApi.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/avabi/RiderProjects/PierogiesBot/Modules/PierogiesBot.Commons/RestClient/IPierogiesBotApi.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/avabi/RiderProjects/PierogiesBot/PierogiesBot.Manager/App.xaml.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/E23DABA8-7AB2-4105-9D4F-E2707357D39E/c8/5ed60c65/GrainRouteAttributeBase.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/ICreateEntityDto.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5D126C5A-9C53-4BCE-9F49-6BDE953FB92E/63/RxApp.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/avabi/RiderProjects/PierogiesBot/Modules/PierogiesBot.Commons/RestClient/IPierogiesBotApi.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/avabi/RiderProjects/PierogiesBot/Modules/PierogiesBot.Commons/RestClient/IPierogiesBotApi.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/avabi/RiderProjects/PierogiesBot/Modules/Orleans/PierogiesBot.Grains/Discord/DiscordCommandsGrainService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/E6E6B40B-308C-4FE1-9C93-7C26C144C865/233/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/avabi/RiderProjects/PierogiesBot/Modules/Orleans/PierogiesBot.Grains/Discord/DiscordSubscriptionsGrainService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/E23DABA8-7AB2-4105-9D4F-E2707357D39E/0a/678c9fa6/RouteAttribute.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/avabi/RiderProjects/PierogiesBot/Modules/PierogiesBot.Commons/RestClient/IPierogiesBotApi.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/E23DABA8-7AB2-4105-9D4F-E2707357D39E/4b/8f88f24b/AuthorizeAttribute.cs" root0="SKIP_HIGHLIGHTING" />
@@ -72,10 +53,6 @@
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
-      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/IEntityGrain.cs" />
-      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/Api/IBotResponseRuleGrain.cs" />
-      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/v1/EntityGrainBase.cs" />
-      <option value="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/ICreateDto.cs" />
       <option value="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/ICreateRuleDto.cs" />
       <option value="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/ICreateEntityDto.cs" />
       <option value="$PROJECT_DIR$/Modules/PierogiesBot.Commons/Dtos/IFindEntityDto.cs" />
@@ -107,10 +84,8 @@
       <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Data/BotReactRuleGrain.cs" />
       <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Data/BotResponseRuleGrain.cs" />
       <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Data/EntityGrainBase.cs" />
-      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Discord/DiscordCommandsGrainService.cs" />
       <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Discord/DiscordGuildGrain.cs" />
       <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Discord/DiscordMessageHandlerGrainService.cs" />
-      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Discord/DiscordSubscriptionsGrainService.cs" />
       <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/QuartzSchedulerGrainService.cs" />
       <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/Discord/IDiscordGuildGrain.cs" />
       <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.GrainsInterfaces/Data/IBotCrontabRuleGrain.cs" />
@@ -123,6 +98,12 @@
       <option value="$PROJECT_DIR$/PierogiesBot/Program.cs" />
       <option value="$PROJECT_DIR$/PierogiesBot/Startup.cs" />
       <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Silo/HostBuilderExtensions.cs" />
+      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Discord/DiscordCommandsGrainService.cs" />
+      <option value="$PROJECT_DIR$/Modules/Orleans/PierogiesBot.Grains/Discord/DiscordSubscriptionsGrainService.cs" />
+      <option value="$PROJECT_DIR$/PierogiesBot.Manager/Services/SettingsService.cs" />
+      <option value="$PROJECT_DIR$/Modules/PierogiesBot.Discord/Services/DiscordClientHostedService.cs" />
+      <option value="$PROJECT_DIR$/PierogiesBot.Manager/App.xaml.cs" />
+      <option value="$PROJECT_DIR$/PierogiesBot/Dockerfile" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1tnMKmsr2rjoZuvSswBGsSaDrLd" />
@@ -136,6 +117,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -214,7 +196,7 @@
       <updated>1623400345196</updated>
       <workItem from="1623400359720" duration="11177000" />
       <workItem from="1623422186858" duration="493000" />
-      <workItem from="1624260411815" duration="6560000" />
+      <workItem from="1624260411815" duration="8505000" />
     </task>
     <task id="LOCAL-00001" summary="Implement HTTP api for rules using Orleans.HTTP">
       <created>1623421920128</created>
@@ -230,7 +212,21 @@
       <option name="project" value="LOCAL" />
       <updated>1623421930953</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Remove Orleans.HTTP implementation">
+      <created>1624284723491</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1624284723491</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Cleanup code">
+      <created>1624287117899</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1624287117899</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -253,7 +249,10 @@
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Implement HTTP api for rules using Orleans.HTTP" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implement HTTP api for rules using Orleans.HTTP" />
+    <MESSAGE value="Add" />
+    <MESSAGE value="Remove Orleans.HTTP implementation" />
+    <MESSAGE value="Cleanup code" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cleanup code" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

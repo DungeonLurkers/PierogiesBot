@@ -9,15 +9,13 @@ namespace PierogiesBot.Discord.Services
     public class DiscordClientHostedService : IHostedService
     {
         private readonly ILogger<DiscordClientHostedService> _logger;
-        private readonly ILoggerFactory _loggerfactory;
         private readonly DiscordSocketClient _client;
 
         public DiscordClientHostedService(ILoggerFactory loggerfactory, DiscordSocketClient client)
         {
-            _loggerfactory = loggerfactory;
             _client = client;
 
-            _logger = _loggerfactory.CreateLogger<DiscordClientHostedService>();
+            _logger = loggerfactory.CreateLogger<DiscordClientHostedService>();
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
