@@ -6,16 +6,14 @@ using PierogiesBot.Commons.Dtos.BotCrontabRule;
 
 namespace PierogiesBot.GrainsInterfaces.Data
 {
-    public interface IBotCrontabRuleGrain : IGrainWithStringKey
+    public interface IBotCrontabRuleGrain : IEntityGrain
     {
         Task<GetBotCrontabRuleDto?> FindById(string id);
         
         Task<IEnumerable<GetBotCrontabRuleDto>> Find();
 
-        Task<string> Create([FromBody] CreateBotCrontabRuleDto ruleDto);
+        Task<string> Create(CreateBotCrontabRuleDto ruleDto);
 
-        Task<string> Update(string id,[FromBody] UpdateBotCrontabRuleDto ruleDto);
-
-        Task<string> Delete(string id);
+        Task<string> Update(string id, UpdateBotCrontabRuleDto ruleDto);
     }
 }

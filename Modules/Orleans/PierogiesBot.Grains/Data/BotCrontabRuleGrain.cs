@@ -14,9 +14,9 @@ namespace PierogiesBot.Grains.Data
         {
         }
         
-        public async Task<GetBotCrontabRuleDto?> FindById(string id) => await FindById<GetBotCrontabRuleDto>(id);
+        public new async Task<GetBotCrontabRuleDto?> FindById(string id) => await FindById<GetBotCrontabRuleDto>(id);
 
-        public async Task<IEnumerable<GetBotCrontabRuleDto>> Find() => await Find<GetBotCrontabRuleDto>();
+        public new async Task<IEnumerable<GetBotCrontabRuleDto>> Find() => await Find<GetBotCrontabRuleDto>();
 
         public async Task<string> Create(CreateBotCrontabRuleDto ruleDto) => await base.Create(ruleDto);
 

@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace PierogiesBot.Discord.Modules
 {
+    [RequireUserPermission(GuildPermission.SendMessages)]
     [Group("emoji")]
     public class EmojiCommandModule : LoggingModuleBase
     {

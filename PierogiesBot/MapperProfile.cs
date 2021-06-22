@@ -2,6 +2,7 @@
 using PierogiesBot.Commons.Dtos.BotCrontabRule;
 using PierogiesBot.Commons.Dtos.BotReactRule;
 using PierogiesBot.Commons.Dtos.BotResponseRule;
+using PierogiesBot.Commons.Dtos.Mute;
 using PierogiesBot.Commons.Dtos.UserData;
 using PierogiesBot.Data.Models;
 using PierogiesBot.Models;
@@ -27,6 +28,10 @@ namespace PierogiesBot
             CreateMap<AppUser, GetUserDto>().ReverseMap();
             CreateMap<AppUser, UpdateUserDto>().ReverseMap();
             CreateMap<AppUser, CreateUserDto>().ReverseMap();
+
+            CreateMap<Mute, GetMuteDto>().ReverseMap();
+            CreateMap<Mute, UpdateMuteDto>().ReverseMap();
+            CreateMap<Mute, CreateMuteDto>().ReverseMap();
         }
     }
 }

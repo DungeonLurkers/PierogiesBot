@@ -16,7 +16,6 @@ namespace PierogiesBot.Discord
             services.AddTransient<CommandService>();
             services.AddTransient<ChannelSubscribeService>();
             services.AddTransient<CrontabSubscribeService>();
-            services.AddHostedService<DiscordClientHostedService>();
 
             services.AddTransient<IMessageHandlerChain, MessageHandlerChain>();
             services.AddTransient<IUserSocketMessageHandler, BotResponseMessageHandler>();

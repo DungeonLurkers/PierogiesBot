@@ -25,20 +25,20 @@ namespace PierogiesBot.Grains.Discord
         private CommandService _commandService;
         private ILogger<CommandService> _commandLogger;
 
-        public DiscordCommandsGrainService(IGrainIdentity id, Silo silo, ILoggerFactory loggerFactory) : base(id, silo, loggerFactory)
-        {
-            _loggerFactory = loggerFactory;
-        }
-
-        public override async Task Init(IServiceProvider serviceProvider)
+        public DiscordCommandsGrainService(IServiceProvider serviceProvider, IGrainIdentity id, Silo silo, ILoggerFactory loggerFactory) : base(id, silo, loggerFactory)
         {
             _services = serviceProvider;
+            _loggerFactory = loggerFactory;
+            
             _client = serviceProvider.GetRequiredService<DiscordSocketClient>();
             _commandService = serviceProvider.GetRequiredService<CommandService>();
             _commandLogger = _loggerFactory.CreateLogger<CommandService>();
             
             _commandService.AddTypeReader<TimeZoneInfo>(new TimeZoneInfoTypeReader());
-            
+        }
+
+        public override async Task Init(IServiceProvider serviceProvider)
+        {
             await base.Init(serviceProvider);
         }
 
@@ -53,6 +53,9 @@ namespace PierogiesBot.Grains.Discord
         {
             _client.MessageReceived -= HandleCommandAsync;
             _commandService.CommandExecuted -= CommandServiceOnCommandExecuted;
+
+            _client.StopAsync();
+            _client.LogoutAsync();
             
             return base.Stop();
         }

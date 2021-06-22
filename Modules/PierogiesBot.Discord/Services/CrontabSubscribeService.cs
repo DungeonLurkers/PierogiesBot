@@ -42,7 +42,7 @@ namespace PierogiesBot.Discord.Services
             var guilds = await _settingsRepository.GetAll();
 
             var botCrontabRules = rules.ToList();
-            foreach (var (_, guildId, guildTimeZoneId) in guilds)
+            foreach (var (_, guildId, guildTimeZoneId, _) in guilds)
             foreach (var rule in botCrontabRules)
             {
                 var tzInfo = TZConvert.GetTimeZoneInfo(guildTimeZoneId);

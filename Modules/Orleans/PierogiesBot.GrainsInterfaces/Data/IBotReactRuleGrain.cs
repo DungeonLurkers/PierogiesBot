@@ -5,15 +5,15 @@ using PierogiesBot.Commons.Dtos.BotReactRule;
 
 namespace PierogiesBot.GrainsInterfaces.Data
 {
-    public interface IBotReactRuleGrain
+    public interface IBotReactRuleGrain : IEntityGrain
     {
         Task<GetBotReactRuleDto?> FindById(string id);
         
         Task<IEnumerable<GetBotReactRuleDto>> Find();
 
-        Task<string> Create([FromBody] CreateBotReactRuleDto ruleDto);
+        Task<string> Create(CreateBotReactRuleDto ruleDto);
 
-        Task<string> Update(string id,[FromBody] UpdateBotReactRuleDto ruleDto);
+        Task<string> Update(string id, UpdateBotReactRuleDto ruleDto);
 
         Task<string> Delete(string id);
     }

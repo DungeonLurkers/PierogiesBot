@@ -12,12 +12,12 @@ namespace PierogiesBot.Discord.Modules
         }
 
         [Command("whois")]
-        public async Task WhoIs(SocketUser? user = null)
+        public Task WhoIs(SocketUser? user = null)
         {
             LogTrace($"Whois {user}");
             user ??= Context.Client.CurrentUser;
 
-            await ReplyAsync($"{user.Username}#{user.Discriminator}");
+            return ReplyAsync($"{user.Username}#{user.Discriminator}");
         }
     }
 }

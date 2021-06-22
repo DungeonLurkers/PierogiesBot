@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace PierogiesBot.Discord.Modules
 {
+    [RequireUserPermission(GuildPermission.AddReactions)]
     [Group("react")]
     public class ReactionCommandModule : LoggingModuleBase
     {

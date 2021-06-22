@@ -1,22 +1,28 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
+using Discord;
 using Discord.Commands;
+using Discord.WebSocket;
 using Microsoft.Extensions.Logging;
-using PierogiesBot.Data.Models;
+using Orleans;
 using PierogiesBot.Data.Services;
-using TimeZoneConverter;
+using PierogiesBot.GrainsInterfaces.Data;
 
 namespace PierogiesBot.Discord.Modules
 {
+    [RequireUserPermission(GuildPermission.Administrator)]
     [Group("settings")]
     public class GuildSettingsCommandModule : LoggingModuleBase
     {
-        private readonly IRepository<GuildSettings> _repository;
+        private readonly ISettingsService _settingsService;
 
-        public GuildSettingsCommandModule(ILogger<GuildSettingsCommandModule> logger,
-            IRepository<GuildSettings> repository) : base(logger)
+        public GuildSettingsCommandModule(
+            ILogger<GuildSettingsCommandModule> logger,
+            ISettingsService settingsService)
+            : base(logger)
         {
-            _repository = repository;
+            _settingsService = settingsService;
         }
 
         [Command("set_timezone")]
@@ -24,12 +30,8 @@ namespace PierogiesBot.Discord.Modules
         {
             LogTrace($"Set TimeZone {tzInfo.DisplayName}");
             var guildId = Context.Guild.Id;
-            var settings = await _repository.GetByProperty(s => s.GuildId, guildId);
 
-            if (settings == null)
-                await _repository.InsertAsync(new GuildSettings(guildId, tzInfo.Id));
-            else
-                await _repository.UpdateAsync(settings with {GuildTimeZone = tzInfo.Id});
+            await _settingsService.SetGuildTimeZone(guildId, tzInfo);
 
             await ReplyAsync($"Server timezone set to {tzInfo}");
         }
@@ -39,11 +41,39 @@ namespace PierogiesBot.Discord.Modules
         {
             LogTrace("Get TimeZone");
             var guildId = Context.Guild.Id;
-            var settings = await _repository.GetByProperty(s => s.GuildId, guildId);
+            var tzInfo = await _settingsService.GetGuildTimeZone(guildId);
 
-            if (settings == null) return;
+            if (tzInfo == null) return;
 
-            await ReplyAsync($"Server timezone is {TZConvert.GetTimeZoneInfo(settings.GuildTimeZone)}");
+            await ReplyAsync($"Server timezone is {tzInfo}");
+        }
+
+        [Command("set_muterole")]
+        public async Task SetMuteRole(SocketRole role)
+        {
+            LogTrace($"Set mute role to {role}");
+            var guildId = Context.Guild.Id;
+
+            await _settingsService.SetMuteRole(guildId, role);
+
+            await ReplyAsync($"Server mute role set to {role}");
+        }
+
+        [Command("get_muterole")]
+        public async Task GetMuteRole()
+        {
+            LogTrace("Get guild mute role");
+            var guild = Context.Guild;
+            var guildId = guild.Id;
+
+            var settingsGuildMuteRole = await _settingsService.GetMuteRole(guildId);
+            if (settingsGuildMuteRole is null)
+            {
+                await ReplyAsync("There is no mute role set");
+                return;
+            }
+
+            await ReplyAsync($"Server mute role is {settingsGuildMuteRole}");
         }
     }
 }

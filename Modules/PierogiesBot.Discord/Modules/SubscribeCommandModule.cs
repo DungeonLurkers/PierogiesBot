@@ -8,6 +8,7 @@ using PierogiesBot.Discord.Services;
 
 namespace PierogiesBot.Discord.Modules
 {
+    [RequireUserPermission(GuildPermission.Administrator)]
     [Group("sub")]
     public class SubscribeCommandModule : LoggingModuleBase
     {
